@@ -1,9 +1,17 @@
-# Getting Started with Create React App
+# Creating Portfolio Site
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was was built using the Express, React, ThreeJS
 
 ## Available Scripts
 
+## Backend
+
+In the project directory, you can run:
+
+### `node app`
+Starts up the backend
+
+## Frontend
 In the project directory, you can run:
 
 ### `npm start`
