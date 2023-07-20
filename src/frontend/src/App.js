@@ -8,6 +8,7 @@ import Home from './pages/index';
 import About from './pages/about';
 import Project from './pages/Project/project.jsx';
 import Resume from './pages/resume';
+import Experimentation from './pages/experimentation';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
           length={repos.reposLength}
           specfic={repos.specificRepos}/>} />
         <Route path='/resume' element={<Resume />} />
+        <Route path='/experimentation' element={<Experimentation/>}/>
       </Routes>
     </Router>
   )

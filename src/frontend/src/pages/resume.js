@@ -4,6 +4,7 @@ const Resume = () => {
   return (
     <div
       style={{
+        
         display: 'flex',
         justifyContent: 'Center',
         alignItems: 'Left',

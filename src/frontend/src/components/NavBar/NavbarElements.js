@@ -1,4 +1,5 @@
 import { FaBars } from 'react-icons/fa';
+import Button from '@mui/material/Button';
 import { NavLink as Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -6,7 +7,7 @@ export const Nav = styled.nav`
     background: #2f3c69;
     height: 85px;
     display: flex;
-    justify-content: end;
+    justify-content: start;
     padding: 0.2rem calc((100vw - 1200px) / 2);
     z-index: 12;
     /* Third Nav */
@@ -14,15 +15,21 @@ export const Nav = styled.nav`
 `;
 
 export const NavLink = styled(Link)`
-    color: #ffffff;
+    color: rgba(255, 255, 255, 0.7);
     display: flex;
-    align-items: center;
+    align-items: left;
     text-decoration: none;
     padding: 0 1rem;
     height: 100%;
     cursor: pointer;
     &.active {
         color: #00deb9;
+    }
+    &:hover {
+        transition: all 0.2s ease-in-out;
+        background: #fff;
+        color: #808080;
+
     }
 `;
 
@@ -41,34 +48,40 @@ export const Bars = styled(FaBars)`
 `;
 
 export const NavMenu = styled.div`
+    background-color: #333;
+    overflow-y: auto;
     display: flex;
-    align-items: end;
-    margin-right: -24px;
-    /* Second Nav */
-    /* margin-right: 24px; */
-    /* Third Nav */
-    /* width: 100vw;
-    white-space: nowrap; */
+    flex-direction: column;
     @media screen and (max-width: 768px) {
         display: none;
     }
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 9;
+    font-size: 24px;
+    box-shadow: 0 10px 15px -3px rgb(46 41 51 / 8%), 0 4px 6px -2px rgb(71 63 79 / 16%);
+    transition: transform ease-in-out 0.2s;
+    /* transition: width ease 0.2s; */
 `;
 
-export const NavBtn = styled.nav`
-    display: flex;
-    align-items: center;
-    margin-right: 24px;
+export const NavBtn = styled(Button)`
+    position: fixed;
+    left: 1125px;
+    cursor: pointer;
+    color: #fff;
+    background: transparent;;
+    border: none;
     /* Third Nav */
     /* justify-content: flex-end;
     width: 100vw; */
     @media screen and (max-width: 768px) {
         display: none;
     }
+    
 `;
 
 export const NavBtnLink = styled(Link)`
     border-radius: 4px;
-    background: #ffffff;
+    background: #000000;
     padding: 10px 22px;
     color: #000000;
     outline: none;
