@@ -8,11 +8,17 @@ This project was was built using the Express, React, ThreeJS
 
 In the project directory, you can run:
 
+### `npm install`
+Download the required package dependencies
+
 ### `node app`
 Starts up the backend
 
 ## Frontend
 In the project directory, you can run:
+
+### `npm install`
+Download the required package dependencies
 
 ### `npm start`
 

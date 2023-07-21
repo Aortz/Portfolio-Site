@@ -1,59 +1,44 @@
-import React, { useState } from 'react';
-import { MdClose } from 'react-icons/md';
-import { BiMenuAltRight } from 'react-icons/bi';
+import React from 'react';
 import {
   Nav,
-  NavLink,
-  Bars,
-  NavMenu,
+  NavLogo,
+  NavText,
   NavBtn,
-  NavBtnLink,
+  NavMenuClose,
+  NavMenuOpen
 } from './NavbarElements';
+import { useNavigate } from 'react-router-dom';
+import PersonalLogo from '../../assets/personal-icon/personal-logo-transparent.png';
   
-const Navbar = () => {
-  const [navbarOpen, setNavbarOpen] = useState(false);
+const Navbar = ({ navbarOpen, setNavbarOpen }) => {
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    navigate("/");
+    setNavbarOpen(false);
+  }
+
   return (
     <>
-      <Nav>
+      <Nav className={navbarOpen ? 'open' : ''}>
+        
+        <NavLogo 
+          src={PersonalLogo} 
+          onClick={handleLogoClick}
+        />
+        <NavText onClick={handleLogoClick}> Junwei </NavText>
         <NavBtn
           onClick={() => setNavbarOpen((prev) => !prev)}
         >
           {navbarOpen ? (
             <>
-              <MdClose style={{ width: '32px', height: '32px', color: "#000" }} />
+              <NavMenuClose  />
             </>
             ) : (
-              <BiMenuAltRight
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  color: "#000",
-                }}
-              />
+              <NavMenuOpen/>
           )}
         </NavBtn>
       </Nav>
-      <>
-        {navbarOpen ? (
-          <NavMenu>
-            <NavLink to='/' onClick={() => setNavbarOpen((prev) => !prev)}>
-              <p>{"<Home />"}</p>
-            </NavLink>
-            <NavLink to='/about' onClick={() => setNavbarOpen((prev) => !prev)}>
-              <p>{"<About />"}</p>
-            </NavLink>
-            <NavLink to='/projects' onClick={() => setNavbarOpen((prev) => !prev)}>
-              <p>{"<Project />"}</p>
-            </NavLink>
-            <NavLink to='/resume' onClick={() => setNavbarOpen((prev) => !prev)}>
-              <p>{"<Resume />"}</p>
-            </NavLink>
-            <NavLink to='/experimentation' onClick={() => setNavbarOpen((prev) => !prev)}>
-              <p>{"<Experiment />"}</p>
-            </NavLink>
-          </NavMenu>) : (<></>)
-        }
-      </>
     </>
   );
 };

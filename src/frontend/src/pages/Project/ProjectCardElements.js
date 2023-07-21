@@ -1,12 +1,13 @@
 import Button from '@mui/material/Button';
 import { NavLink as Link } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
+import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
 import VT323RegularTTF from '../../assets/fonts/VT323/VT323-Regular.ttf';
-import MoiraiOne from '../../assets/fonts/MoiraiOne/MoiraiOne-Regular.ttf';import IBMPlexMonoBold from '../../assets/fonts/IBM_Plex_Mono/IBMPlexMono-Bold.ttf';
+import MoiraiOne from '../../assets/fonts/MoiraiOne/MoiraiOne-Regular.ttf';
+import IBMPlexMonoBold from '../../assets/fonts/IBM_Plex_Mono/IBMPlexMono-Bold.ttf';
 import MajorMonoDisplay from '../../assets/fonts/Major_Mono_Display/MajorMonoDisplay-Regular.ttf';
 import PressStart2P from '../../assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf';
-import { MdClose } from 'react-icons/md';
-import { BiMenuAltRight } from 'react-icons/bi';
 
 
 export const GlobalStyles = createGlobalStyle`
@@ -33,27 +34,69 @@ export const GlobalStyles = createGlobalStyle`
     src: url(${MajorMonoDisplay}) format('truetype');
     /* You can specify additional font styles here if needed, such as font-weight and font-style */
   }
+
   @font-face {
     font-family: 'IBMPlexMonoBold';
     src: url(${IBMPlexMonoBold}) format('truetype');
     /* You can specify additional font styles here if needed, such as font-weight and font-style */
   }
+  
+  
 
 `;
 
-export const Nav = styled.nav`
-    background-color: rgba(0, 0, 0, 0.9);
-    height: 85px;
-    display: flex;
-    justify-content: end;
+export const ContainerTitle = styled.div`
+    color: yellow;
     align-items: center;
-    z-index: 999;
+    
+    text-align: center;
+    font-family: 'IBMPlexMonoBold', monospace;
+    font-size: 70px;
+    font-weight: 500;
+`
+export const CardContainer = styled(Col)`
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px solid #ccc,
+    border-radius: 25px;
+    background: rgba(0, 0, 0, 0.1),
     padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 999; /* Ensure the navbar is on top */
-`;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 1);
+`
 
-export const NavLink = styled(Link)`
+export const StyledCard = styled(Card)`
+    // height: 100px;
+    // width: 100px;
+    justify-content: start;
+    border-radius: 25px;
+`
+
+export const CardTitle = styled(Card.Title)`
+    color: #0000f7;
+    align-self: center;
+    text-align: center;
+    font-family: 'VT323', monospace;
+    font-size: 40px;
+    font-weight: 400;
+`
+
+export const CardBody = styled(Card.Body)`
+    background: rgba(255, 255, 255, 0.5);
+    align-items: center;
+    border-radius: 25px;
+`
+
+export const CardText = styled(Card.Text)`
+    color: #fff;
+    align-self: center;
+    margin-left: 60px;
+    font-family: 'MoiraiOne', monospace;
+    font-size: 24px;
+    font-weight: 400;
+`
+
+export const CardLink = styled(Link)`
     color: rgba(255, 255, 255);
     text-align: right;
     text-decoration: none;
@@ -80,17 +123,7 @@ export const NavLink = styled(Link)`
     }
 `;
 
-export const NavText = styled.div`
-    color: #737378;
-    align-self: safe center;
-    margin-right: 600px; /* Adding some space between the child elements */
-    margin-left: 60px;
-    font-family: 'MajorMonoDisplay', monospace;
-    font-size: 50px;
-    font-weight: 500;
-`
-
-export const NavMenu = styled.div`
+export const CardMenu = styled.div`
     overflow-y: auto;
     display: flex;
     flex-direction: column;
@@ -125,19 +158,8 @@ export const NavMenu = styled.div`
     }
 `;
 
-export const NavMenuOpen = styled(BiMenuAltRight)` 
-    width: 50px; 
-    height: 50px; 
-    color: #fff;
-`
 
-export const NavMenuClose = styled(MdClose)` 
-    width: 50px; 
-    height: 50px;
-    color: #fff;
-`
-
-export const NavBtn = styled(Button)`
+export const CardBtn = styled(Button)`
     width: 60px;
     height: 60px;
     cursor: pointer;
@@ -153,13 +175,3 @@ export const NavBtn = styled(Button)`
     
 `;
 
-export const NavLogo = styled.img`
-    width: 80px;
-    height: 80px;
-    align-self: safe center;
-    background: none;
-    @media screen and (max-width: 768px) {
-        display: none;
-    }
-    
-`;

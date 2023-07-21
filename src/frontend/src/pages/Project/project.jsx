@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Container from "react-bootstrap/Container";
 import { Jumbotron } from "./migration";
-import Row from "react-bootstrap/Row";
+
 import ProjectCard from "./ProjectCard";
 import axios from "axios";
+import { 
+  ContainerTitle,
+  CardContainer
+} from './ProjectCardElements'
 
 const dummyProject = {
   name: null,
@@ -55,10 +58,11 @@ const Project = ({ heading, username, length, specfic }) => {
   }, [fetchRepos]);
 
   return (
-    <Jumbotron fluid id="projects" className="bg-light m-0">
-      <Container className="">
-        <h2 className="display-4 pb-5 text-center">{heading}</h2>
-        <Row>
+    <Jumbotron fluid id="projects" className="bg-black m-0">
+        <ContainerTitle>
+          {"{ALL WORKS}"}
+        </ContainerTitle>
+        <CardContainer>
           {projectsArray.length
             ? projectsArray.map((project, index) => (
               <ProjectCard
@@ -74,8 +78,8 @@ const Project = ({ heading, username, length, specfic }) => {
                 value={project}
               />
             ))}
-        </Row>
-      </Container>
+        </CardContainer>
+      
     </Jumbotron>
   );
 };

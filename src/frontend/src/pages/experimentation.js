@@ -4,20 +4,20 @@ import './experimentation.css';
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment, OrbitControls } from "@react-three/drei";
 import { Suspense } from "react";
-import { Model } from '../components/Model.js'
-import { Box } from '../components/Box.js'
-import Text from '../components/TextGeometry.js'
+import { Model } from '../components/ThreeJS/Model.js'
+import { Box } from '../components/ThreeJS/Box.js'
+import Text from '../components/ThreeJS/TextGeometry.js'
   
 const Experimentation = () => {
   return (
     <>
       {/* Canvas 1 */}
       <Canvas>
-        {/* <Suspense fallback={null}>
+        <Suspense fallback={null}>
             <Model />
             <OrbitControls autoRotate rotateSpeed={0.01}/>
             <Environment preset="forest" background />
-        </Suspense> */}
+        </Suspense>
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -10, -10]} />
@@ -29,7 +29,7 @@ const Experimentation = () => {
         <Box position={[4.8, 0, 0]}/>
       </Canvas>
       {/* Canvas 2 */}
-      <Canvas>
+      {/* <Canvas>
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -10, -10]} wireframe={true}/>
@@ -42,7 +42,7 @@ const Experimentation = () => {
         <Box position={[3.6, 0, 0]} wireframe={true}/>
         <Box position={[-4.8, 0, 0]} wireframe={true}/>
         <Box position={[4.8, 0, 0]} wireframe={true}/>
-      </Canvas>
+      </Canvas> */}
     </>
   )
 };

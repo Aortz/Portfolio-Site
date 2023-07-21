@@ -4,7 +4,7 @@ import { useFrame } from '@react-three/fiber'
 import { extend } from '@react-three/fiber'
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader'
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry'
-import Kolker from '../assets/Kolker Brush_Regular.json'
+import Kolker from '../../assets/fonts/Kolker_Brush/Kolker Brush_Regular.json'
 
 extend({ TextGeometry })
 

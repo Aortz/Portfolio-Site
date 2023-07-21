@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useCallback } from "react";
-import Col from "react-bootstrap/Col";
 import { FaGithub } from "react-icons/fa";
-import Card from "react-bootstrap/Card";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
+import styled from "styled-components";
+import { 
+  CardContainer,
+  StyledCard,
+  CardBody,
+  CardTitle,
+  CardText,
+  GlobalStyles
+} from './ProjectCardElements';
 
-const cardStyle = {
-  display: "flex", 
-  flexBasis: "auto", 
-  flexDirection: "column", 
-  alignItems: "stretch",
-  justifyContent: "center"
-};
 
 const cardButtonStyle = {
   justifyContent: "space-between",
   backgroundColor: "#fffff",
-  color: "#000",
+  color: "#fff",
   border: "1px solid black",
   borderRadius: "4px",
   padding: "8px 16px",
@@ -25,7 +25,7 @@ const cardButtonStyle = {
   fontSize: "14px",
   transition: "background-color 0.3s",
   "&:hover": {
-    backgroundColor: "#007bff",
+    backgroundColor: "#fff",
   },
 };
 
@@ -54,32 +54,18 @@ const ProjectCard = ({ value }) => {
     languages_url,
     pushed_at,
   } = value;
-  
-
-  const cardBodyStyle = {
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-    padding: "16px",
-    backgroundColor: "#fff",
-    transition: "transform 0.3s, box-shadow 0.3s",
-    "&:hover": {
-      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-      transform: "translateY(-2px)",
-    },
-  };
-
 
   return (
-    <Col md={6} style={cardStyle}>
-      <Card className="card shadow-lg p-3 mb-5 bg-white rounded">
-        <Card.Body style={{ ...cardBodyStyle }}>
-          <Card.Title as="h5" >{name || <Skeleton />} </Card.Title>
-          <Card.Text>{(!description) ? "" : description || <Skeleton count={3} />} </Card.Text>
+    <CardContainer md={6}>
+      <GlobalStyles />
+      <StyledCard>
+        <CardBody>
+          <CardTitle>{name || <Skeleton />} </CardTitle>
+          <CardText>{(!description) ? "" : description || <Skeleton count={3} />} </CardText>
           {svn_url ? <CardButtons svn_url={svn_url} /> : <Skeleton count={2} />}
           <hr />
           {languages_url ? (
-            <Language languages_url={languages_url} repo_url={svn_url} />
+            <StyledLanguage languages_url={languages_url} repo_url={svn_url} />
           ) : (
             <Skeleton count={3} />
           )}
@@ -88,9 +74,9 @@ const ProjectCard = ({ value }) => {
           ) : (
             <Skeleton />
           )}
-        </Card.Body>
-      </Card>
-    </Col>
+        </CardBody>
+      </StyledCard>
+    </CardContainer>
   );
 };
 
@@ -162,6 +148,10 @@ const Language = ({ languages_url, repo_url }) => {
     </div>
   );
 };
+
+const StyledLanguage = styled(Language)`
+  font-family: 'VT323', monospace;
+`
 
 const CardFooter = ({ star_count, repo_url, pushed_at }) => {
   const [updated_at, setUpdated_at] = useState("0 mints");
