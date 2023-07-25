@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Jumbotron } from "./migration";
-
 import ProjectCard from "./ProjectCard";
 import axios from "axios";
 import { 
   ContainerTitle,
-  CardContainer
+  CardContainer,
+  ProjectContainer,
 } from './ProjectCardElements'
+
 
 const dummyProject = {
   name: null,
@@ -28,6 +28,19 @@ const Project = ({ heading, username, length, specfic }) => {
   );
 
   const [projectsArray, setProjectsArray] = useState([]);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // For Component1, set the text to be visible after the animation-delay
+    const timer1 = setTimeout(() => {
+      setIsVisible(true);
+    }, 0); // Set the delay time in milliseconds (e.g., 1s for Component1)
+
+    // Clear the timeouts when the component unmounts or when the animations are complete
+    return () => {
+      clearTimeout(timer1);
+    };
+  }, []);
 
   const fetchRepos = useCallback(async () => {
     let repoList = [];
@@ -58,10 +71,11 @@ const Project = ({ heading, username, length, specfic }) => {
   }, [fetchRepos]);
 
   return (
-    <Jumbotron fluid id="projects" className="bg-black m-0">
-        <ContainerTitle>
-          {"{ALL WORKS}"}
+    <ProjectContainer>
+        <ContainerTitle $animationDelay="0s" className={isVisible ? 'visible' : ''}>
+          {"3. { PROJECTS }"}
         </ContainerTitle>
+        {/* <MovieCurtains src={movieCurtains}/> */}
         <CardContainer>
           {projectsArray.length
             ? projectsArray.map((project, index) => (
@@ -80,7 +94,7 @@ const Project = ({ heading, username, length, specfic }) => {
             ))}
         </CardContainer>
       
-    </Jumbotron>
+    </ProjectContainer>
   );
 };
 

@@ -5,10 +5,11 @@ import {
   NavText,
   NavBtn,
   NavMenuClose,
-  NavMenuOpen
+  NavMenuOpen,
 } from './NavbarElements';
 import { useNavigate } from 'react-router-dom';
 import PersonalLogo from '../../assets/personal-icon/personal-logo-transparent.png';
+import { GlobalStyles } from '../Fonts/Fonts';
   
 const Navbar = ({ navbarOpen, setNavbarOpen }) => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const Navbar = ({ navbarOpen, setNavbarOpen }) => {
   return (
     <>
       <Nav className={navbarOpen ? 'open' : ''}>
-        
+        <GlobalStyles />
         <NavLogo 
           src={PersonalLogo} 
           onClick={handleLogoClick}

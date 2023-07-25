@@ -4,48 +4,17 @@ import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import styled from "styled-components";
 import { 
-  CardContainer,
   StyledCard,
   CardBody,
   CardTitle,
   CardText,
-  GlobalStyles
+  CardBtn,
+  CardButtonLink
 } from './ProjectCardElements';
-
-
-const cardButtonStyle = {
-  justifyContent: "space-between",
-  backgroundColor: "#fffff",
-  color: "#fff",
-  border: "1px solid black",
-  borderRadius: "4px",
-  padding: "8px 16px",
-  cursor: "pointer",
-  fontWeight: "bold",
-  fontSize: "14px",
-  transition: "background-color 0.3s",
-  "&:hover": {
-    backgroundColor: "#fff",
-  },
-};
-
-const languageStyle = {
-  justifyContent: "space-between",
-  backgroundColor: "#D3D3D3",
-  color: "#000",
-  border: "none",
-  borderRadius: "4px",
-  padding: "8px 16px",
-  cursor: "pointer",
-  fontWeight: "bold",
-  fontSize: "14px",
-  transition: "background-color 0.3s",
-  "&:hover": {
-    backgroundColor: "#007bff",
-  },
-};
+import { BsFolder } from "react-icons/bs";
 
 const ProjectCard = ({ value }) => {
+  
   const {
     name,
     description,
@@ -55,49 +24,75 @@ const ProjectCard = ({ value }) => {
     pushed_at,
   } = value;
 
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // For Component1, set the text to be visible after the animation-delay
+    const timer1 = setTimeout(() => {
+      setIsVisible(true);
+    }, 0); // Set the delay time in milliseconds (e.g., 1s for Component1)
+
+    // Clear the timeouts when the component unmounts or when the animations are complete
+    return () => {
+      clearTimeout(timer1);
+    };
+  }, []);
+
   return (
-    <CardContainer md={6}>
-      <GlobalStyles />
       <StyledCard>
         <CardBody>
-          <CardTitle>{name || <Skeleton />} </CardTitle>
-          <CardText>{(!description) ? "" : description || <Skeleton count={3} />} </CardText>
-          {svn_url ? <CardButtons svn_url={svn_url} /> : <Skeleton count={2} />}
+          <CardTitle $animationDelay="0s" className={isVisible ? 'visible' : ''}>
+            <BsFolder style={{height: 20, width: 30}}/> 
+            Project: {  name || <Skeleton />} 
+            {/* <Cursor/> */}
+          </CardTitle>
           <hr />
-          {languages_url ? (
-            <StyledLanguage languages_url={languages_url} repo_url={svn_url} />
-          ) : (
-            <Skeleton count={3} />
-          )}
-          {value ? (
-            <CardFooter star_count={stargazers_count} repo_url={svn_url} pushed_at={pushed_at} />
-          ) : (
-            <Skeleton />
-          )}
+          <CardText>
+            {(!description) ? "" : description || <Skeleton count={3} />} 
+          </CardText>
+          {/* <hr /> */}
+          <CardText $justifyContent="center" >
+            {svn_url ? <CardButtons svn_url={svn_url} /> : <Skeleton count={2} />}
+          </CardText>
+          <hr />
+          <CardText $bgColor="#000">
+            {languages_url ? (
+              <StyledLanguage languages_url={languages_url} repo_url={svn_url} />
+              ) : (
+                <Skeleton count={3} />
+              )}
+          </CardText>
+          <hr />
+          <>
+            {value ? (
+                <CardFooter star_count={stargazers_count} repo_url={svn_url} pushed_at={pushed_at} />
+              ) : (
+                <Skeleton />
+            )}
+          </>
         </CardBody>
       </StyledCard>
-    </CardContainer>
   );
 };
 
 const CardButtons = ({ svn_url }) => {
   return (
-    <div className="d-grid gap-2 d-md-block">
-      <a
-        href={`${svn_url}/archive/master.zip`}
-        className="btn btn-outline-secondary mx-2"
-        style={{...cardButtonStyle}}
-      >
-        <FaGithub/> Clone Project
-      </a>
-      <a 
-        href={svn_url} target=" _blank" 
-        className="btn btn-outline-secondary mx-2"
-        style={{...cardButtonStyle}}  
-      >
-        <FaGithub/> Repo
-      </a>
-    </div>
+    <>
+      <CardBtn> 
+        <CardButtonLink
+          href={`${svn_url}/archive/master.zip`}
+        >
+          <FaGithub/> Clone Project
+        </CardButtonLink>
+      </CardBtn>
+      <CardBtn>
+        <CardButtonLink 
+          href={svn_url} target=" _blank" 
+        >
+          <FaGithub/> Repo
+        </CardButtonLink>
+      </CardBtn>
+    </>
   );
 };
 
@@ -125,32 +120,81 @@ const Language = ({ languages_url, repo_url }) => {
   }
 
   return (
-    <div className="pb-3" style={{flexDirection: 'row', justifyContent: "center"}}>
-      Languages:{" "}
-      {array.length
-        ? array.map((language) => (
-          <a
-            key={language}
-            className="card-link"
-            href={repo_url + `/search?l=${language}`}
-            target=" _blank"
-            rel="noopener noreferrer"
-            style={languageStyle}
-          >
-            <span className="badge bg-light text-dark" >
-              {language}:{" "}
-              {Math.trunc((data[language] / total_count) * 1000) / 10} %
-            </span>
-          </a>
+    <LanguageContainer $flexWrap="none">
+      <LanguageTitle $marginLeft="10px">
+        Languages:{" "}
+      </LanguageTitle>
+      <LanguageContainer $marginLeft="10px">
+        {array.length
+          ? array.map((language) => (
+            <LanguageIndv
+              key={language}
+              $border="1px solid #fff"
+              className="card-link"
+              href={repo_url + `/search?l=${language}`}
+              target=" _blank"
+              rel="noopener noreferrer"
+            >
+              <LanguagePercentage className="languge-percentage" >
+                {language}:{" "}
+                {Math.trunc((data[language] / total_count) * 1000) / 10} %
+              </LanguagePercentage>
+            </LanguageIndv>
 
-        ))
-        : "code yet to be deployed."}
-    </div>
+          ))
+          : "code yet to be deployed."}
+        </LanguageContainer>
+    </LanguageContainer>
   );
 };
 
 const StyledLanguage = styled(Language)`
   font-family: 'VT323', monospace;
+  display: flex;
+  flex-wrap: wrap;
+  
+`
+const LanguageContainer = styled.div`
+  display: flex;
+  flex-direction: ${props => props.$flexDirection || "row"};
+  justify-content: start;
+  border: 0px;
+  flex-wrap: ${props => props.$flexWrap || "wrap"};
+  margin-left: ${props => props.$marginLeft || "0px"};
+`
+
+const LanguageTitle = styled.h1`
+  align-self: center;
+  text-align: center;
+  margin-left: ${props => props.$marginLeft || "0px"};
+`
+
+const LanguageIndv = styled.a`
+  display: flex;
+  flex-wrap: none;
+  align-self: flex-start;
+  // justify-content: space-between;
+  border: ${props => props.$border || "0px"};
+  border-radius: 20px;
+  margin: 2px;
+  // cursor: pointer;
+  padding: 8px;
+
+  &:hover {
+    align-self: flex-start;
+    background: #4FAF44;
+    border: 1px solid #ccc;
+    color: #000;
+  }
+`
+
+const LanguagePercentage = styled.div`
+  background: none;
+  color: #fff;
+  font-size: 20px;
+  // &:hover {
+  //   color: #000;
+  // }
 `
 
 const CardFooter = ({ star_count, repo_url, pushed_at }) => {
@@ -178,20 +222,69 @@ const CardFooter = ({ star_count, repo_url, pushed_at }) => {
   }, [handleUpdatetime]);
 
   return (
-    <p className="card-text" style={{padding: 10}}>
-      <a
+    <FooterContainer className="card-text">
+      <FooterBtn
         href={repo_url + "/stargazers"}
         target=" _blank"
-        className="text-dark text-decoration-none"
       >
-        <span className="text-dark card-link mr-4" style={{...cardButtonStyle}}>
+        <FooterBtnLink className="text-light card-link mr-4">
           <FaGithub/> Stars{" "}
           <span className="badge badge-dark">{star_count}</span>
-        </span>
-      </a>
-      <small className="text-muted" style={{padding: 20}}>Updated {updated_at}</small>
-    </p>
+        </FooterBtnLink>
+      </FooterBtn>
+      <small className="text-muted" style={{marginLeft: "20px"}}>Updated {updated_at}</small>
+    </FooterContainer>
   );
 };
+
+const FooterContainer = styled.p`
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // margin-bottom: 10px;
+
+  // &:hover {
+  //   align-self: flex-start;
+  //   background: #55B4B0;
+  //   border: 1px solid #ccc;
+  //   border-radius: 20px;
+  //   color: #000;
+
+  //   background: #000;
+  // }
+`
+
+const FooterBtn = styled.a`
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 3px;
+  border: 1px solid white;
+  border-left: 1px solid white;
+  margin-left: 20px;
+
+  &:hover {
+    align-self: flex-start;
+    background: #55B4B0;
+    color: #000;
+
+    background: #fff;
+  }
+`
+
+const FooterBtnLink = styled.span`
+  padding: 3px;
+  color: #fff;
+  border-radius: 20px;
+
+  &:hover {
+    align-self: flex-start;
+    background: #55B4B0;
+    color: #000;
+
+    background: #fff;
+  }
+`
 
 export default ProjectCard;

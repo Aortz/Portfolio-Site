@@ -4,29 +4,37 @@ import CustomScrollbar from './components/ScrollBar/CustomScrollbar';
 import {
   repos,
 } from "./editable-stuff/config.js";
-
+import { RouteContainer } from './pages/Home/HomePageElements';
 import {
   NavLink,
   NavMenu,
-  GlobalStyles
 } from './components/NavBar/NavbarElements';
-  
+import VerticalNavbar from './components/NavBar/VerticalNavbar';
+import { GlobalStyles } from './components/Fonts/Fonts';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import styled from 'styled-components';
-import Home from './pages/index';
-import About from './pages/about';
+import styled, { keyframes } from 'styled-components';
+import Home from './pages/Home/index';
+import About from './pages/About/about';
 import Project from './pages/Project/project.jsx';
 import Resume from './pages/resume';
 import Experimentation from './pages/experimentation';
 
+const slideLeftAnimation = keyframes`
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+`;
 
-const Container = styled.div`
-  /* Your main content container styles here */
-  padding-top: 60px; /* Adjust the padding to create space for the fixed navbar */
+const SlideLeftWrapper = styled.p`
+  animation: ${({ animate }) => (animate ? slideLeftAnimation : 'none')} 1s forwards;
 `;
 
 export default function App() {
   const [navbarOpen, setNavbarOpen] = useState(false);
+
 
   return (
     <Router>
@@ -36,24 +44,18 @@ export default function App() {
       <>
         {navbarOpen ? (
           <NavMenu>
-            <NavLink to='/' onClick={() => setNavbarOpen((prev) => !prev)}>
-              <p>{"01. <HOME/>"}</p>
-            </NavLink>
-            <NavLink to='/about' onClick={() => setNavbarOpen((prev) => !prev)}>
-              <p>{"02. <ABOUT/>"}</p>
-            </NavLink>
-            <NavLink to='/projects' onClick={() => setNavbarOpen((prev) => !prev)}>
-              <p>{"03. <PROJECTS/>"}</p>
-            </NavLink>
-            <NavLink to='/resume' onClick={() => setNavbarOpen((prev) => !prev)}>
-              <p>{"04. <RESUME/>"}</p>
-            </NavLink>
-            <NavLink to='/experimentation' onClick={() => setNavbarOpen((prev) => !prev)}>
+            <RedirectHome navbarOpen={navbarOpen} setNavbarOpen={setNavbarOpen}/>
+            <RedirectAbout navbarOpen={navbarOpen} setNavbarOpen={setNavbarOpen}/>
+            <RedirectProjects navbarOpen={navbarOpen} setNavbarOpen={setNavbarOpen}/>
+            <RedirectResume navbarOpen={navbarOpen} setNavbarOpen={setNavbarOpen}/>
+            {/* <NavLink to='/experimentation' onClick={() => setNavbarOpen((prev) => !prev)}>
               <p>{"05. <EXPERIMENT/>"}</p>
-            </NavLink>
+            </NavLink> */}
           </NavMenu>) : 
-          (<CustomScrollbar>
-            <Container>
+          (
+            // <CustomScrollbar></CustomScrollbar>
+            <RouteContainer>
+              <VerticalNavbar/>
               <Routes>
                 <Route path='/' exact element={<Home />} />
                 <Route path='/about' element={<About />} />
@@ -66,17 +68,99 @@ export default function App() {
                       length={repos.reposLength}
                       specfic={repos.specificRepos}
                     />
-                    // <Cube/>
                   }
                 />
                 <Route path='/resume' element={<Resume />} />
-                <Route path='/experimentation' element={<Experimentation />} />
+                {/* <Route path='/experimentation' element={<Experimentation />} /> */}
               </Routes>
-            </Container>
-          </CustomScrollbar>
+            </RouteContainer>
           )
         }
       </>
     </Router>
   );
 }
+
+const RedirectHome = ({navbarOpen, setNavbarOpen}) => {
+  const [animate, setAnimate] = useState(false);
+
+  const handleClick = () => {
+    setAnimate(true);
+    setTimeout(() => {
+      setNavbarOpen((prev) => !prev)
+      setAnimate(false);
+    }, 1000);
+  };
+
+  return (
+    <NavLink to='/' onClick={handleClick}>
+      <SlideLeftWrapper animate={animate}>
+        {/* Your Component 1 content */}
+          <p>{"01. <HOME/>"}</p>
+      </SlideLeftWrapper>
+    </NavLink>
+  );
+};
+
+const RedirectProjects = ({navbarOpen, setNavbarOpen}) => {
+  const [animate, setAnimate] = useState(false);
+
+  const handleClick = () => {
+    setAnimate(true);
+    setTimeout(() => {
+      setNavbarOpen((prev) => !prev)
+      setAnimate(false);
+    }, 1000);
+  };
+
+  return (
+    <NavLink to='/projects' onClick={handleClick}>
+      <SlideLeftWrapper animate={animate}>
+        {/* Your Component 1 content */}
+        <p>{"03. <PROJECTS/>"}</p>
+      </SlideLeftWrapper>
+    </NavLink>
+  );
+};
+
+const RedirectResume = ({navbarOpen, setNavbarOpen}) => {
+  const [animate, setAnimate] = useState(false);
+
+  const handleClick = () => {
+    setAnimate(true);
+    setTimeout(() => {
+      setNavbarOpen((prev) => !prev)
+      setAnimate(false);
+    }, 1000);
+  };
+
+  return (
+    <NavLink to='/resume' onClick={handleClick}>
+      <SlideLeftWrapper animate={animate}>
+        {/* Your Component 1 content */}
+        <p>{"04. <RESUME/>"}</p>
+      </SlideLeftWrapper>
+    </NavLink>
+  );
+};
+
+const RedirectAbout = ({navbarOpen, setNavbarOpen}) => {
+  const [animate, setAnimate] = useState(false);
+
+  const handleClick = () => {
+    setAnimate(true);
+    setTimeout(() => {
+      setNavbarOpen((prev) => !prev)
+      setAnimate(false);
+    }, 1000);
+  };
+
+  return (
+    <NavLink to='/about' onClick={handleClick}>
+      <SlideLeftWrapper animate={animate}>
+        {/* Your Component 1 content */}
+        <p>{"02. <ABOUT/>"}</p>
+      </SlideLeftWrapper>
+    </NavLink>
+  );
+};
