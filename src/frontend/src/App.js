@@ -35,7 +35,6 @@ const SlideLeftWrapper = styled.p`
 export default function App() {
   const [navbarOpen, setNavbarOpen] = useState(false);
 
-
   return (
     <Router>
       <GlobalStyles />
