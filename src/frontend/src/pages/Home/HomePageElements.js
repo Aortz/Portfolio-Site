@@ -68,7 +68,7 @@ const slideLeftAnimation = keyframes`
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateX(0) rotateY(-10deg) rotateZ(-10deg);
     opacity: 1;
   }
 `;
@@ -81,6 +81,7 @@ export const RouteContainer = styled.div`
     padding: 20px; /* Add padding to match the Container behavior */
     overflow: auto;
     height: 100vh;
+    background: rgba(10,10,10,0.8);
 
     
     /* Hide the default scrollbar */
@@ -119,6 +120,7 @@ export const ParentContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
+    background: rgba(0,0,0,0.5);
     width: 100%;
     height: 50vh;
 `;
@@ -132,7 +134,7 @@ export const HomeContainer = styled.div`
     flex-direction: column;
     align-items: left;
     text-align: left;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.5);
     width: 100%;
     color: #fff;
     align-items: left;
@@ -159,18 +161,10 @@ export const HomeContainer = styled.div`
     } 
 `;
 
-export const HomeContainerTitle = styled.div`
-    color: #55B4B0;
-
-    font-family: 'IBMPlexMonoBold', monospace;
-    padding: 20px;
-    font-size: 18px;
-    font-weight: 50;
-`
 export const HomeBgImg = styled.img`
-    margin-top: 50px;
+    margin-top: 160px;
     margin-left: auto;
-    // margin-right: auto;
+    margin-right: 20px;
     // padding: 20px;
     height: 350px;
     width: auto;
@@ -196,6 +190,15 @@ export const HomeBgImg = styled.img`
         width: 300px;
     } 
 `;
+
+export const HomeContainerTitle = styled.div`
+    color: #55B4B0;
+
+    font-family: 'IBMPlexMonoBold', monospace;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 50;
+`
 
 export const HomeContainerText = styled.div`
     color: ${props => props.$inputColor || "#fff"};

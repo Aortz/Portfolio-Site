@@ -79,9 +79,9 @@ export const ProjectContainer = styled.div`
     min-height: 100vh; /* Use min-height instead of height to prevent overflow */
     margin-left: 60px;
     padding: 20px;
-    border-top: 1px solid #ccc;
+    // border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
-    border-radius: 25px;
+    // border-radius: 25px;
     /* Add the following styles to remove the horizontal scrollbar */
     overflow-x: auto;
 
@@ -92,14 +92,15 @@ export const ContainerTitle = styled.div`
     color: #55B4B0;
     align-items: left;
     
-    text-align: left;
+    text-align: center;
     font-family: 'IBMPlexMonoBold', monospace;
     padding: 20px;
     font-size: 40px;
+    // height: 40px;
     font-weight: 500;
 
     /* Typing cursor animation */
-    overflow: hidden; /* Hide overflowing characters */
+    // overflow: hidden; /* Hide overflowing characters */
     white-space: nowrap; /* Prevent text from wrapping */
     animation: ${slideLeftAnimation} 3s forwards; /* Duration and steps for animation */
     animation-delay: ${props => props.$animationDelay || "0s"};
@@ -126,15 +127,15 @@ export const ContainerTitle = styled.div`
 export const CardContainer = styled(Col)`
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    height: 80%;
+    justify-content: start;
+    align-items: left;
+    height: auto;
     background: #000;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
+    // width: 90%;
+    // margin-left: auto;
+    // margin-right: auto;
 
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
     border: 1px solid red,
     border-radius: 90px;
     padding: 10px;
@@ -143,7 +144,7 @@ export const CardContainer = styled(Col)`
     
 
     /* Allow vertical scrolling when content overflows */
-    overflow-y: auto;
+    overflow-x: auto;
 
     /* Hide the default scrollbar */
     scrollbar-width: none;
@@ -151,7 +152,7 @@ export const CardContainer = styled(Col)`
   
     /* WebKit-based browsers */
     &::-webkit-scrollbar {
-      width: 10px;
+      width: 3px;
       
     }
   
@@ -159,7 +160,7 @@ export const CardContainer = styled(Col)`
       // background-image: url('../../assets/scrollbar/mario-climbing-thumb.png');
       // background-repeat: no-repeat;
       // background-size: cover;
-      height: 5px;
+      height: 3px;
       background-color: #888;
       border-radius: 4px;
     }
@@ -188,8 +189,8 @@ export const StyledCard = styled(Card)`
     // align-items: center;
     border-radius: 40px;
     margin: 20px;
-    width: 45%;
-    height: 50%;
+    // width: 50%;
+    // height: 50%;
     animation: ${slideUpAnimation} 3s forwards; /* Duration and steps for animation */
 
     /* Apply the animation only when the card is in the hover state */

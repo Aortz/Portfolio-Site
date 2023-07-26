@@ -47,7 +47,7 @@ const flipAnimation = keyframes`
   }
 `;
 
-const slideLeftAnimation = keyframes`
+const slideLeftAnimationTitle = keyframes`
   from {
     transform: translateX(100%);
     opacity: 0;
@@ -58,22 +58,46 @@ const slideLeftAnimation = keyframes`
   }
 `;
 
+const slideLeftAnimation = keyframes`
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) rotateY(20deg) rotateZ(10deg);
+    opacity: 1;
+  }
+`;
+
+export const AboutParentContainer = styled.div`
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    width: 100%;
+    height: 50vh;
+`;
+
 export const AboutContainer = styled.div`
     display: flex;
-    justify-content: start;
+    justify-content: center;
     flex-direction: row;
     align-items: left;
     text-align: left;
-    background: #000;
+    background: rgba(0,0,0,0.3);
     width: 100%;
     color: #fff;
     align-items: left;
-    min-height: 20vh; /* Use min-height instead of height to prevent overflow */
+    height: 100vh; /* Use min-height instead of height to prevent overflow */
     margin-left: 60px;
     padding: 20px;
     // border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
     // border-radius: 25px;
+
+    grid-row: 1;
+    grid-column: 1;
+    z-index: 2;
+
     /* Add the following styles to remove the horizontal scrollbar */
     overflow-x: hidden;
 
@@ -89,13 +113,45 @@ export const AboutContainer = styled.div`
     } 
 `;
 
+export const AboutBgImg = styled.img`
+    margin-top: 190px;
+    margin-right: auto;
+    margin-left: 100px;
+    // padding: 20px;
+    height: 390px;
+    width: auto;
+    align-self: right;
+    background: none;
+
+    /* Your content styles go here */
+    grid-row: 1;
+    grid-column: 1;
+    z-index: 1;
+
+    /* Set the initial position to below the viewport */
+    transform: translateX(100%);
+    opacity: 0;
+
+    /* Apply the slide-up animation */
+    animation: ${slideLeftAnimation} 2s ease-in-out forwards;
+    
+    /* Account for mobile devices */
+    @media screen and (max-width: 768px) {
+        // display: none;
+        height: auto;
+        width: 300px;
+    } 
+`;
+
+
+
 export const AboutLeftContainer = styled.div`
     display: flex;
     justify-content: start;
     flex-direction: column;
     align-items: left;
     text-align: left;
-    background: #000;
+    background: rgba(0,0,0,0.5);
     width: 100%;
     color: #fff;
     align-items: left;
@@ -177,7 +233,7 @@ export const AboutContainerTitle = styled.div`
     color: #55B4B0;
     align-items: left;
 
-    text-align: left;
+    text-align: center;
     font-family: 'IBMPlexMonoBold', monospace;
     padding: 20px;
     font-size: 40px;
@@ -186,7 +242,7 @@ export const AboutContainerTitle = styled.div`
     /* Typing cursor animation */
     overflow: hidden; /* Hide overflowing characters */
     white-space: nowrap; /* Prevent text from wrapping */
-    animation: ${slideLeftAnimation} 3s forwards; /* Duration and steps for animation */
+    animation: ${slideLeftAnimationTitle} 3s forwards; /* Duration and steps for animation */
     animation-delay: ${props => props.$animationDelay || "0s"};
     // border-right: 1px solid #55B4B0;
 
@@ -252,17 +308,22 @@ export const AboutDescriptionContainer = styled.div`
 
 export const ToolsContainer = styled.div`
     display: flex;
-    justify-content: start;
+    justify-content: center;
     color: ${props => props.$inputColor || "#fff"};
-    padding: ${props => props.$padding || "10px"};
-    margin: ${props => props.$margin || "5px"};
+    padding: ${props => props.$padding || "5px"};
+    
     align-items: ${props => props.$alignItems || "center"};
     flex-direction: ${props => props.$flexDirection || "column"};
     background: ${props => props.$background || "none"};
-    border: ${props => props.$border || "none"};
-    border-radius: ${props => props.$borderRadius || "10px"};
-
+    border: ${props => props.$border || "1px solid #fff"};
+    border-radius: ${props => props.$borderRadius|| "10px"};
+    
+    width: 40%;
+    margin-left: ${props => props.$marginLeft || "auto"};
+    margin-right: ${props => props.$marginRight || "auto"};
+    
     font-family: 'VT323', monospace;
+    font-size: 30px;
 
     /* Set the initial position to below the viewport */
     opacity: 0;
@@ -310,11 +371,11 @@ export const ToolsContainer = styled.div`
 
 export const ToolsTitle = styled.div`
     color: ${props => props.$inputColor || "#55B4B0"};
-    font-family: 'IBMPlexMonoBold', monospace;
+    font-family: 'VT323', monospace;
     text-align: center;
     align-items: center;
     padding: 20px;
-    font-size: ${props => props.$size || "40px"};
+    font-size: ${props => props.$size || "100px"};
     font-weight: 50;
     
     /* Typing cursor animation */
@@ -342,7 +403,7 @@ export const ToolDescriptionText = styled.div`
     align-self: right;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
     align-items: ${props => props.$alignItems || "left"};
     // border: 1px solid #ccc;
     // border-radius: 25px;
@@ -375,22 +436,28 @@ export const AboutDescriptionText = styled.div`
     // border-radius: 25px;
     /* Hide the scrollbar during the animation */
     overflow: hidden;
+
+    &:hover {
+      filter: drop-shadow(8px 5px red) sepia(60%) hue-rotate(90deg);
+      
+    }
 `;
 
 export const ToolsDescriptionContainer = styled.div`
     display: flex;
-    justify-content: start;
+    justify-content: center;
     color: ${props => props.$inputColor || "#fff"};
     padding: ${props => props.$padding || "10px"};
+    width: 40%;
     margin: ${props => props.$margin || "5px"};
-    align-items: ${props => props.$alignItems || "left"};
+    align-items: ${props => props.$alignItems || "center"};
     flex-direction: ${props => props.$flexDirection || "column"};
     background: ${props => props.$background || "none"};
     border: ${props => props.$border || "none"};
     border-radius: ${props => props.$borderRadius|| "10px"};
 
     font-family: 'VT323', monospace;
-    // font-size: 10px;
+    font-size: 20px;
 
     /* Set the initial position to below the viewport */
     transform: translateY(100%);
@@ -401,6 +468,12 @@ export const ToolsDescriptionContainer = styled.div`
 
     /* Hide the scrollbar during the animation */
     overflow: hidden;
+
+    &:hover {
+      background: #fff;
+      color: #000;
+      transform: translateY(1);
+    }
 
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
