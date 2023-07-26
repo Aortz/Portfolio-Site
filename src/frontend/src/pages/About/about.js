@@ -33,7 +33,7 @@ const About = () => {
   }, []);
 
   return (
-    <AboutContainer>
+    <AboutContainer style={{height: '100vh'}}>
       <AboutLeftContainer>
         <AboutContainerTitle $size="30px" $animationDelay="0s" className={isVisible ? 'visible' : ''}>
           02. About Me 

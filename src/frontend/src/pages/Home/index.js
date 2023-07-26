@@ -12,6 +12,9 @@ import {
 import HomeImg from '../../assets/home-img.png'
 import HomeBg from '../../assets/homeBG.png'
 import styled, { keyframes } from 'styled-components';
+import About from '../About/about';
+import Project from '../Project/project';
+import Resume from '../resume';
 
  
 const SelectableText = styled.span`
@@ -50,7 +53,7 @@ const Home = () => {
   }, []);
 
   return (
-    <ParentContainer>
+    <ParentContainer style={{height: '100vh'}}>
       <HomeBgImg
         src={HomeBg} 
       />
@@ -77,6 +80,8 @@ const Home = () => {
             src={HomeImg}
           />
       </HomeContainer>
+      <About/>
+      <Resume/>
     </ParentContainer>
   );
 };

@@ -71,9 +71,9 @@ export const AboutContainer = styled.div`
     min-height: 20vh; /* Use min-height instead of height to prevent overflow */
     margin-left: 60px;
     padding: 20px;
-    border-top: 1px solid #ccc;
+    // border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
-    border-radius: 25px;
+    // border-radius: 25px;
     /* Add the following styles to remove the horizontal scrollbar */
     overflow-x: hidden;
 

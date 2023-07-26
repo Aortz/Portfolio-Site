@@ -77,7 +77,42 @@ const slideLeftAnimation = keyframes`
 export const RouteContainer = styled.div`
     display: flex;
     justify-content: start;
+    flex-direction: column;
     padding: 20px; /* Add padding to match the Container behavior */
+    overflow: auto;
+    height: 100vh;
+
+    
+    /* Hide the default scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  
+    /* WebKit-based browsers */
+    &::-webkit-scrollbar {
+      width: 10px;
+      
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      // background-image: url('../../assets/scrollbar/mario-climbing-thumb.png');
+      // background-repeat: no-repeat;
+      // background-size: cover;
+      height: 5px;
+      background-color: #888;
+      border-radius: 4px;
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+      // background-image: url('../../assets/scrollbar/mario-climbing-thumb.png');
+      // background-repeat: no-repeat;
+      // background-size: cover;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background-color: #000;
+      // background-image: url('../../assets/scrollbar/vine-track.png');
+    }
 `;
 
 export const ParentContainer = styled.div`
@@ -85,7 +120,7 @@ export const ParentContainer = styled.div`
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     width: 100%;
-    height: 100vh;
+    height: 50vh;
 `;
 
 export const HomeContainer = styled.div`
@@ -101,12 +136,12 @@ export const HomeContainer = styled.div`
     width: 100%;
     color: #fff;
     align-items: left;
-    min-height: 100vh; /* Use min-height instead of height to prevent overflow */
+    height: 90vh; /* Use min-height instead of height to prevent overflow */
     margin-left: 60px;
     padding: 20px;
     border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
-    border-radius: 25px;
+    border-radius: 25px 0 0 0;
 
     grid-row: 1;
     grid-column: 1;

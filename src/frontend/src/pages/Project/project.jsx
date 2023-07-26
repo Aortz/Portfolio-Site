@@ -71,7 +71,7 @@ const Project = ({ heading, username, length, specfic }) => {
   }, [fetchRepos]);
 
   return (
-    <ProjectContainer>
+    <ProjectContainer style={{height: '100vh'}}>
         <ContainerTitle $animationDelay="0s" className={isVisible ? 'visible' : ''}>
           {"3. { PROJECTS }"}
         </ContainerTitle>

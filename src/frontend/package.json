@@ -22,9 +22,10 @@
     "react-carousel3": "^1.0.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-loading-skeleton": "^3.3.1",
     "react-router-dom": "^6.14.2",
-    "react-scripts": "^2.1.3",
+    "react-scripts": "^5.0.1",
     "styled-components": "^5.3.10",
     "three": "^0.145.0",
     "web-vitals": "^2.1.4"
