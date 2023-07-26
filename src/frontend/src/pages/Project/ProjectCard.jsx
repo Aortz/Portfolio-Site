@@ -13,7 +13,7 @@ import {
 } from './ProjectCardElements';
 import { BsFolder } from "react-icons/bs";
 
-const ProjectCard = ({ value }) => {
+const ProjectCard = ({ index, value }) => {
   
   const {
     name,
@@ -39,14 +39,13 @@ const ProjectCard = ({ value }) => {
   }, []);
 
   return (
-      <StyledCard>
+      <StyledCard $zIndex={index}>
         <CardBody>
           <CardTitle $animationDelay="0s" className={isVisible ? 'visible' : ''}>
             <BsFolder style={{height: 20, width: 30}}/> 
             Project: {  name || <Skeleton />} 
             {/* <Cursor/> */}
           </CardTitle>
-          <hr />
           <CardText>
             {(!description) ? "" : description || <Skeleton count={3} />} 
           </CardText>

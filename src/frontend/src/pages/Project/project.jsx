@@ -81,7 +81,7 @@ const Project = ({ heading, username, length, specfic }) => {
             ? projectsArray.map((project, index) => (
               <ProjectCard
                 key={`project-card-${index}`}
-                id={`project-card-${index}`}
+                id={`${index}`}
                 value={project}
               />
             ))

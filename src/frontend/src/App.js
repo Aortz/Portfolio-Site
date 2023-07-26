@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/NavBar';
 import CustomScrollbar from './components/ScrollBar/CustomScrollbar';
 import {
@@ -34,6 +34,46 @@ const SlideLeftWrapper = styled.p`
 
 export default function App() {
   const [navbarOpen, setNavbarOpen] = useState(false);
+
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    // Attach the scroll event listener
+    window.addEventListener('scroll', handleScroll);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      // Replace with your API endpoint and fetch data for the current page
+      const response = await fetch(`/api/data?page=${page}`);
+      const newData = await response.json();
+
+      // Append new data to the existing data
+      setData((prevData) => [...prevData, ...newData]);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleScroll = () => {
+    // Check if the user has scrolled to the bottom of the page
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight
+    ) {
+      // Load the next page of data
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
 
 
   return (

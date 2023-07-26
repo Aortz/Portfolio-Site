@@ -51,6 +51,17 @@ const slideRightAnimation = keyframes`
   }
 `;
 
+const rotateAnimation = keyframes`
+  from {
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+  }
+  to {0
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg);
+  }
+`;
+
 export const ProjectContainer = styled.div`
     // display: flex;
     // justify-content: start;
@@ -117,26 +128,53 @@ export const CardContainer = styled(Col)`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: auto;
+    height: 80%;
     background: #000;
-    width: 100%;
-    // margin: 10px;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 
     flex-wrap: wrap;
-    border: 1px solid #fff,
+    border: 1px solid red,
     border-radius: 90px;
     padding: 10px;
 
     animation: ${slideUpAnimation} 3s forwards; /* Duration and steps for animation */
     
 
-    /* Set a fixed height for the container so that it doesn't grow infinitely */
-    // height: 800px;
     /* Allow vertical scrolling when content overflows */
-    overflow-y: hidden;
-    /* Customize the scrollbar track */
-    scrollbar-width: thin;
-    scrollbar-color: #fff; /* thumb color and track color */
+    overflow-y: auto;
+
+    /* Hide the default scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  
+    /* WebKit-based browsers */
+    &::-webkit-scrollbar {
+      width: 10px;
+      
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      // background-image: url('../../assets/scrollbar/mario-climbing-thumb.png');
+      // background-repeat: no-repeat;
+      // background-size: cover;
+      height: 5px;
+      background-color: #888;
+      border-radius: 4px;
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+      // background-image: url('../../assets/scrollbar/mario-climbing-thumb.png');
+      // background-repeat: no-repeat;
+      // background-size: cover;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background-color: #000;
+      // background-image: url('../../assets/scrollbar/vine-track.png');
+    }
 
 
     grid-row: 2;
@@ -149,13 +187,17 @@ export const StyledCard = styled(Card)`
     // justify-content: center;
     // align-items: center;
     border-radius: 40px;
-    margin: 10px;
-    // width: 50%;
-    // height: 50%;
+    margin: 20px;
+    width: 45%;
+    height: 50%;
+    animation: ${slideUpAnimation} 3s forwards; /* Duration and steps for animation */
 
+    /* Apply the animation only when the card is in the hover state */
     &:hover {
         // filter: blur(4px); /* Adjust the blur amount as needed */ 
-        filter: opacity(50%) drop-shadow(0px 0px red) sepia(10%) saturate(30%);
+        filter: opacity(50%) drop-shadow(0px 0px #006e1d); // sepia(50%) saturate(30%)
+        // animation: ${rotateAnimation} 3s linear;
+        // animation-play-state: running;
         // filter: brightness(0.4);
         // filter: contrast(200%);
         // filter: drop-shadow(16px 16px 20px blue);
@@ -166,10 +208,15 @@ export const StyledCard = styled(Card)`
         // filter: saturate(30%);
         // filter: sepia(60%);
     }
-    
-    width: 40%;
-    height: 50%;
-    animation: ${slideUpAnimation} 3s forwards; /* Duration and steps for animation */
+
+    // /* Set the animation fill mode to forwards */
+    // animation-fill-mode: forwards;
+
+    // /* Set the initial animation play state to paused when not hovering */
+    // &:not(:hover) {
+    //   animation-play-state: paused;
+    //   animation: none;
+    // }
 `
 
 export const CardTitle = styled(Card.Title)`
@@ -181,6 +228,7 @@ export const CardTitle = styled(Card.Title)`
     padding: 10px;
     margin-left: auto;
     margin-right: auto;
+    background-color: #888;
 
     /* Typing cursor animation */
     overflow: hidden; /* Hide overflowing characters */

@@ -135,7 +135,7 @@ export const NavLink = styled(Link)`
     text-align: right;
     text-decoration: none;
 
-    font-family: 'MajorMonoDisplay', monospace;
+    font-family: 'VT323', monospace;
     font-size: 35px;
     font-weight: 500;
 

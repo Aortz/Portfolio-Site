@@ -188,10 +188,13 @@ export const HomeContainerText = styled.div`
         width: 48%
     }
 
-    &:hover {
+    &.role {
+      &:hover {
+      // background: rgba(255, 255, 255, 0.7); 
       animation: ${glitchAnimation} 2s ease-in-out forwards;
       animation-iteration-count: infinite;
       // filter: blur(4px); /* Adjust the blur amount as needed */
+      }
       
     }
 
@@ -230,7 +233,7 @@ export const HomeContainerDescription = styled.div`
     &:hover {
       // animation: ${glitchAnimation} 2s ease-in-out forwards;
       // animation-iteration-count: infinite;
-      filter: blur(4px); /* Adjust the blur amount as needed */
+      filter: drop-shadow(8px 5px green) sepia(60%) hue-rotate(90deg);
       
     }
 

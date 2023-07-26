@@ -61,7 +61,7 @@ const Home = () => {
         <HomeContainerText $size="80px" $animationDelay="0s" className={isVisible1 ? 'visible name' : ''}>
           Lee Junwei. 
         </HomeContainerText>
-        <HomeContainerText $inputColor="#5f7c96" $animationDelay="2s" className={isVisible2 ? 'visible' : ''}>
+        <HomeContainerText $inputColor="#5f7c96" $animationDelay="2s" className={isVisible2 ? 'visible role' : ''}>
           Software Engineer | Student 
           <Cursor $inputColor="#5f7c96"/>
         </HomeContainerText>
