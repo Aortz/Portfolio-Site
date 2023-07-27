@@ -28,7 +28,7 @@ const slideLeftAnimation = keyframes`
   }
 `;
 
-const SlideLeftWrapper = styled.p`
+const SlideLeftWrapper = styled.div`
   animation: ${({ animate }) => (animate ? slideLeftAnimation : 'none')} 1s forwards;
 `;
 

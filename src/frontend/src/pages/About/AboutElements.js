@@ -47,9 +47,27 @@ const flipAnimation = keyframes`
   }
 `;
 
-const slideLeftAnimationTitle = keyframes`
+const glitchAnimation = keyframes`
+  0% {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(2px, -2px);
+  }
+  50% {
+    transform: translate(-2px, 2px);
+  }
+  75% {
+    transform: translate(2px, 0);
+  }
+  100% {
+    transform: translate(0);
+  }
+`;
+
+const slideRightAnimationTitle = keyframes`
   from {
-    transform: translateX(100%);
+    transform: translateX(-100%);
     opacity: 0;
   }
   to {
@@ -69,12 +87,23 @@ const slideLeftAnimation = keyframes`
   }
 `;
 
+const slideLeftAnimationDescription = keyframes`
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
 export const AboutParentContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     width: 100%;
-    height: 50vh;
+    height: 100vh;
 `;
 
 export const AboutContainer = styled.div`
@@ -88,7 +117,7 @@ export const AboutContainer = styled.div`
     color: #fff;
     align-items: left;
     height: 100vh; /* Use min-height instead of height to prevent overflow */
-    margin-left: 60px;
+    margin-left: 80px;
     padding: 20px;
     // border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
@@ -102,7 +131,7 @@ export const AboutContainer = styled.div`
     overflow-x: hidden;
 
     /* Hide the scrollbar during the animation */
-    overflow: auto;
+    overflow: hidden;
 
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
@@ -133,7 +162,13 @@ export const AboutBgImg = styled.img`
     opacity: 0;
 
     /* Apply the slide-up animation */
-    animation: ${slideLeftAnimation} 2s ease-in-out forwards;
+    /* Add a class to set visibility to visible after the animation-delay has passed */
+    &.visible {
+        visibility: visible;
+        animation: ${slideLeftAnimation} 2s ease-in-out forwards; /* Duration and steps for animation */
+        // animation-delay: ${props => props.$animationDelay || "0s"};
+    }
+    // animation: ${slideLeftAnimation} 2s ease-in-out forwards;
     
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
@@ -230,20 +265,20 @@ export const RightContainerImg = styled.img`
 `;
 
 export const AboutContainerTitle = styled.div`
-    color: #55B4B0;
+
     align-items: left;
 
-    text-align: center;
+    text-align: left;
+    color: ${props => props.$inputColor || "#55B4B0;"};
     font-family: 'IBMPlexMonoBold', monospace;
-    padding: 20px;
-    font-size: 40px;
+    // padding-left: 20px;
+    font-size: ${props => props.$size || "40px"};
     font-weight: 500;
 
     /* Typing cursor animation */
     overflow: hidden; /* Hide overflowing characters */
     white-space: nowrap; /* Prevent text from wrapping */
-    animation: ${slideLeftAnimationTitle} 3s forwards; /* Duration and steps for animation */
-    animation-delay: ${props => props.$animationDelay || "0s"};
+
     // border-right: 1px solid #55B4B0;
 
     /* Initially set the text to be invisible */
@@ -252,10 +287,18 @@ export const AboutContainerTitle = styled.div`
     /* Add a class to set visibility to visible after the animation-delay has passed */
     &.visible {
         visibility: visible;
-        
+        animation: ${slideRightAnimationTitle} 1s; /* Duration and steps for animation */
+        animation-delay: ${props => props.$animationDelay || "0s"};
     }
 
     filter: drop-shadow(8px 5px green) sepia(60%) hue-rotate(90deg);
+
+    &:hover {
+      // background: rgba(255, 255, 255, 0.7); 
+      animation: ${glitchAnimation} 2s ease-in-out forwards;
+      // animation-iteration-count: infinite;
+      // filter: blur(4px); /* Adjust the blur amount as needed */
+    }
 
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
@@ -291,9 +334,14 @@ export const AboutDescriptionContainer = styled.div`
     /* Set the initial position to below the viewport */
     transform: translateY(100%);
     opacity: 0;
+    // visibility: hidden;
 
     /* Apply the slide-up animation */
-    animation: ${slideUpAnimation} 2s ease-in-out forwards;
+    &.visible {
+      visibility: visible;
+      animation: ${slideLeftAnimationDescription} 2s ease-in-out forwards;
+      animation-delay: ${props => props.$animationDelay || "0s"};
+    }
 
     /* Hide the scrollbar during the animation */
     overflow: hidden;
@@ -402,8 +450,9 @@ export const ToolDescriptionText = styled.div`
     font-weight: 500;
     align-self: right;
     display: flex;
-    justify-content: space-between;
-    // flex-wrap: wrap;
+    justify-content: center;
+    flex-wrap: wrap;
+    // max-width: 800px; /* Optional: Set a maximum width to limit the number of items per row */
     align-items: ${props => props.$alignItems || "left"};
     // border: 1px solid #ccc;
     // border-radius: 25px;
@@ -442,7 +491,7 @@ export const AboutDescriptionText = styled.div`
       
     }
 `;
-
+// ${props => props.$flexBasis|| "0px"};  Calculate the width of each item (25% - 20px for spacing) 
 export const ToolsDescriptionContainer = styled.div`
     display: flex;
     justify-content: center;
@@ -455,9 +504,9 @@ export const ToolsDescriptionContainer = styled.div`
     background: ${props => props.$background || "none"};
     border: ${props => props.$border || "none"};
     border-radius: ${props => props.$borderRadius|| "10px"};
-
+    flex-basis: calc(25% - 20px); /* Calculate the width of each item (25% - 20px for spacing) */
     font-family: 'VT323', monospace;
-    font-size: 20px;
+    font-size: 25px;
 
     /* Set the initial position to below the viewport */
     transform: translateY(100%);

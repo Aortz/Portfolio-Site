@@ -72,8 +72,8 @@ const Project = ({ heading, username, length, specfic }) => {
 
   return (
     <ProjectContainer style={{height: '100vh'}}>
-        <ContainerTitle $animationDelay="0s" className={isVisible ? 'visible' : ''}>
-          {"3. { PROJECTS }"}
+        <ContainerTitle $size="50px" $animationDelay="0s" className={isVisible ? 'visible' : ''}>
+          {"PROJECTS"}
         </ContainerTitle>
         {/* <MovieCurtains src={movieCurtains}/> */}
         <CardContainer>

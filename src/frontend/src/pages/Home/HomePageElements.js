@@ -139,7 +139,7 @@ export const HomeContainer = styled.div`
     color: #fff;
     align-items: left;
     height: 90vh; /* Use min-height instead of height to prevent overflow */
-    margin-left: 60px;
+    margin-left: 80px;
     padding: 20px;
     border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;

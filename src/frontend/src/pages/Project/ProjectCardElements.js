@@ -62,6 +62,24 @@ const rotateAnimation = keyframes`
   }
 `;
 
+const glitchAnimation = keyframes`
+  0% {
+    transform: translate(0);
+  }
+  25% {
+    transform: translate(2px, -2px);
+  }
+  50% {
+    transform: translate(-2px, 2px);
+  }
+  75% {
+    transform: translate(2px, 0);
+  }
+  100% {
+    transform: translate(0);
+  }
+`;
+
 export const ProjectContainer = styled.div`
     // display: flex;
     // justify-content: start;
@@ -77,7 +95,7 @@ export const ProjectContainer = styled.div`
     color: #fff;
     align-items: left;
     min-height: 100vh; /* Use min-height instead of height to prevent overflow */
-    margin-left: 60px;
+    margin-left: 80px;
     padding: 20px;
     // border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
@@ -89,15 +107,14 @@ export const ProjectContainer = styled.div`
 `;
 
 export const ContainerTitle = styled.div`
-    color: #55B4B0;
     align-items: left;
     
-    text-align: center;
+    text-align: left;
     font-family: 'IBMPlexMonoBold', monospace;
-    padding: 20px;
-    font-size: 40px;
-    // height: 40px;
+    // padding: 20px;
     font-weight: 500;
+    color: ${props => props.$inputColor || "#55B4B0"};
+    font-size: ${props => props.$size || "40px"};
 
     /* Typing cursor animation */
     // overflow: hidden; /* Hide overflowing characters */
@@ -112,11 +129,18 @@ export const ContainerTitle = styled.div`
     /* Add a class to set visibility to visible after the animation-delay has passed */
     &.visible {
         visibility: visible;
-        
+        animation: none;
     }
 
     filter: drop-shadow(8px 5px green) sepia(60%) hue-rotate(90deg);
-    // filter: drop-shadow(10px 10px green) sepia(60%) hue-rotate(90deg);
+    
+    &:hover {
+      // background: rgba(255, 255, 255, 0.7); 
+      animation: ${glitchAnimation} 2s ease-in-out forwards;
+      animation-iteration-count: infinite;
+      // filter: blur(4px); /* Adjust the blur amount as needed */
+    }
+
 
     grid-row: 1;
     grid-column: 1;
@@ -125,6 +149,7 @@ export const ContainerTitle = styled.div`
 
 
 export const CardContainer = styled(Col)`
+
     display: flex;
     flex-direction: row;
     justify-content: start;
@@ -138,7 +163,7 @@ export const CardContainer = styled(Col)`
     // flex-wrap: wrap;
     border: 1px solid red,
     border-radius: 90px;
-    padding: 10px;
+    padding: 5px;
 
     animation: ${slideUpAnimation} 3s forwards; /* Duration and steps for animation */
     
