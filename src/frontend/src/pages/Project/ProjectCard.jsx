@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaDownload } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import styled from "styled-components";
@@ -8,8 +8,10 @@ import {
   CardBody,
   CardTitle,
   CardText,
-  CardBtn,
-  CardButtonLink
+  StyledDownloadIcon,
+  CardButtonLink,
+  StyledGithubIcon,
+  CardBtn
 } from './ProjectCardElements';
 import { BsFolder } from "react-icons/bs";
 
@@ -42,17 +44,17 @@ const ProjectCard = ({ index, value }) => {
       <StyledCard $zIndex={index}>
         <CardBody>
           <CardTitle $animationDelay="0s" className={isVisible ? 'visible' : ''}>
-            <BsFolder style={{height: 20, width: 30}}/> 
-            Project: {  name || <Skeleton />} 
+            <BsFolder style={{color: '#55B4B0' , height: 40, width: 40, marginRight: 100}}/>
+            {svn_url ? <CardButtons svn_url={svn_url} /> : <Skeleton count={2} />}
             {/* <Cursor/> */}
           </CardTitle>
-          <CardText>
+          <CardText $justifyContent="center" $fontSize="30px">
+            {  name || <Skeleton />} 
+          </CardText>
+          <CardText $padding="10px">
             {(!description) ? "" : description || <Skeleton count={3} />} 
           </CardText>
           {/* <hr /> */}
-          <CardText $justifyContent="center" >
-            {svn_url ? <CardButtons svn_url={svn_url} /> : <Skeleton count={2} />}
-          </CardText>
           <hr />
           <CardText $bgColor="#000">
             {languages_url ? (
@@ -76,22 +78,18 @@ const ProjectCard = ({ index, value }) => {
 
 const CardButtons = ({ svn_url }) => {
   return (
-    <>
-      <CardBtn> 
-        <CardButtonLink
-          href={`${svn_url}/archive/master.zip`}
-        >
-          <FaGithub/> Clone Project
-        </CardButtonLink>
-      </CardBtn>
-      <CardBtn>
+    <CardBtn>
         <CardButtonLink 
           href={svn_url} target=" _blank" 
         >
-          <FaGithub/> Repo
+          <StyledGithubIcon/>
         </CardButtonLink>
-      </CardBtn>
-    </>
+        <CardButtonLink
+          href={`${svn_url}/archive/master.zip`}
+        >
+          <StyledDownloadIcon/>
+        </CardButtonLink>
+    </CardBtn>
   );
 };
 
@@ -166,6 +164,7 @@ const LanguageTitle = styled.h1`
   align-self: center;
   text-align: center;
   margin-left: ${props => props.$marginLeft || "0px"};
+  font-size: 30px;
 `
 
 const LanguageIndv = styled.a`
@@ -190,7 +189,7 @@ const LanguageIndv = styled.a`
 const LanguagePercentage = styled.div`
   background: none;
   color: #fff;
-  font-size: 20px;
+  font-size: 15px;
   // &:hover {
   //   color: #000;
   // }

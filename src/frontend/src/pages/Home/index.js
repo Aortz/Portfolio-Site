@@ -27,17 +27,62 @@ const SelectableText = styled.span`
 const Home = () => {
   const [isVisible1, setIsVisible1] = useState(false);
   const [isVisible2, setIsVisible2] = useState(false);
+  const [isTitleVisible, setIsTitleVisible] = useState(false);
+  const [isDescriptionVisible, setIsDescriptionVisible] = useState(false);
 
-  const [selectedText, setSelectedText] = useState('');
+  // Create a ref for the AboutContainerTitle element
+  const aboutTitleRef = useRef(null);
 
-  const handleSelect = (event) => {
-    const selection = window.getSelection().toString();
-    setSelectedText(selection);
-  };
+  // Create a ref for the AboutDescriptionContainer element
+  const aboutDescriptionRef = useRef(null);
 
-
-
+  // Intersection Observer to track the AboutParentContainer
   useEffect(() => {
+    const observerOptions = {
+      root: null, // Use the viewport as the root
+      rootMargin: '0px', // No margin
+      threshold: [0, 0.5], // Trigger when component enters and exits the viewport
+    };
+
+    const titleObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Title component is now visible
+          setIsTitleVisible(true);
+          console.log("Title Visible");
+        } else {
+          // Title component is not visible (scrolled out of the viewport)
+          setIsTitleVisible(false);
+          console.log("Title not visible");
+        }
+      });
+    }, observerOptions);
+
+    // Start observing the AboutParentContainer element
+    if (aboutTitleRef.current) {
+      titleObserver.observe(aboutTitleRef.current);
+    }
+
+    // Observer for the description component
+    const descriptionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Description component is now visible
+          setIsDescriptionVisible(true);
+          console.log("Description Visible");
+        } else {
+          // Description component is not visible (scrolled out of the viewport)
+          setIsDescriptionVisible(false);
+          console.log("Description not Visible");
+        }
+      });
+    }, observerOptions);
+
+    // Start observing the description element
+    if (aboutDescriptionRef.current) {
+      descriptionObserver.observe(aboutDescriptionRef.current);
+    }
+
     // For Component1, set the text to be visible after the animation-delay
     const timer1 = setTimeout(() => {
       setIsVisible1(true);
@@ -48,12 +93,38 @@ const Home = () => {
       setIsVisible2(true);
     }, 2000); // Set the delay time in milliseconds (e.g., 2s for Component2)
 
-    // Clear the timeouts when the component unmounts or when the animations are complete
+    // Clean up the observers
     return () => {
+      if (aboutTitleRef.current) {
+        titleObserver.unobserve(aboutTitleRef.current);
+      }
+      if (aboutDescriptionRef.current) {
+        descriptionObserver.unobserve(aboutDescriptionRef.current);
+      }
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
   }, []);
+
+
+
+  // useEffect(() => {
+  //   // For Component1, set the text to be visible after the animation-delay
+  //   const timer1 = setTimeout(() => {
+  //     setIsVisible1(true);
+  //   }, 0); // Set the delay time in milliseconds (e.g., 1s for Component1)
+
+  //   // For Component2, set the text to be visible after the animation-delay
+  //   const timer2 = setTimeout(() => {
+  //     setIsVisible2(true);
+  //   }, 2000); // Set the delay time in milliseconds (e.g., 2s for Component2)
+
+  //   // Clear the timeouts when the component unmounts or when the animations are complete
+  //   return () => {
+  //     clearTimeout(timer1);
+  //     clearTimeout(timer2);
+  //   };
+  // }, []);
 
   const elementRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -62,15 +133,17 @@ const Home = () => {
   return (
     <ParentContainer style={{height: '100vh'}}>
       <HomeBgImg
-        src={HomeBg} 
+        src={HomeBg}
+        ref={aboutDescriptionRef}
+        className={isDescriptionVisible ? 'visible bg' : ''} 
       />
       <HomeContainer>
-        <HomeContainerTitle>
+        <HomeContainerTitle ref={aboutTitleRef} className={isTitleVisible ? 'visible title' : ''}>
           Hi, my name is
-        </HomeContainerTitle>
+        </HomeContainerTitle >
         <HomeContainerText $size="80px" $animationDelay="0s" className={isVisible1 ? 'visible name' : ''}>
           Lee Junwei. 
-        </HomeContainerText>
+        </HomeContainerText >
         <HomeContainerText $inputColor="#5f7c96" $animationDelay="2s" className={isVisible2 ? 'visible role' : ''}>
           Software Engineer | Student 
           <Cursor $inputColor="#5f7c96"/>

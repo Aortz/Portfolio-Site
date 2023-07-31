@@ -44,6 +44,17 @@ const slideDownAnimation = keyframes`
   }
 `;
 
+const slideRightAnimationTitle = keyframes`
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+`;
+
 const glitchAnimation = keyframes`
   0% {
     transform: translate(0);
@@ -181,7 +192,10 @@ export const HomeBgImg = styled.img`
     opacity: 0;
 
     /* Apply the slide-up animation */
-    animation: ${slideLeftAnimation} 2s ease-in-out forwards;
+    &.visible {
+      visibility: visible;
+      animation: ${slideLeftAnimation} 1s ease-in-out forwards;
+  }
     
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
@@ -198,6 +212,16 @@ export const HomeContainerTitle = styled.div`
     padding: 20px;
     font-size: 18px;
     font-weight: 50;
+
+    /* Initially set the text to be invisible */
+    visibility: hidden;
+    // border-right: 2px solid #fff;
+    /* Add a class to set visibility to visible after the animation-delay has passed */
+    &.visible {
+        visibility: visible;
+        animation: ${slideRightAnimationTitle} 1s; /* Duration and steps for animation */
+        animation-delay: ${props => props.$animationDelay || "0s"};
+    }
 `
 
 export const HomeContainerText = styled.div`

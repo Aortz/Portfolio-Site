@@ -295,9 +295,9 @@ export const AboutContainerTitle = styled.div`
 
     &:hover {
       // background: rgba(255, 255, 255, 0.7); 
-      animation: ${glitchAnimation} 2s ease-in-out forwards;
+      // animation: ${glitchAnimation} 2s ease-in-out forwards;
       // animation-iteration-count: infinite;
-      // filter: blur(4px); /* Adjust the blur amount as needed */
+      filter: drop-shadow(8px 5px blue) sepia(60%); /* Adjust the blur amount as needed */
     }
 
     /* Account for mobile devices */
@@ -339,7 +339,7 @@ export const AboutDescriptionContainer = styled.div`
     /* Apply the slide-up animation */
     &.visible {
       visibility: visible;
-      animation: ${slideLeftAnimationDescription} 2s ease-in-out forwards;
+      animation: ${slideUpAnimation} 1s ease-in-out forwards;
       animation-delay: ${props => props.$animationDelay || "0s"};
     }
 
@@ -378,7 +378,7 @@ export const ToolsContainer = styled.div`
     transform: translateY(100%);
 
     /* Apply the slide-up animation */
-    animation: ${slideUpAnimation} 2s ease-in-out forwards;
+    animation: ${slideUpAnimation} 1s ease-in-out forwards;
 
     /* Hide the scrollbar during the animation */
     overflow: hidden;

@@ -91,7 +91,7 @@ const About = () => {
     <AboutParentContainer style={{height: '100vh'}}>
       <AboutBgImg
         src={AboutBg}
-        ref={aboutDescriptionRef}
+        // ref={aboutDescriptionRef}
         className={isDescriptionVisible ? 'visible bg' : ''}
       />
       <AboutContainer>

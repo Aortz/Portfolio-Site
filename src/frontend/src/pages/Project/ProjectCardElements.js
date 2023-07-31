@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import { NavLink as Link } from 'react-router-dom';
+import { FaGithub, FaDownload } from "react-icons/fa";
 import styled, { keyframes } from 'styled-components';
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -221,7 +222,7 @@ export const StyledCard = styled(Card)`
     /* Apply the animation only when the card is in the hover state */
     &:hover {
         // filter: blur(4px); /* Adjust the blur amount as needed */ 
-        filter: opacity(50%) drop-shadow(0px 0px #006e1d); // sepia(50%) saturate(30%)
+        // filter: opacity(50%) drop-shadow(0px 0px #006e1d); // sepia(50%) saturate(30%)
         // animation: ${rotateAnimation} 3s linear;
         // animation-play-state: running;
         // filter: brightness(0.4);
@@ -232,7 +233,7 @@ export const StyledCard = styled(Card)`
         // filter: invert(75%);
         // filter: opacity(25%);
         // filter: saturate(30%);
-        // filter: sepia(60%);
+        filter: sepia(60%);
     }
 
     // /* Set the animation fill mode to forwards */
@@ -244,17 +245,28 @@ export const StyledCard = styled(Card)`
     //   animation: none;
     // }
 `
+export const CardBody = styled(Card.Body)`
+    // background: rgba(255, 255, 255, 0.7);
+    align-items: left;
+    border: 1px solid #fff;
+    border-radius: 5px;
+`
 
 export const CardTitle = styled(Card.Title)`
     color: #fff;
-    // align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
+    width: 350px;
+    height: auto;
     font-family: 'VT323', monospace;
-    font-size: 35px;
+    font-size: 40px;
+    // font-weight: bold;
     padding: 10px;
     margin-left: auto;
     margin-right: auto;
-    background-color: #888;
+    background-color: #adc0ff;
 
     /* Typing cursor animation */
     overflow: hidden; /* Hide overflowing characters */
@@ -272,17 +284,11 @@ export const CardTitle = styled(Card.Title)`
     
 `
 
-export const CardBody = styled(Card.Body)`
-    // background: rgba(255, 255, 255, 0.7);
-    align-items: left;
-    border: 1px solid #fff;
-    border-radius: 5px;
-`
-
 export const CardText = styled(Card.Text)`
     color: #fff;
     display: flex;
     background: ${props => props.$bgColor || "fff"};
+    text-align: center;
     align-self: center;
     align-items: center;
     margin-left: ${props => props.$marginLeft || "0px"};
@@ -295,7 +301,7 @@ export const CardText = styled(Card.Text)`
     // border: 1px solid #fff;
     // border-left: 1px solid #fff;
 
-    font-size: 20px;
+    font-size: ${props => props.$fontSize || "20px"};;
     font-weight: 400;
 `
 
@@ -362,54 +368,51 @@ export const CardMenu = styled.div`
 `;
 
 
-// export const CardBtn = styled(Button)`
-//     width: 60px;
-//     height: 60px;
-//     cursor: pointer;
-//     background: none;
-//     border: none;
-//     padding: 8px;
-//     margin-right: 10px;
-//     color: #000;
-//     display: none;
-//     @media screen and (max-width: 768px) {
-//         display: none;
-//     }
-    
-// `;
+export const StyledGithubIcon = styled(FaGithub)`
+  height: auto;
+  width: 20px;
+  transition: transform 0.3s ease; /* Add a smooth transition effect on hover */
+  
+  &:hover {
+    color: #000; /* Change the color to black on hover */
+    transform: translateY(-3px); /* Raise the icon by 3 pixels on hover */
+  }
+`;
+
+export const StyledDownloadIcon = styled(FaDownload)`
+  height: auto;
+  width: 20px;
+  transition: transform 0.3s ease; /* Add a smooth transition effect on hover */
+  
+  &:hover {
+    color: #000; /* Change the color to black on hover */
+    transform: translateY(-3px); /* Raise the icon by 3 pixels on hover */
+  }
+`;
+
 
 export const CardBtn = styled.a`
-  cursor: pointer;
-  border-radius: 4px;
-  border: 1px solid white;
-  padding: 8px;
-  margin-left: 20px;
-  margin-bottom: 10px;
-
-  &:hover {
-    align-self: flex-start;
-    background: #55B4B0;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    color: #000;
-
-    background: #000;
-  }
+  margin-left: 80px;
+  align-self: right
 `
 
 export const CardButtonLink = styled.a`
-  justify-content: space-between;
-  background: #fffff;
+  // justify-content: center;
+  // background: #fffff;
   color: #fff;
-  border: 1px solid black;
-  borderRadius: 4px;
-  padding: 8px 16px;
+  // border: 1px solid black;
+  // borderRadius: 4px;
+  padding: 10px;
   cursor: pointer;
   fontWeight: bold;
-  fontSize: 14px;
+  fontSize: 10px;
   transition: background-color 0.3s;
 
   &:hover: {
-    background: #000;
+    // align-self: right;
+    // background: #55B4B0;
+    // border-radius: 20px;
+    // border: 1px solid #000;
+    color: #000;
   }
 `
