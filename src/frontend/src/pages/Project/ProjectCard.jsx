@@ -49,7 +49,7 @@ const ProjectCard = ({ index, value, isActive }) => {
       >
         <CardBody>
           <CardTitle $animationDelay="0s" className={isVisible ? 'visible' : ''}>
-            <BsFolder style={{color: '#55B4B0' , height: 40, width: 40, marginRight: 100}}/>
+            <BsFolder style={{color: '#FBEAEB' , height: 40, width: 40, marginRight: 200, alignSelf: 'left'}}/>
             {svn_url ? <CardButtons svn_url={svn_url} /> : <Skeleton count={2} />}
             {/* <Cursor/> */}
           </CardTitle>
@@ -89,6 +89,7 @@ const CardButtons = ({ svn_url }) => {
             href={svn_url} 
             target="_blank" 
             rel="noopener noreferrer"
+            aria-label="View GitHub Repository"
           >
             <StyledGithubIcon/>
           </StyledLink>
@@ -98,6 +99,7 @@ const CardButtons = ({ svn_url }) => {
             href={`${svn_url}/archive/master.zip`}
             target="_blank" 
             rel="noopener noreferrer"
+            aria-label="Download Project"
           >
             <StyledDownloadIcon/>
           </StyledLink>
@@ -173,14 +175,14 @@ const LanguageContainer = styled.div`
   margin-left: ${props => props.$marginLeft || "0px"};
 `
 
-const LanguageTitle = styled.h1`
+const LanguageTitle = styled.span`
   align-self: center;
   text-align: center;
   margin-left: ${props => props.$marginLeft || "0px"};
   font-size: 30px;
 `
 
-const LanguageIndv = styled.a`
+const LanguageIndv = styled.span`
   display: flex;
   flex-wrap: none;
   align-self: flex-start;
@@ -234,16 +236,16 @@ const CardFooter = ({ star_count, repo_url, pushed_at }) => {
 
   return (
     <FooterContainer className="card-text">
-      {/* <FooterBtn
+      <FooterBtn
         href={repo_url + "/stargazers"}
         target=" _blank"
       >
         <FooterBtnLink className="text-light card-link mr-4">
-          <FaGithub/> Stars{" "}
+          Stars{" "}
           <span className="badge badge-dark">{star_count}</span>
         </FooterBtnLink>
-      </FooterBtn> */}
-      <FaGithub/>
+      </FooterBtn>
+      {/* <FaGithub/> */}
       <small className="text-muted" style={{marginLeft: "20px"}}>Updated {updated_at}</small>
     </FooterContainer>
   );

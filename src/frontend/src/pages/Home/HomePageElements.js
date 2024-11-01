@@ -89,82 +89,62 @@ export const RouteContainer = styled.div`
     display: flex;
     justify-content: start;
     flex-direction: column;
-    padding: 20px; /* Add padding to match the Container behavior */
+    padding: 20px;
     overflow: auto;
     height: 100vh;
     background: rgba(10,10,10,0.8);
-
     
-    /* Hide the default scrollbar */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  
-    /* WebKit-based browsers */
+    /* Hide scrollbar for Chrome, Safari and Opera */
     &::-webkit-scrollbar {
-      width: 10px;
-      
+      display: none;
     }
-  
-    &::-webkit-scrollbar-thumb {
-      // background-image: url('../../assets/scrollbar/mario-climbing-thumb.png');
-      // background-repeat: no-repeat;
-      // background-size: cover;
-      height: 5px;
-      background-color: #888;
-      border-radius: 4px;
-    }
-  
-    &::-webkit-scrollbar-thumb:hover {
-      background-color: #555;
-      // background-image: url('../../assets/scrollbar/mario-climbing-thumb.png');
-      // background-repeat: no-repeat;
-      // background-size: cover;
-    }
-  
-    &::-webkit-scrollbar-track {
-      background-color: #000;
-      // background-image: url('../../assets/scrollbar/vine-track.png');
-    }
+    
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 `;
 
 export const ParentContainer = styled.div`
+  position: relative;
+  width: 100%;
   min-height: 100vh;
-  scroll-snap-align: start;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   background: rgba(0,0,0,0.5);
-  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 `;
 
 export const HomeContainer = styled.div`
-    // position: absolute;
-    // left: 0;
-
     display: flex;
     justify-content: start;
     flex-direction: column;
     align-items: left;
     text-align: left;
-    background: rgba(0,0,0,0.5);
+    background: transparent;
     width: 100%;
     color: #fff;
     align-items: left;
-    height: 90vh; /* Use min-height instead of height to prevent overflow */
+    height: 90vh;
     margin-left: 80px;
     padding: 20px;
     border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
     border-radius: 25px 0 0 0;
-
-    grid-row: 1;
-    grid-column: 1;
+    position: relative;
     z-index: 2;
-
-    /* Add the following styles to remove the horizontal scrollbar */
     overflow-x: hidden;
 
-    /* Account for mobile devices */
     @media screen and (max-width: 768px) {
         margin-left: 0px;
         border-top: none;
@@ -174,59 +154,67 @@ export const HomeContainer = styled.div`
 `;
 
 export const HomeBgImg = styled.img`
-    margin-top: 160px;
-    margin-left: auto;
-    margin-right: 20px;
-    height: 500px;
-    width: auto;
-    align-self: right;
-    background: none;
-    grid-row: 1;
-    grid-column: 1;
-    z-index: 1;
-    
-    /* Initial state */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(100%);
+  position: absolute;
+  top: 15%;
+  right: 5%;
+  transform: translateY(-50%) translateX(100%);
+  height: 50vh;
+  width: auto;
+  z-index: 1;
+  object-fit: cover;
+  filter: blur(0.5px);
+  
+  /* Initial state */
+  opacity: 0;
+  visibility: hidden;
 
-    /* Animation state */
-    &.visible {
-        visibility: visible;
-        opacity: 1;
-        animation: ${slideLeftAnimation} 1s ease-in-out forwards;
-    }
-    
-    @media screen and (max-width: 768px) {
-        height: auto;
-        width: 300px;
-    } 
+  /* Animation state */
+  &.visible {
+    visibility: visible;
+    opacity: 0.08;
+    animation: ${slideLeftAnimation} 1s ease-in-out forwards;
+  }
+  
+  @media screen and (max-width: 768px) {
+    top: 13%;
+    right: 7%;
+    height: 25vh;
+    width: 100%;
+    object-fit: cover;
+    opacity: 0.05;
+  } 
 `;
 
 export const HomeContainerTitle = styled.div`
-    color: #55B4B0;
+  color: #55B4B0;
+  font-family: 'IBMPlexMonoBold', monospace;
+  padding: 20px;
+  font-size: 18px;
+  font-weight: 50;
+  opacity: 0;
+  visibility: visible;
 
-    font-family: 'IBMPlexMonoBold', monospace;
-    padding: 20px;
-    font-size: 18px;
-    font-weight: 50;
+  opacity: 1;
+  animation: ${slideRightAnimationTitle} 1s forwards;
+  animation-delay: ${props => props.$animationDelay || "0s"};
 
-    /* Initially set the text to be invisible */
-    visibility: hidden;
-    // border-right: 2px solid #fff;
-    /* Add a class to set visibility to visible after the animation-delay has passed */
-    &.visible {
-        visibility: visible;
-        animation: ${slideRightAnimationTitle} 1s; /* Duration and steps for animation */
-        animation-delay: ${props => props.$animationDelay || "0s"};
-    }
-`
+  /* Account for mobile devices */
+  @media screen and (max-width: 768px) {
+      font-size: 18px;
+  }
+
+  @media screen and (max-width: 472px) {
+    font-size: 15px; // Larger font for name
+    width: 80%; // Wider on mobile
+    padding: 5px 10px; // Add some padding
+  }
+`;
 
 export const HomeContainerText = styled.div`
     color: ${props => props.$inputColor || "#fff"};
     font-family: 'IBMPlexMonoBold', monospace;
     padding-left: 20px;
-    font-size: ${props => props.$size || "40px"};
+    font-size: ${props => props.$size || "30px"};
     font-weight: 500;
     overflow: hidden; /* Hide overflowing characters */
     white-space: nowrap; /* Prevent text from wrapping */
@@ -241,7 +229,18 @@ export const HomeContainerText = styled.div`
         visibility: visible;     
     }
 
-    
+    @media screen and (max-width: 768px) {
+        font-size: 50px; // Larger font for name
+        width: 80%; // Wider on mobile
+        padding: 5px 10px; // Add some padding
+    }
+
+    @media screen and (max-width: 472px) {
+        font-size: 40px; // Larger font for name
+        width: 80%; // Wider on mobile
+        padding: 5px 10px; // Add some padding
+    }
+
     &.name {
         background: rgba(255, 255, 255, 0.7); 
         border-radius: 10px;
@@ -255,13 +254,19 @@ export const HomeContainerText = styled.div`
       animation-iteration-count: infinite;
       // filter: blur(4px); /* Adjust the blur amount as needed */
       }
+
+      @media screen and (max-width: 768px) {
+        font-size: 20px; // Smaller font for role
+        margin-top: 10px; // Add some spacing
+      }
+
+      @media screen and (max-width: 472px) {
+        font-size: 15px; // Larger font for name
+        width: 80%; // Wider on mobile
+        padding: 5px 10px; // Add some padding
+      }
       
     }
-
-    /* Account for mobile devices */
-    @media screen and (max-width: 768px) {
-        font-size: 30px;
-    } 
 `
 
 export const Cursor = styled.span`

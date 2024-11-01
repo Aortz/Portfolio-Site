@@ -405,36 +405,11 @@ export const ToolsContainer = styled.div`
 
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
-        margin-right: 10px;
-        padding: 10px;
+        width: 90%; // Increased width for mobile
+        margin: 10px auto; // Center horizontally
+        padding: 5px;
         overflow: auto;
     }
-
-//   /* Back face styles */
-//   .back-face {
-//     /* Display the back face of the component */
-//     transform: perspective(800px) rotateY(180deg);
-//   }
-
-//   /* Initially hide the back face */
-//   .back-face,
-//   .front-face {
-//     backface-visibility: hidden;
-//   }
-
-//   /* Apply the flip effect on hover */
-//   &:hover {
-//     .front-face {
-//       transition: transform 1s ease-in-out;
-//       transform: perspective(800px) rotateY(180deg);
-//     }
-
-//     .back-face {
-//       /* Show the back face on hover */
-//       transition: transform 1s ease-in-out;
-//       transform: perspective(800px) rotateY(0);
-//     }
-//   }
 `;
 
 export const ToolsTitle = styled.div`
@@ -459,6 +434,12 @@ export const ToolsTitle = styled.div`
     &.visible {
         visibility: visible;    
     }
+    
+    // @media screen and (max-width: 768px) {
+    //     justify-content: center;
+    //     align-self: center;
+    //     text-align: center;
+    // }
 
 `;
 
@@ -474,8 +455,6 @@ export const ToolDescriptionText = styled.div`
     flex-wrap: wrap;
     // max-width: 800px; /* Optional: Set a maximum width to limit the number of items per row */
     align-items: ${props => props.$alignItems || "left"};
-    // border: 1px solid #ccc;
-    // border-radius: 25px;
     /* Hide the scrollbar during the animation */
     overflow: hidden;
 
@@ -526,7 +505,7 @@ export const ToolsDescriptionContainer = styled.div`
     border-radius: ${props => props.$borderRadius|| "10px"};
     flex-basis: calc(25% - 20px); /* Calculate the width of each item (25% - 20px for spacing) */
     font-family: 'VT323', monospace;
-    font-size: 25px;
+    font-size: 20px;
 
     /* Set the initial position to below the viewport */
     transform: translateY(100%);
@@ -546,9 +525,10 @@ export const ToolsDescriptionContainer = styled.div`
 
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
-        width: 240px;
-        font-size: 20px;
+        width: 250px;
+        font-size: 15px;
         overflow: hidden;
+        flex-wrap: wrap;
         align-items: center;
         text-align: center;
     }

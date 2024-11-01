@@ -21,8 +21,6 @@ import AboutBg from '../../assets/aboutBG.png'
 const About = () => {
   const [isTitleVisible, setIsTitleVisible] = useState(false);
   const [isDescriptionVisible, setIsDescriptionVisible] = useState(false);
-  const titleAnimated = useRef(false);
-  const descriptionAnimated = useRef(false);
   const aboutTitleRef = useRef(null);
   const aboutDescriptionRef = useRef(null);
 
@@ -38,20 +36,18 @@ const About = () => {
 
     const titleObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting && !titleAnimated.current) {
+        if (entry.isIntersecting) {
           setIsTitleVisible(true);
-          titleAnimated.current = true;
-          titleObserver.unobserve(entry.target);
+          // titleAnimated.current = true;
         }
       });
     }, observerOptions);
 
     const descriptionObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting && !descriptionAnimated.current) {
+        if (entry.isIntersecting) {
           setIsDescriptionVisible(true);
-          descriptionAnimated.current = true;
-          descriptionObserver.unobserve(entry.target);
+          // descriptionAnimated.current = true;
         }
       });
     }, observerOptions);
@@ -111,7 +107,7 @@ const About = () => {
             </ToolsContainer>
 
             <div className="back-face">
-              <ToolDescriptionText $inputColor="#5f7c96">
+              <ToolDescriptionText $inputColor="#ffffff">
                 <ToolsDescriptionContainer $flexBasis="calc(25% - 20px)">
                   <FaPython style={{
                       marginRight: '10px',

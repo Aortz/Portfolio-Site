@@ -108,7 +108,7 @@ export const ContainerTitle = styled.div`
     font-family: 'IBMPlexMonoBold', monospace;
     // padding: 20px;
     font-weight: 500;
-    color: ${props => props.$inputColor || "#55B4B0"};
+    color: ${props => props.$inputColor || "#253ea1"};
     font-size: ${props => props.$size || "40px"};
 
     /* Typing cursor animation */
@@ -211,9 +211,7 @@ export const StyledCard = styled(Card)`
       transform: scale(1);
     }
 
-    &:hover {
-      filter: ${props => props.$isActive ? 'sepia(60%)' : 'blur(4px)'};
-      
+    &:hover {      
       @media screen and (max-width: 768px) {
         filter: sepia(60%);
       }
@@ -235,14 +233,15 @@ export const CardTitle = styled(Card.Title)`
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 350px; 
+    max-width: 420px; 
+    min-width: 410px;
     height: auto;
     font-family: 'VT323', monospace;
     font-size: 30px; // Reduced from 40px
     padding: 8px; // Reduced from 10px
     margin-left: auto;
     margin-right: auto;
-    background-color: #adc0ff;
+    background-color: #00246B;
 
     visibility: hidden;
     &.visible {
@@ -286,7 +285,7 @@ export const CardLink = styled(Link)`
 
     &:hover {
         transition: all 0.2s ease-in-out;
-        background: #626385;
+        background: #253ea1;
         color: #fff;
         font-size: 60px;
         font-weight: 5000;
@@ -353,26 +352,44 @@ export const StyledDownloadIcon = styled(FaDownload)`
 `;
 
 
-export const CardBtn = styled.a`
-  margin-left: 100px;
-  align-self: right
+export const CardBtn = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;  // Space between buttons
+  margin-top: 15px;
+  
+  @media screen and (max-width: 768px) {
+    justify-content: center;
+    margin-left: 0;
+  }
 `
 
 export const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   margin: 0 5px;
 `;
 
 export const StyledLink = styled.a`
-  color: inherit;
+  color: #FBEAEB;
   text-decoration: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
   
   &:hover {
     color: #55B4B0;
+    transform: translateY(-2px);
+  }
+
+  /* Optional: add background on hover */
+  &:hover {
+    background: rgba(85, 180, 176, 0.1);
   }
 `;
 
