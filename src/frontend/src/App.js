@@ -46,7 +46,7 @@ export default function App() {
             <RedirectHome navbarOpen={navbarOpen} setNavbarOpen={setNavbarOpen}/>
             <RedirectAbout navbarOpen={navbarOpen} setNavbarOpen={setNavbarOpen}/>
             <RedirectProjects navbarOpen={navbarOpen} setNavbarOpen={setNavbarOpen}/>
-            <RedirectResume navbarOpen={navbarOpen} setNavbarOpen={setNavbarOpen}/>
+            {/* <RedirectResume navbarOpen={navbarOpen} setNavbarOpen={setNavbarOpen}/> */}
             {/* <NavLink to='/experimentation' onClick={() => setNavbarOpen((prev) => !prev)}>
               <p>{"05. <EXPERIMENT/>"}</p>
             </NavLink> */}

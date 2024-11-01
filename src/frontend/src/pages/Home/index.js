@@ -145,7 +145,7 @@ const Home = () => {
           Lee Junwei. 
         </HomeContainerText >
         <HomeContainerText $inputColor="#5f7c96" $animationDelay="2s" className={isVisible2 ? 'visible role' : ''}>
-          Software Engineer | Student 
+          Software Engineer
           <Cursor $inputColor="#5f7c96"/>
         </HomeContainerText>
         <HomeContainerDescription $inputColor="#b8b8b8" >
@@ -170,7 +170,7 @@ const Home = () => {
       />
       <div ref={elementRef}>
         {/* Element you want to track */}
-        <Resume/>
+        {/* <Resume/> */}
       </div>
     </ParentContainer>
   );

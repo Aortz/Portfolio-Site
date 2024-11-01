@@ -27,7 +27,7 @@ const navBar = {
   const repos = {
     show: true,
     heading: "Recent Projects",
-    gitHubUsername: "Aortz", //i.e."johnDoe12Gh"
+    gitHubUsername: "Aortz",
     reposLength: 4,
     specificRepos: [],
   };

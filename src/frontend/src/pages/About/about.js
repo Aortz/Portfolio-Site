@@ -41,11 +41,11 @@ const About = () => {
         if (entry.isIntersecting) {
           // Title component is now visible
           setIsTitleVisible(true);
-          console.log("Title Visible");
+          // console.log("Title Visible");
         } else {
           // Title component is not visible (scrolled out of the viewport)
           setIsTitleVisible(false);
-          console.log("Title not visible");
+          // console.log("Title not visible");
         }
       });
     }, observerOptions);
@@ -61,11 +61,11 @@ const About = () => {
         if (entry.isIntersecting) {
           // Description component is now visible
           setIsDescriptionVisible(true);
-          console.log("Description Visible");
+          // console.log("Description Visible");
         } else {
           // Description component is not visible (scrolled out of the viewport)
           setIsDescriptionVisible(false);
-          console.log("Description not Visible");
+          // console.log("Description not Visible");
         }
       });
     }, observerOptions);

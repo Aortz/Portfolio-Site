@@ -1,5 +1,4 @@
 import React from 'react';
-import { FaGithub, FaLinkedin } from "react-icons/fa";
 import {
   VerticalNav,
   VerticalNavLogo,
@@ -8,7 +7,6 @@ import {
   VerticalNavText,
   StyledInstaLogo
 } from './NavbarElements';
-import PersonalLogo from '../../assets/personal-icon/personal-logo-transparent.png';
 import { GlobalStyles } from '../Fonts/Fonts';
 
 const VerticalNavbar = () =>{

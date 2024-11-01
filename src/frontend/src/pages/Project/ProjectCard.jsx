@@ -15,7 +15,7 @@ import {
 } from './ProjectCardElements';
 import { BsFolder } from "react-icons/bs";
 
-const ProjectCard = ({ index, value }) => {
+const ProjectCard = ({ index, value, isActive }) => {
   
   const {
     name,
@@ -41,7 +41,7 @@ const ProjectCard = ({ index, value }) => {
   }, []);
 
   return (
-      <StyledCard $zIndex={index}>
+      <StyledCard $zIndex={index} $isActive={isActive}>
         <CardBody>
           <CardTitle $animationDelay="0s" className={isVisible ? 'visible' : ''}>
             <BsFolder style={{color: '#55B4B0' , height: 40, width: 40, marginRight: 100}}/>
@@ -58,10 +58,10 @@ const ProjectCard = ({ index, value }) => {
           <hr />
           <CardText $bgColor="#000">
             {languages_url ? (
-              <StyledLanguage languages_url={languages_url} repo_url={svn_url} />
-              ) : (
-                <Skeleton count={3} />
-              )}
+              <Language languages_url={languages_url} repo_url={svn_url} />
+            ) : (
+              <Skeleton count={3} />
+            )}
           </CardText>
           <hr />
           <>
@@ -98,10 +98,13 @@ const Language = ({ languages_url, repo_url }) => {
 
   const handleRequest = useCallback(async () => {
     try {
-      const response = await axios.get(languages_url);
+      const headers = {
+        Authorization: `Bearer ${process.env.REACT_APP_GITHUB_TOKEN}`
+      };
+      const response = await axios.get(languages_url, { headers });
       return setData(response.data);
     } catch (error) {
-      console.error(error.message);
+      console.error("Error fetching languages:", error.message);
     }
   }, [languages_url]);
 
@@ -124,23 +127,20 @@ const Language = ({ languages_url, repo_url }) => {
       <LanguageContainer $marginLeft="10px">
         {array.length
           ? array.map((language) => (
-            <LanguageIndv
-              key={language}
-              $border="1px solid #fff"
-              className="card-link"
-              href={repo_url + `/search?l=${language}`}
-              target=" _blank"
-              rel="noopener noreferrer"
-            >
-              <LanguagePercentage className="languge-percentage" >
-                {language}:{" "}
-                {Math.trunc((data[language] / total_count) * 1000) / 10} %
-              </LanguagePercentage>
-            </LanguageIndv>
-
-          ))
-          : "code yet to be deployed."}
-        </LanguageContainer>
+              <LanguageIndv
+                key={language}
+                href={repo_url + `/search?l=${language}`}
+                target=" _blank"
+                rel="noopener noreferrer"
+              >
+                <span>{language}: </span>
+                <LanguagePercentage>
+                  {((data[language] / total_count) * 100).toFixed(1)} %
+                </LanguagePercentage>
+              </LanguageIndv>
+            ))
+          : "No Languages Found"}
+      </LanguageContainer>
     </LanguageContainer>
   );
 };

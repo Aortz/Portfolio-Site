@@ -82,29 +82,17 @@ const glitchAnimation = keyframes`
 `;
 
 export const ProjectContainer = styled.div`
-    // display: flex;
-    // justify-content: start;
-    // flex-direction: column;
-
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
+    display: flex;
+    flex-direction: column;
     align-items: left;
-    text-align: left;
     background: #000;
     width: 100%;
     color: #fff;
-    align-items: left;
-    min-height: 100vh; /* Use min-height instead of height to prevent overflow */
+    min-height: 100vh;
     margin-left: 80px;
     padding: 20px;
-    // border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;
-    // border-radius: 25px;
-    /* Add the following styles to remove the horizontal scrollbar */
-    overflow-x: auto;
-
-    overflow:hidden;
+    overflow: hidden;
 `;
 
 export const ContainerTitle = styled.div`
@@ -150,106 +138,76 @@ export const ContainerTitle = styled.div`
 
 
 export const CardContainer = styled(Col)`
-
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: left;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); // Creates 2 columns
+    gap: 1.5rem; // Reduced from 2rem
+    padding: 1.5rem; // Reduced from 2rem
+    width: 100%;
     height: auto;
     background: #000;
-    // width: 90%;
-    // margin-left: auto;
-    // margin-right: auto;
-
-    // flex-wrap: wrap;
-    border: 1px solid red,
-    border-radius: 90px;
-    padding: 5px;
-
-    animation: ${slideUpAnimation} 3s forwards; /* Duration and steps for animation */
+    overflow-y: auto; // Enables vertical scrolling
     
-
-    /* Allow vertical scrolling when content overflows */
-    overflow-x: auto;
-
     /* Hide the default scrollbar */
     scrollbar-width: none;
     -ms-overflow-style: none;
   
     /* WebKit-based browsers */
     &::-webkit-scrollbar {
-      width: 3px;
-      
+        width: 3px;
     }
   
     &::-webkit-scrollbar-thumb {
-      // background-image: url('../../assets/scrollbar/mario-climbing-thumb.png');
-      // background-repeat: no-repeat;
-      // background-size: cover;
-      height: 3px;
-      background-color: #888;
-      border-radius: 4px;
+        height: 3px;
+        background-color: #888;
+        border-radius: 4px;
     }
   
     &::-webkit-scrollbar-thumb:hover {
-      background-color: #555;
-      // background-image: url('../../assets/scrollbar/mario-climbing-thumb.png');
-      // background-repeat: no-repeat;
-      // background-size: cover;
+        background-color: #555;
     }
   
     &::-webkit-scrollbar-track {
-      background-color: #000;
-      // background-image: url('../../assets/scrollbar/vine-track.png');
+        background-color: #000;
     }
-
 
     grid-row: 2;
     grid-column: 1;
     z-index: 1;
+
+    @media screen and (max-width: 1200px) {
+        grid-template-columns: 1fr; // Single column on smaller screens
+    }
 `
 
 export const StyledCard = styled(Card)`
-
-    // justify-content: center;
-    // align-items: center;
+    width: 80%;
+    max-width: 500px;
+    min-width: 300px;
     border-radius: 40px;
-    margin: 20px;
-    // width: 50%;
-    // height: 50%;
-    animation: ${slideUpAnimation} 3s forwards; /* Duration and steps for animation */
+    height: fit-content;
+    min-height: 300px;
+    margin: 0 auto;
+    transition: all 0.5s ease-in-out;
+    position: relative;
+    z-index: 1;
+    opacity: ${props => props.$isActive ? 1 : 0.3};
+    filter: ${props => props.$isActive ? 'none' : 'blur(4px)'};
+    transform: scale(${props => props.$isActive ? 1 : 0.8});
+    display: flex;
+    visibility: visible;
 
-    /* Apply the animation only when the card is in the hover state */
     &:hover {
-        // filter: blur(4px); /* Adjust the blur amount as needed */ 
-        // filter: opacity(50%) drop-shadow(0px 0px #006e1d); // sepia(50%) saturate(30%)
-        // animation: ${rotateAnimation} 3s linear;
-        // animation-play-state: running;
-        // filter: brightness(0.4);
-        // filter: contrast(200%);
-        // filter: drop-shadow(16px 16px 20px blue);
-        // filter: grayscale(50%);
-        // filter: hue-rotate(90deg);
-        // filter: invert(75%);
-        // filter: opacity(25%);
-        // filter: saturate(30%);
-        filter: sepia(60%);
+        filter: ${props => props.$isActive ? 'sepia(60%)' : 'blur(4px)'};
     }
-
-    // /* Set the animation fill mode to forwards */
-    // animation-fill-mode: forwards;
-
-    // /* Set the initial animation play state to paused when not hovering */
-    // &:not(:hover) {
-    //   animation-play-state: paused;
-    //   animation: none;
-    // }
 `
+
 export const CardBody = styled(Card.Body)`
-    // background: rgba(255, 255, 255, 0.7);
     align-items: left;
     border: 1px solid #fff;
     border-radius: 5px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 `
 
 export const CardTitle = styled(Card.Title)`
@@ -258,30 +216,19 @@ export const CardTitle = styled(Card.Title)`
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 350px;
+    width: 350px; 
     height: auto;
     font-family: 'VT323', monospace;
-    font-size: 40px;
-    // font-weight: bold;
-    padding: 10px;
+    font-size: 30px; // Reduced from 40px
+    padding: 8px; // Reduced from 10px
     margin-left: auto;
     margin-right: auto;
     background-color: #adc0ff;
 
-    /* Typing cursor animation */
-    overflow: hidden; /* Hide overflowing characters */
-    white-space: nowrap; /* Prevent text from wrapping */
-    // animation: ${props => typingAnimationWithSteps(props.children)} 2s forwards; /* Duration and steps for animation */
-    // animation-delay: ${props => props.$animationDelay || "0s"};
-
-    /* Initially set the text to be invisible */
     visibility: hidden;
-    // border-right: 1px solid #fff;
-    /* Add a class to set visibility to visible after the animation-delay has passed */
     &.visible {
         visibility: visible;
     }
-    
 `
 
 export const CardText = styled(Card.Text)`
@@ -297,11 +244,7 @@ export const CardText = styled(Card.Text)`
     font-family: 'VT323', monospace;
     justify-content: ${props => props.$justifyContent || "left"};
     padding: ${props => props.$padding || "0px"};
-
-    // border: 1px solid #fff;
-    // border-left: 1px solid #fff;
-
-    font-size: ${props => props.$fontSize || "20px"};;
+    font-size: ${props => props.$fontSize || "16px"}; // Reduced from 20px
     font-weight: 400;
 `
 
@@ -416,3 +359,110 @@ export const CardButtonLink = styled.a`
     color: #000;
   }
 `
+
+export const CarouselWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column; // Changed to column to stack content vertically
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 20px 40px;
+  overflow: hidden;
+`;
+
+export const CarouselContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 400px;
+  background: #000;
+  position: relative;
+  transition: transform 0.5s ease-in-out;
+`;
+
+export const CarouselControls = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px; // Add space between cards and controls
+  width: 100%;
+`;
+
+export const CarouselButton = styled.button`
+  background: none;
+  border: none;
+  color: #55B4B0;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 100;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #fff;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+export const CarouselTrack = styled.div`
+  display: flex;
+  gap: 20px;
+  padding: 20px 40px;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+`;
+
+export const LanguageContainer = styled.div`
+  display: flex;
+  flex-wrap: ${props => props.$flexWrap || "wrap"};
+  margin-left: ${props => props.$marginLeft || "0px"};
+  align-items: center;
+`;
+
+export const LanguageTitle = styled.h1`
+  align-self: center;
+  text-align: center;
+  margin-left: ${props => props.$marginLeft || "0px"};
+  font-size: 20px;
+  color: #B8A7E9; // Pale purple text
+  margin-right: 10px;
+`;
+
+export const LanguageIndv = styled.a`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #B8A7E9; // Pale purple border
+  border-radius: 15px;
+  margin: 4px;
+  padding: 6px 12px;
+  color: #B8A7E9; // Pale purple text
+  text-decoration: none;
+  font-size: 14px;
+  background: rgba(184, 167, 233, 0.1); // Very light purple background
+  transition: all 0.3s ease;
+  min-width: 80px;
+  
+  &:hover {
+    background: #B8A7E9;
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(184, 167, 233, 0.3);
+  }
+`;
+
+export const LanguagePercentage = styled.div`
+  color: #B8A7E9; // Pale purple text
+  font-size: 14px;
+  margin-left: 6px;
+  font-weight: bold;
+  
+  ${LanguageIndv}:hover & {
+    color: #000;
+  }
+`;

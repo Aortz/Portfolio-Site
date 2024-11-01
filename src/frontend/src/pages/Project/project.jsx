@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ProjectCard from "./ProjectCard";
 import axios from "axios";
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { 
   ContainerTitle,
-  CardContainer,
+  CarouselContainer,
   ProjectContainer,
+  CarouselButton,
+  CarouselWrapper,
+  CarouselTrack,
+  CarouselControls,
 } from './ProjectCardElements'
 
 
@@ -17,8 +22,6 @@ const dummyProject = {
   pushed_at: null,
 };
 const API = "https://api.github.com";
-// const gitHubQuery = "/repos?sort=updated&direction=desc";
-// const specficQuerry = "https://api.github.com/repos/hashirshoaeb/";
 
 const Project = ({ heading, username, length, specfic }) => {
   const allReposAPI = `${API}/users/${username}/repos?sort=updated&direction=desc`;
@@ -26,9 +29,14 @@ const Project = ({ heading, username, length, specfic }) => {
   const dummyProjectsArr = new Array(length + specfic.length).fill(
     dummyProject
   );
+  // Add headers configuration
+  const headers = {
+    Authorization: `Bearer ${process.env.REACT_APP_GITHUB_TOKEN}`
+  };
 
   const [projectsArray, setProjectsArray] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     // For Component1, set the text to be visible after the animation-delay
@@ -45,8 +53,8 @@ const Project = ({ heading, username, length, specfic }) => {
   const fetchRepos = useCallback(async () => {
     let repoList = [];
     try {
-      // getting all repos
-      const response = await axios.get(allReposAPI);
+      // getting all repos with headers
+      const response = await axios.get(allReposAPI, { headers });
       // slicing to the length
       repoList = [...response.data.slice(0, length)];
       // adding specified repos
@@ -56,7 +64,7 @@ const Project = ({ heading, username, length, specfic }) => {
           repoList.push(response.data);
         }
       } catch (error) {
-        console.error(error.message);
+        // console.error(error.message);
       }
       // setting projectArray
       // TODO: remove the duplication.
@@ -64,36 +72,61 @@ const Project = ({ heading, username, length, specfic }) => {
     } catch (error) {
       console.error(error.message);
     }
-  }, [allReposAPI, length, specfic, specficReposAPI]);
+  }, [allReposAPI, length, specfic, specficReposAPI, headers]);
 
   useEffect(() => {
     fetchRepos();
   }, [fetchRepos]);
 
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === Math.min(3, projectsArray.length - 1) ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? Math.min(3, projectsArray.length - 1) : prevIndex - 1
+    );
+  };
+
+
   return (
-    <ProjectContainer style={{height: '100vh'}}>
-        <ContainerTitle $size="50px" $animationDelay="0s" className={isVisible ? 'visible' : ''}>
-          {"PROJECTS"}
-        </ContainerTitle>
-        {/* <MovieCurtains src={movieCurtains}/> */}
-        <CardContainer>
-          {projectsArray.length
-            ? projectsArray.map((project, index) => (
+    <ProjectContainer>
+      <ContainerTitle $size="50px" $animationDelay="0s" className={isVisible ? 'visible' : ''}>
+        {"PROJECTS"}
+      </ContainerTitle>
+      <CarouselWrapper>
+        <CarouselContainer>
+          <CarouselTrack>
+            {projectsArray && projectsArray.length > 0 ? (
+              projectsArray.slice(0, 4).map((project, index) => (
+                <ProjectCard
+                  key={`project-card-${index}`}
+                  index={index}
+                  value={project}
+                  isActive={index === currentIndex}
+                />
+              ))
+            ) : (
               <ProjectCard
-                key={`project-card-${index}`}
-                id={`${index}`}
-                value={project}
+                key="dummy-0"
+                index={0}
+                value={dummyProject}
+                isActive={true}
               />
-            ))
-            : dummyProjectsArr.map((project, index) => (
-              <ProjectCard
-                key={`dummy-${index}`}
-                id={`dummy-${index}`}
-                value={project}
-              />
-            ))}
-        </CardContainer>
-      
+            )}
+          </CarouselTrack>
+        </CarouselContainer>
+        <CarouselControls>
+          <CarouselButton onClick={prevSlide}>
+            <FaChevronLeft />
+          </CarouselButton>
+          <CarouselButton onClick={nextSlide}>
+            <FaChevronRight />
+          </CarouselButton>
+        </CarouselControls>
+      </CarouselWrapper>
     </ProjectContainer>
   );
 };
