@@ -65,7 +65,7 @@ const glitchAnimation = keyframes`
   }
 `;
 
-const slideRightAnimationTitle = keyframes`
+const slideRightAnimation = keyframes`
   from {
     transform: translateX(-100%);
     opacity: 0;
@@ -160,16 +160,20 @@ export const AboutBgImg = styled.img`
     /* Set the initial position to below the viewport */
     transform: translateX(100%);
     opacity: 0;
+    visibility: hidden;
 
-    /* Apply the slide-up animation */
-    /* Add a class to set visibility to visible after the animation-delay has passed */
+    /* Animation state */
     &.visible {
         visibility: visible;
-        animation: ${slideLeftAnimation} 2s ease-in-out forwards; /* Duration and steps for animation */
-        // animation-delay: ${props => props.$animationDelay || "0s"};
+        animation: ${slideLeftAnimation} 2s ease-in-out forwards;
     }
-    // animation: ${slideLeftAnimation} 2s ease-in-out forwards;
-    
+
+    /* Prevent re-triggering */
+    &.visible {
+        transform: translateX(0) rotateY(20deg) rotateZ(10deg);
+        opacity: 1;
+    }
+
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
         // display: none;
@@ -287,7 +291,7 @@ export const AboutContainerTitle = styled.div`
     /* Add a class to set visibility to visible after the animation-delay has passed */
     &.visible {
         visibility: visible;
-        animation: ${slideRightAnimationTitle} 1s; /* Duration and steps for animation */
+        animation: ${slideRightAnimation} 1s; /* Duration and steps for animation */
         animation-delay: ${props => props.$animationDelay || "0s"};
     }
 
@@ -331,16 +335,22 @@ export const AboutDescriptionContainer = styled.div`
     font-family: 'VT323', monospace;
     // font-size: 10px;
 
-    /* Set the initial position to below the viewport */
+    /* Initial state */
     transform: translateY(100%);
     opacity: 0;
-    // visibility: hidden;
+    visibility: hidden;
 
-    /* Apply the slide-up animation */
+    /* Animation state */
     &.visible {
       visibility: visible;
-      animation: ${slideUpAnimation} 1s ease-in-out forwards;
+      animation: ${slideRightAnimation} 1s ease-in-out forwards;
       animation-delay: ${props => props.$animationDelay || "0s"};
+    }
+
+    /* Prevent re-triggering */
+    &.visible {
+      transform: translateY(0);
+      opacity: 1;
     }
 
     /* Hide the scrollbar during the animation */
@@ -373,12 +383,22 @@ export const ToolsContainer = styled.div`
     font-family: 'VT323', monospace;
     font-size: 30px;
 
-    /* Set the initial position to below the viewport */
-    opacity: 0;
+    /* Initial state */
     transform: translateY(100%);
+    opacity: 0;
+    visibility: hidden;
 
-    /* Apply the slide-up animation */
-    animation: ${slideUpAnimation} 1s ease-in-out forwards;
+    /* Animation state */
+    &.visible {
+      visibility: visible;
+      animation: ${slideUpAnimation} 1s ease-in-out forwards;
+    }
+
+    /* Prevent re-triggering */
+    &.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
 
     /* Hide the scrollbar during the animation */
     overflow: hidden;

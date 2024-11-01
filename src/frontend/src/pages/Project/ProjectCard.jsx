@@ -11,7 +11,9 @@ import {
   StyledDownloadIcon,
   CardButtonLink,
   StyledGithubIcon,
-  CardBtn
+  CardBtn,
+  ButtonContainer,
+  StyledLink
 } from './ProjectCardElements';
 import { BsFolder } from "react-icons/bs";
 
@@ -41,7 +43,10 @@ const ProjectCard = ({ index, value, isActive }) => {
   }, []);
 
   return (
-      <StyledCard $zIndex={index} $isActive={isActive}>
+      <StyledCard 
+      $isActive={isActive}
+      data-active={isActive} // Add this line
+      >
         <CardBody>
           <CardTitle $animationDelay="0s" className={isVisible ? 'visible' : ''}>
             <BsFolder style={{color: '#55B4B0' , height: 40, width: 40, marginRight: 100}}/>
@@ -79,16 +84,24 @@ const ProjectCard = ({ index, value, isActive }) => {
 const CardButtons = ({ svn_url }) => {
   return (
     <CardBtn>
-        <CardButtonLink 
-          href={svn_url} target=" _blank" 
-        >
-          <StyledGithubIcon/>
-        </CardButtonLink>
-        <CardButtonLink
-          href={`${svn_url}/archive/master.zip`}
-        >
-          <StyledDownloadIcon/>
-        </CardButtonLink>
+        <ButtonContainer>
+          <StyledLink 
+            href={svn_url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <StyledGithubIcon/>
+          </StyledLink>
+        </ButtonContainer>
+        <ButtonContainer>
+          <StyledLink
+            href={`${svn_url}/archive/master.zip`}
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            <StyledDownloadIcon/>
+          </StyledLink>
+        </ButtonContainer>
     </CardBtn>
   );
 };

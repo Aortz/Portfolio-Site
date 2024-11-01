@@ -128,12 +128,13 @@ export const RouteContainer = styled.div`
 `;
 
 export const ParentContainer = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    background: rgba(0,0,0,0.5);
-    width: 100%;
-    height: 50vh;
+  min-height: 100vh;
+  scroll-snap-align: start;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  background: rgba(0,0,0,0.5);
+  width: 100%;
 `;
 
 export const HomeContainer = styled.div`
@@ -176,30 +177,27 @@ export const HomeBgImg = styled.img`
     margin-top: 160px;
     margin-left: auto;
     margin-right: 20px;
-    // padding: 20px;
     height: 350px;
     width: auto;
     align-self: right;
     background: none;
-
-    /* Your content styles go here */
     grid-row: 1;
     grid-column: 1;
     z-index: 1;
-
-    /* Set the initial position to below the viewport */
-    transform: translateX(100%);
-    opacity: 0;
-
-    /* Apply the slide-up animation */
-    &.visible {
-      visibility: visible;
-      animation: ${slideLeftAnimation} 1s ease-in-out forwards;
-  }
     
-    /* Account for mobile devices */
+    /* Initial state */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100%);
+
+    /* Animation state */
+    &.visible {
+        visibility: visible;
+        opacity: 1;
+        animation: ${slideLeftAnimation} 1s ease-in-out forwards;
+    }
+    
     @media screen and (max-width: 768px) {
-        // display: none;
         height: auto;
         width: 300px;
     } 

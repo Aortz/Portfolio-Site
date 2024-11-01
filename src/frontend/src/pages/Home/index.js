@@ -4,17 +4,14 @@ import {
   HomeContainerTitle, 
   HomeContainerText,
   HomeContainerDescription,
-  MobileHomeImg,
   HomeBgImg,
   ParentContainer,
   Cursor
 } from './HomePageElements';
-import HomeImg from '../../assets/home-img.png'
 import HomeBg from '../../assets/homeBG.png'
 import styled, { keyframes } from 'styled-components';
 import About from '../About/about';
 import Project from '../Project/project';
-import Resume from '../Resume/resume';
 import {
   repos,
 } from "../../editable-stuff/config.js";
@@ -41,19 +38,19 @@ const Home = () => {
     const observerOptions = {
       root: null, // Use the viewport as the root
       rootMargin: '0px', // No margin
-      threshold: [0, 0.5], // Trigger when component enters and exits the viewport
+      threshold: 0.5, // Increase threshold to require more visibility
     };
 
     const titleObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
+        // Only trigger animation if element hasn't been animated before
+        if (entry.isIntersecting && !entry.target.hasAnimated) {
           // Title component is now visible
           setIsTitleVisible(true);
-          console.log("Title Visible");
+          titleObserver.unobserve(entry.target);
         } else {
           // Title component is not visible (scrolled out of the viewport)
           setIsTitleVisible(false);
-          console.log("Title not visible");
         }
       });
     }, observerOptions);
@@ -66,10 +63,10 @@ const Home = () => {
     // Observer for the description component
     const descriptionObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !entry.target.hasAnimated) {
           // Description component is now visible
           setIsDescriptionVisible(true);
-          console.log("Description Visible");
+          descriptionObserver.unobserve(entry.target);
         } else {
           // Description component is not visible (scrolled out of the viewport)
           setIsDescriptionVisible(false);
@@ -107,25 +104,6 @@ const Home = () => {
   }, []);
 
 
-
-  // useEffect(() => {
-  //   // For Component1, set the text to be visible after the animation-delay
-  //   const timer1 = setTimeout(() => {
-  //     setIsVisible1(true);
-  //   }, 0); // Set the delay time in milliseconds (e.g., 1s for Component1)
-
-  //   // For Component2, set the text to be visible after the animation-delay
-  //   const timer2 = setTimeout(() => {
-  //     setIsVisible2(true);
-  //   }, 2000); // Set the delay time in milliseconds (e.g., 2s for Component2)
-
-  //   // Clear the timeouts when the component unmounts or when the animations are complete
-  //   return () => {
-  //     clearTimeout(timer1);
-  //     clearTimeout(timer2);
-  //   };
-  // }, []);
-
   const elementRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -156,9 +134,9 @@ const Home = () => {
             Currently taking an interest in exploring AI/ML as well as metaverse technologies
           </p>
         </HomeContainerDescription>
-        <MobileHomeImg
+        {/* <MobileHomeImg
             src={HomeImg}
-          />
+          /> */}
       </HomeContainer>
       <About className={isVisible ? 'animate' : ''} />
         {/* Element you want to track */}

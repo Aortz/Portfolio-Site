@@ -21,186 +21,168 @@ import AboutBg from '../../assets/aboutBG.png'
 const About = () => {
   const [isTitleVisible, setIsTitleVisible] = useState(false);
   const [isDescriptionVisible, setIsDescriptionVisible] = useState(false);
-
-  // Create a ref for the AboutContainerTitle element
+  const titleAnimated = useRef(false);
+  const descriptionAnimated = useRef(false);
   const aboutTitleRef = useRef(null);
-
-  // Create a ref for the AboutDescriptionContainer element
   const aboutDescriptionRef = useRef(null);
 
-  // Intersection Observer to track the AboutParentContainer
   useEffect(() => {
     const observerOptions = {
-      root: null, // Use the viewport as the root
-      rootMargin: '0px', // No margin
-      threshold: [0, 0.5], // Trigger when component enters and exits the viewport
+      root: null,
+      rootMargin: '0px',
+      threshold: [0, 0.6]
     };
+
+    const currentTitleRef = aboutTitleRef.current;
+    const currentDescriptionRef = aboutDescriptionRef.current;
 
     const titleObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Title component is now visible
+        if (entry.isIntersecting && !titleAnimated.current) {
           setIsTitleVisible(true);
-          // console.log("Title Visible");
-        } else {
-          // Title component is not visible (scrolled out of the viewport)
-          setIsTitleVisible(false);
-          // console.log("Title not visible");
+          titleAnimated.current = true;
+          titleObserver.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
-    // Start observing the AboutParentContainer element
-    if (aboutTitleRef.current) {
-      titleObserver.observe(aboutTitleRef.current);
-    }
-
-    // Observer for the description component
     const descriptionObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Description component is now visible
+        if (entry.isIntersecting && !descriptionAnimated.current) {
           setIsDescriptionVisible(true);
-          // console.log("Description Visible");
-        } else {
-          // Description component is not visible (scrolled out of the viewport)
-          setIsDescriptionVisible(false);
-          // console.log("Description not Visible");
+          descriptionAnimated.current = true;
+          descriptionObserver.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
-    // Start observing the description element
-    if (aboutDescriptionRef.current) {
-      descriptionObserver.observe(aboutDescriptionRef.current);
+    if (currentTitleRef) {
+      titleObserver.observe(currentTitleRef);
+    }
+    if (currentDescriptionRef) {
+      descriptionObserver.observe(currentDescriptionRef);
     }
 
-    // Clean up the observers
     return () => {
-      if (aboutTitleRef.current) {
-        titleObserver.unobserve(aboutTitleRef.current);
+      if (currentTitleRef) {
+        titleObserver.unobserve(currentTitleRef);
       }
-      if (aboutDescriptionRef.current) {
-        descriptionObserver.unobserve(aboutDescriptionRef.current);
+      if (currentDescriptionRef) {
+        descriptionObserver.unobserve(currentDescriptionRef);
       }
     };
   }, []);
-
 
   return (
     <AboutParentContainer style={{height: '100vh'}}>
       <AboutBgImg
         src={AboutBg}
-        // ref={aboutDescriptionRef}
         className={isDescriptionVisible ? 'visible bg' : ''}
       />
       <AboutContainer>
         <AboutLeftContainer>
-          <AboutContainerTitle ref={aboutTitleRef} $size="50px" $animationDelay="0s" className={isTitleVisible ? 'visible title' : 'invisible'}>
+          <AboutContainerTitle 
+            ref={aboutTitleRef} 
+            $size="50px" 
+            $animationDelay="0s" 
+            className={isTitleVisible ? 'visible title' : ''}
+          >
             ABOUT ME
           </AboutContainerTitle>
-          <AboutDescriptionContainer ref={aboutDescriptionRef} $animationDelay="0s" className={isDescriptionVisible ? 'visible description' : ''}>
-            {/* <AboutContainerText $size="20px">
-              Lee Junwei. 
-            </AboutContainerText> */}
+          
+          <AboutDescriptionContainer 
+            ref={aboutDescriptionRef} 
+            $animationDelay="0s" 
+            className={isDescriptionVisible ? 'visible description' : ''}
+          >
             <AboutDescriptionText $inputColor="#b8b8b8" >
-              Hello! My name is Junwei and I enjoy creating things that live on the internet. My interest in web development started back in 2015 when I decided to try making a custom website for my
-              schools orientation. Now I enjoy playing around with new frameworks and languages!
+              Hello! My name is Junwei and I enjoy creating things that live on the internet. 
+              My interest seems as myriad as the stars, but you can find me tinkering with 
+              new frameworks and languages!
             </AboutDescriptionText>
-            {/* <AboutDescriptionText $inputColor="#5f7c96" >
-              Since then, I have dabbled in many more technology and languages
-            </AboutDescriptionText> */}
-            {/* $background="#55B4B0" */}
+
             <ToolsContainer className={isTitleVisible ? 'visible' : ''} $border="none" $borderRadius="20px" > 
-              <ToolsTitle  $inputColor="#fff" $size="60px" $animationDelay="0s" className={isTitleVisible ? 'visible front-face' : ''}>
-                <BsTools style={{
-                    height: 'auto',
-                    width: '30px'
-                  }}/> Tools <BsTools style={{
-                    marginRight: '10px',
-                    height: 'auto',
-                    width: '30px'
-                  }}/>
+              <ToolsTitle $inputColor="#fff" $size="60px" $animationDelay="0s" 
+                className={isTitleVisible ? 'visible front-face' : ''}>
+                <BsTools style={{height: 'auto', width: '30px', marginRight: '20px'}}/> 
+                Tools 
+                <BsTools style={{marginLeft: '20px', height: 'auto', width: '30px'}}/>
               </ToolsTitle>
             </ToolsContainer>
+
             <div className="back-face">
-                <ToolDescriptionText $inputColor="#5f7c96">
-                  <ToolsDescriptionContainer $flexBasis="calc(25% - 20px)">
-                    <FaPython style={{
-                        marginRight: '10px',
-                        height: 'auto',
-                        width: '50px'
-                      }}/>Python
-                  </ToolsDescriptionContainer >
-                  <ToolsDescriptionContainer>
-                    <FaJava style={{
-                        marginRight: '10px',
-                        height: 'auto',
-                        width: '50px'
-                      }}/> Java
-                  </ToolsDescriptionContainer>
-                  <ToolsDescriptionContainer >
-                    <TbSql style={{
-                        height: 'auto',
-                        width: '50px',
-                      }}/>
-                  </ToolsDescriptionContainer>
-                  <ToolsDescriptionContainer >
-                    <FaDocker style={{
-                        marginRight: '10px',
-                        height: 'auto',
-                        width: '50px'
-                      }}/> Docker
-                  </ToolsDescriptionContainer>
-                  <ToolsDescriptionContainer >
-                    <FaReact style={{
-                        marginRight: '10px',
-                        height: 'auto',
-                        width: '50px'
-                      }}/> React
-                  </ToolsDescriptionContainer>
-                  <ToolsDescriptionContainer  >
-                    <FaJs  style={{
-                        marginRight: '10px',
-                        height: 'auto',
-                        width: '50px'
-                      }}/>Javascript
-                  </ToolsDescriptionContainer >
-                  <ToolsDescriptionContainer >
-                    <FaGithub style={{
-                        marginRight: '10px',
-                        height: 'auto',
-                        width: '50px'
-                      }}/> Git
-                  </ToolsDescriptionContainer>
-                  <ToolsDescriptionContainer >
-                    <TbBrandCSharp style={{
-                        height: 'auto',
-                        width: '50px'}}/>
-                  </ToolsDescriptionContainer>
-                  <ToolsDescriptionContainer >
-                    <FaUnity style={{
-                        marginRight: '10px',
-                        height: 'auto',
-                        width: '50px'
-                      }}/> Unity
-                  </ToolsDescriptionContainer>
-                  <ToolsDescriptionContainer >
-                    <FaCss3 style={{
-                        marginRight: '10px',
-                        height: 'auto',
-                        width: '50px'
-                      }}/> CSS
-                  </ToolsDescriptionContainer>
-                </ToolDescriptionText>
-              </div>
+              <ToolDescriptionText $inputColor="#5f7c96">
+                <ToolsDescriptionContainer $flexBasis="calc(25% - 20px)">
+                  <FaPython style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/>Python
+                </ToolsDescriptionContainer >
+                <ToolsDescriptionContainer>
+                  <FaJava style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/> Java
+                </ToolsDescriptionContainer>
+                <ToolsDescriptionContainer >
+                  <TbSql style={{
+                      height: 'auto',
+                      width: '50px',
+                    }}/>
+                </ToolsDescriptionContainer>
+                <ToolsDescriptionContainer >
+                  <FaDocker style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/> Docker
+                </ToolsDescriptionContainer>
+                <ToolsDescriptionContainer >
+                  <FaReact style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/> React
+                </ToolsDescriptionContainer>
+                <ToolsDescriptionContainer  >
+                  <FaJs  style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/>Javascript
+                </ToolsDescriptionContainer >
+                <ToolsDescriptionContainer >
+                  <FaGithub style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/> Git
+                </ToolsDescriptionContainer>
+                <ToolsDescriptionContainer >
+                  <TbBrandCSharp style={{
+                      height: 'auto',
+                      width: '50px'}}/>
+                </ToolsDescriptionContainer>
+                <ToolsDescriptionContainer >
+                  <FaUnity style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/> Unity
+                </ToolsDescriptionContainer>
+                <ToolsDescriptionContainer >
+                  <FaCss3 style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/> CSS
+                </ToolsDescriptionContainer>
+              </ToolDescriptionText>
+            </div>
           </AboutDescriptionContainer>
         </AboutLeftContainer>
-        {/* <AboutRightContainer>
-          <RightContainerImg
-            src={RightImg}
-          />
-        </AboutRightContainer> */}
       </AboutContainer>
     </AboutParentContainer>
   );

@@ -93,6 +93,12 @@ export const ProjectContainer = styled.div`
     padding: 20px;
     border-left: 1px solid #ccc;
     overflow: hidden;
+
+    @media screen and (max-width: 768px) {
+      padding: 10px;
+      margin-left: 0px;
+      border-left: 0px solid #ccc;
+    }
 `;
 
 export const ContainerTitle = styled.div`
@@ -196,8 +202,21 @@ export const StyledCard = styled(Card)`
     display: flex;
     visibility: visible;
 
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      min-width: unset;
+      margin: 0;
+      opacity: 1;
+      filter: none;
+      transform: scale(1);
+    }
+
     &:hover {
-        filter: ${props => props.$isActive ? 'sepia(60%)' : 'blur(4px)'};
+      filter: ${props => props.$isActive ? 'sepia(60%)' : 'blur(4px)'};
+      
+      @media screen and (max-width: 768px) {
+        filter: sepia(60%);
+      }
     }
 `
 
@@ -339,26 +358,23 @@ export const CardBtn = styled.a`
   align-self: right
 `
 
-export const CardButtonLink = styled.a`
-  // justify-content: center;
-  // background: #fffff;
-  color: #fff;
-  // border: 1px solid black;
-  // borderRadius: 4px;
-  padding: 10px;
-  cursor: pointer;
-  fontWeight: bold;
-  fontSize: 10px;
-  transition: background-color 0.3s;
+export const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 0 5px;
+`;
 
-  &:hover: {
-    // align-self: right;
-    // background: #55B4B0;
-    // border-radius: 20px;
-    // border: 1px solid #000;
-    color: #000;
+export const StyledLink = styled.a`
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    color: #55B4B0;
   }
-`
+`;
 
 export const CarouselWrapper = styled.div`
   position: relative;
@@ -369,6 +385,11 @@ export const CarouselWrapper = styled.div`
   width: 100%;
   padding: 20px 40px;
   overflow: hidden;
+
+  @media screen and (max-width: 768px) {
+    padding: 10px;
+    width: 100%;
+  }
 `;
 
 export const CarouselContainer = styled.div`
@@ -380,6 +401,11 @@ export const CarouselContainer = styled.div`
   background: #000;
   position: relative;
   transition: transform 0.5s ease-in-out;
+
+  @media screen and (max-width: 768px) {
+    min-height: 350px;
+    width: 100%;
+  }
 `;
 
 export const CarouselControls = styled.div`
@@ -388,6 +414,13 @@ export const CarouselControls = styled.div`
   gap: 20px;
   margin-top: 20px; // Add space between cards and controls
   width: 100%;
+
+  @media screen and (max-width: 768px) {
+    position: relative;
+    bottom: 0;
+    padding: 10px;
+    background: transparent;
+  }
 `;
 
 export const CarouselButton = styled.button`
@@ -399,6 +432,11 @@ export const CarouselButton = styled.button`
   padding: 10px;
   z-index: 100;
   transition: color 0.3s ease;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.5rem;
+    padding: 5px;
+  }
 
   &:hover {
     color: #fff;
@@ -415,6 +453,22 @@ export const CarouselTrack = styled.div`
   padding: 20px 40px;
   transition: transform 0.5s ease-in-out;
   width: 100%;
+
+  @media screen and (max-width: 768px) {
+    padding: 10px;
+    gap: 0;
+    
+    /* Hide non-active cards on mobile */
+    & > * {
+      display: none;
+      width: 100%;
+    }
+    
+    /* Only show active card */
+    & > *[data-active="true"] {
+      display: flex;
+    }
+  }
 `;
 
 export const LanguageContainer = styled.div`

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import ProjectCard from "./ProjectCard";
 import axios from "axios";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
@@ -29,10 +29,10 @@ const Project = ({ heading, username, length, specfic }) => {
   const dummyProjectsArr = new Array(length + specfic.length).fill(
     dummyProject
   );
-  // Add headers configuration
-  const headers = {
-    Authorization: `Bearer ${process.env.REACT_APP_GITHUB_TOKEN}`
-  };
+  // Move headers into useMemo
+  const headers = useMemo(() => ({
+    Authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
+  }), []); // Empty dependency array since env variable shouldn't change
 
   const [projectsArray, setProjectsArray] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
@@ -71,6 +71,7 @@ const Project = ({ heading, username, length, specfic }) => {
       setProjectsArray(repoList);
     } catch (error) {
       console.error(error.message);
+      setProjectsArray([dummyProject]); // Use dummyProject on error
     }
   }, [allReposAPI, length, specfic, specficReposAPI, headers]);
 
@@ -94,7 +95,7 @@ const Project = ({ heading, username, length, specfic }) => {
   return (
     <ProjectContainer>
       <ContainerTitle $size="50px" $animationDelay="0s" className={isVisible ? 'visible' : ''}>
-        {"PROJECTS"}
+        {"GITHUB PROJECTS"}
       </ContainerTitle>
       <CarouselWrapper>
         <CarouselContainer>

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
+// Remove Router imports and add smooth scroll polyfill if needed
+import smoothscroll from 'smoothscroll-polyfill';
 import Navbar from './components/NavBar';
-import InfiniteScroll from "react-infinite-scroll-component";
 import {
   repos,
 } from "./editable-stuff/config.js";
@@ -17,7 +18,6 @@ import Home from './pages/Home/index';
 import About from './pages/About/about';
 import Project from './pages/Project/project.jsx';
 import Resume from './pages/Resume/resume';
-import Experimentation from './pages/experimentation';
 
 const slideLeftAnimation = keyframes`
   from {
@@ -34,6 +34,17 @@ const SlideLeftWrapper = styled.div`
 
 export default function App() {
   const [navbarOpen, setNavbarOpen] = useState(false);
+
+  // Create refs for each section
+  const homeRef = useRef(null);
+  const aboutRef = useRef(null);
+  const projectsRef = useRef(null);
+  const resumeRef = useRef(null);
+
+  const scrollToSection = (ref) => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' });
+    setNavbarOpen(false);
+  };
 
   return (
     <Router>
@@ -163,64 +174,3 @@ const RedirectAbout = ({navbarOpen, setNavbarOpen}) => {
     </NavLink>
   );
 };
-
-// function App() {
-//   // const [state, setState] = useState({ items: [<About />,<Home />]});
-//   // const [extraComponents] = useState([
-//   //   <Home />,
-//   //   <Project />,
-//   //   <Resume />,
-//   // ]);
-//   // const [count, setCount] = useState(0);
-//   // const [hasMore, setHasMore] = useState(true);
-  
-//   // const fetchMoreData = () => {
-//   //   if (state.items.length >= 7) {
-//   //     setHasMore(false);
-//   //     return;
-//   //   }
-  
-//   //   // Simulate an asynchronous API call using Promise
-//   //   const fakeAPICall = new Promise((resolve) => {
-//   //     setTimeout(() => {
-//   //       resolve(extraComponents[count]);
-//   //     }, 500);
-//   //   });
-  
-//   //   // Update the state when the Promise resolves
-//   //   fakeAPICall.then((newItem) => {
-//   //     setCount(count + 1);
-//   //     setState((state) => ({
-//   //       items: state.items.concat([newItem]),
-//   //     }));
-//   //   });
-//   // };
-
-//   // console.log(state.items);
-//   return (
-//     <RouteContainer>
-//       {/* <h1 style={{backgroundColor: '#fff'}}>Portfolio Template with react-infinite-scroll-component </h1> */}
-//       <VerticalNavbar/>
-//       {/* {console.log("extraC", state.items.length)}
-//       <InfiniteScroll
-//         dataLength={state.items.length}
-//         // height={50}
-//         next={fetchMoreData}
-//         hasMore={hasMore}
-//         loader={<h4>Loading...</h4>}
-//         endMessage={
-//           <p style={{ textAlign: "center" }}>
-//             <b>Yay! You have seen it all</b>
-//           </p>
-//         }
-//         // scrollableTarget={<RouteContainer/>}
-//       >
-//         {state.items.map((i, index) =>  i)}
-//       </InfiniteScroll> */}
-//       <Home />
-//       {/* <Resume /> */}
-//     </RouteContainer>
-//   );
-// }
-
-// export default App;
