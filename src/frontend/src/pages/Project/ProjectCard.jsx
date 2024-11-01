@@ -146,10 +146,10 @@ const Language = ({ languages_url, repo_url }) => {
                 target=" _blank"
                 rel="noopener noreferrer"
               >
-                <span>{language}: </span>
-                <LanguagePercentage>
+                {language}
+                {/* <LanguagePercentage>
                   {((data[language] / total_count) * 100).toFixed(1)} %
-                </LanguagePercentage>
+                </LanguagePercentage> */}
               </LanguageIndv>
             ))
           : "No Languages Found"}
@@ -234,7 +234,7 @@ const CardFooter = ({ star_count, repo_url, pushed_at }) => {
 
   return (
     <FooterContainer className="card-text">
-      <FooterBtn
+      {/* <FooterBtn
         href={repo_url + "/stargazers"}
         target=" _blank"
       >
@@ -242,7 +242,8 @@ const CardFooter = ({ star_count, repo_url, pushed_at }) => {
           <FaGithub/> Stars{" "}
           <span className="badge badge-dark">{star_count}</span>
         </FooterBtnLink>
-      </FooterBtn>
+      </FooterBtn> */}
+      <FaGithub/>
       <small className="text-muted" style={{marginLeft: "20px"}}>Updated {updated_at}</small>
     </FooterContainer>
   );

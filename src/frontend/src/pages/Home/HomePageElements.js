@@ -177,7 +177,7 @@ export const HomeBgImg = styled.img`
     margin-top: 160px;
     margin-left: auto;
     margin-right: 20px;
-    height: 350px;
+    height: 500px;
     width: auto;
     align-self: right;
     background: none;

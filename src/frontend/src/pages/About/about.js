@@ -97,8 +97,8 @@ const About = () => {
           >
             <AboutDescriptionText $inputColor="#b8b8b8" >
               Hello! My name is Junwei and I enjoy creating things that live on the internet. 
-              My interest seems as myriad as the stars, but you can find me tinkering with 
-              new frameworks and languages!
+              You can find me tinkering with new frameworks and languages, at the gym or just chilling.
+              I'm always looking for new opportunities to learn and grow!
             </AboutDescriptionText>
 
             <ToolsContainer className={isTitleVisible ? 'visible' : ''} $border="none" $borderRadius="20px" > 

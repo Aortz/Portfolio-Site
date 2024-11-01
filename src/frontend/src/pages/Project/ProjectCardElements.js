@@ -354,7 +354,7 @@ export const StyledDownloadIcon = styled(FaDownload)`
 
 
 export const CardBtn = styled.a`
-  margin-left: 80px;
+  margin-left: 100px;
   align-self: right
 `
 
@@ -491,7 +491,7 @@ export const LanguageIndv = styled.a`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #B8A7E9; // Pale purple border
+  border: 2px solid #000000; // Pale purple border
   border-radius: 15px;
   margin: 4px;
   padding: 6px 12px;
