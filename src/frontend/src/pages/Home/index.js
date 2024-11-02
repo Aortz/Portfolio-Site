@@ -14,6 +14,8 @@ import Project from '../Project/project';
 import {
   repos,
 } from "../../editable-stuff/config.js";
+import PointCloud from '../../components/ThreeJS/PointCloud';
+import myImage from '../../assets/personal_pic.jpg';
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -103,6 +105,7 @@ const Home = () => {
         length={repos.reposLength}
         specfic={repos.specificRepos}
       />
+      {/* <PointCloud imageUrl={myImage} /> */}
     </ParentContainer>
   );
 };

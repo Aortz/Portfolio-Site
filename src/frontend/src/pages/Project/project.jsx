@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import ProjectCard from "./ProjectCard";
+import ProjectCarousel3D from './ProjectCarousel3D';
 import axios from "axios";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { 
@@ -97,7 +98,8 @@ const Project = ({ heading, username, length, specfic }) => {
       <ContainerTitle $size="50px" $animationDelay="0s" className={isVisible ? 'visible' : ''}>
         {"3.PROJECTS"}
       </ContainerTitle>
-      <CarouselWrapper>
+      {/* <CarouselWrapper> */}
+        {/*
         <CarouselContainer>
           <CarouselTrack>
             {projectsArray && projectsArray.length > 0 ? (
@@ -118,7 +120,11 @@ const Project = ({ heading, username, length, specfic }) => {
               />
             )}
           </CarouselTrack>
-        </CarouselContainer>
+        </CarouselContainer>*/}
+        <ProjectCarousel3D 
+          projects={projectsArray} 
+          currentIndex={currentIndex}
+        />
         <CarouselControls>
           <CarouselButton onClick={prevSlide}>
             <FaChevronLeft />
@@ -127,7 +133,7 @@ const Project = ({ heading, username, length, specfic }) => {
             <FaChevronRight />
           </CarouselButton>
         </CarouselControls>
-      </CarouselWrapper>
+      {/* </CarouselWrapper> */}
     </ProjectContainer>
   );
 };
