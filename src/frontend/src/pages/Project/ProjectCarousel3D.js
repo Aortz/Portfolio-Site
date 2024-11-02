@@ -212,7 +212,7 @@ const ProjectCarousel3D = ({ projects, currentIndex }) => {
 const createProjectCard = (project) => {
   const element = document.createElement('div');
   element.style.width = '400px';
-  element.style.height = '600px';
+  element.style.height = '800px';
   element.style.background = '#000';
   element.style.border = '1px solid #fff';
   element.style.borderRadius = '20px';

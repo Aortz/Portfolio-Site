@@ -228,24 +228,29 @@ export const HomeContainerText = styled.div`
     font-weight: 500;
     overflow: hidden;
     white-space: nowrap;
+    visibility: hidden;
     
     /* Base styles for name variant */
     &.name {
         background: rgba(255, 255, 255, 0.7); 
         border-radius: 10px;
-        width: 0;  // Start with width 0
-        opacity: 0.5;
+        width: 0;
+        opacity: 0;
+        // padding: 0 20px;
         
         &.typing {
-            animation: ${smoothTypingAnimation} 1.5s ease-in-out forwards;
+            visibility: visible;
+            animation: ${smoothTypingAnimation} 2s ease-in-out forwards;
             animation-delay: ${props => props.$animationDelay || "0s"};
         }
     }
 
-    /* Keep existing typing animation for role */
+    /* Role styling */
     &.role {
         width: 0;
         margin-top: 20px;
+        opacity: 0;
+        padding-left: 20px;
         
         &.typing {
             visibility: visible;
@@ -261,29 +266,45 @@ export const HomeContainerText = styled.div`
         }
     }
 
-    @media screen and (max-width: 372px) {
-        font-size: 20px;
-        width: 100%;
-        padding: 5px 10px;
-        
-        &.role {
-            margin-bottom: 12px;
-            margin-top: 0px;
-            margin-right: 10px;
-            font-size: clamp(10px, 2.5vw, 12px);
-        }
-    }
-
     @media screen and (max-width: 768px) {
-        font-size: 24px;
+        visibility: hidden;
+        opacity: 0;
+        font-size: 32px;
         width: 100%;
-        padding: 5px 10px;
+        padding: 0;
+        
+        &.name {
+            // padding: 0 10px;
+            padding-left: 10px;
+        }
         
         &.role {
             margin-bottom: 15px;
             margin-top: 0px;
             margin-right: 10px;
             font-size: clamp(16px, 2.5vw, 20px);
+            padding-left: 10px;
+        }
+    }
+
+    @media screen and (max-width: 375px) {
+        visibility: hidden;
+        opacity: 0;
+        font-size: 30px;
+        width: 100%;
+        padding: 0;
+        
+        &.name {
+            // padding: 0 8px;
+            padding-left: 8px;
+        }
+        
+        &.role {
+            margin-bottom: 12px;
+            margin-top: 0px;
+            margin-right: 10px;
+            font-size: clamp(14px, 2.5vw, 20px);
+            padding-left: 8px;
         }
     }
 `;
