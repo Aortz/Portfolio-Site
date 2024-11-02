@@ -29,9 +29,9 @@ const ProjectCarousel3D = ({ projects, currentIndex }) => {
         75,
         window.innerWidth / window.innerHeight,
         0.1,
-        1000
+        2000
       );
-      cameraRef.current.position.z = 1000;
+      cameraRef.current.position.z = 1300;
 
       // CSS3D Renderer setup
       cssRendererRef.current = new CSS3DRenderer();
@@ -60,8 +60,8 @@ const ProjectCarousel3D = ({ projects, currentIndex }) => {
       // Optional: Add smooth easing to camera movement
       controlsRef.current.enableZoom = true;
       controlsRef.current.zoomSpeed = 0.5;
-      controlsRef.current.minDistance = 500;  // Minimum zoom distance
-      controlsRef.current.maxDistance = 1500; // Maximum zoom distance
+      controlsRef.current.minDistance = 800;  // Minimum zoom distance
+      controlsRef.current.maxDistance = 2500; // Maximum zoom distance
 
       // Create cards
       const radius = 800;
@@ -83,7 +83,7 @@ const ProjectCarousel3D = ({ projects, currentIndex }) => {
             // Adjust rotation to always face center
             object.rotation.y = Math.PI - theta; // This fixes the inverse cards
         } else {
-            object.rotation.y = - theta;
+            object.rotation.y = -theta;
         }
 
         sceneRef.current.add(object);
