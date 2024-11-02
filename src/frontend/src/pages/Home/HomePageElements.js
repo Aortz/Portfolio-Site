@@ -13,6 +13,18 @@ function typingAnimationWithSteps(text) {
     `;
 }
 
+// Add a smooth typing animation for the name
+const smoothTypingAnimation = keyframes`
+  from {
+    width: 0;
+    opacity: 0.5;
+  }
+  to {
+    width: 7ch;
+    opacity: 1;
+  }
+`;
+
 const cursorBlinkAnimation = keyframes`
   0%, 100% {
     opacity: 1;
@@ -33,16 +45,6 @@ const slideUpAnimation = keyframes`
   }
 `;
 
-const slideDownAnimation = keyframes`
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-`;
 
 const slideRightAnimationTitle = keyframes`
   from {
@@ -83,7 +85,6 @@ const slideLeftAnimation = keyframes`
     opacity: 1;
   }
 `;
-  
 
 export const RouteContainer = styled.div`
     display: flex;
@@ -157,16 +158,18 @@ export const HomeBgImg = styled.img`
   position: absolute;
   top: 15%;
   right: 5%;
-  transform: translateY(-50%) translateX(100%);
   height: 50vh;
   width: auto;
   z-index: 1;
   object-fit: cover;
   filter: blur(0.5px);
   
-  /* Initial state */
-  opacity: 0;
-  visibility: hidden;
+  /* Reset state */
+  &:not(.visible) {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+  }
 
   /* Animation state */
   &.visible {
@@ -191,22 +194,31 @@ export const HomeContainerTitle = styled.div`
   padding: 20px;
   font-size: 18px;
   font-weight: 50;
-  opacity: 0;
-  visibility: visible;
+  margin-top: 150px;
+  
+  /* Reset state */
+  &:not(.visible) {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(-100%);
+  }
 
-  opacity: 1;
-  animation: ${slideRightAnimationTitle} 1s forwards;
-  animation-delay: ${props => props.$animationDelay || "0s"};
+  /* Animation state */
+  &.visible {
+    visibility: visible;
+    opacity: 1;
+    animation: ${slideRightAnimationTitle} 1s forwards;
+    animation-delay: ${props => props.$animationDelay || "0s"};
+  }
 
-  /* Account for mobile devices */
   @media screen and (max-width: 768px) {
-      font-size: 18px;
+    font-size: 18px;
   }
 
   @media screen and (max-width: 472px) {
-    font-size: 15px; // Larger font for name
-    width: 80%; // Wider on mobile
-    padding: 5px 10px; // Add some padding
+    font-size: 15px;
+    width: 80%;
+    padding: 5px 10px;
   }
 `;
 
@@ -216,58 +228,53 @@ export const HomeContainerText = styled.div`
     padding-left: 20px;
     font-size: ${props => props.$size || "30px"};
     font-weight: 500;
-    overflow: hidden; /* Hide overflowing characters */
-    white-space: nowrap; /* Prevent text from wrapping */
-    animation: ${props => typingAnimationWithSteps(props.children)} 3s forwards; /* Duration and steps for animation */
-    animation-delay: ${props => props.$animationDelay || "0s"};
+    overflow: hidden;
+    white-space: nowrap;
     
-    /* Initially set the text to be invisible */
-    visibility: hidden;
-    // border-right: 2px solid #fff;
-    /* Add a class to set visibility to visible after the animation-delay has passed */
-    &.visible {
-        visibility: visible;     
-    }
-
-    @media screen and (max-width: 768px) {
-        font-size: 50px; // Larger font for name
-        width: 80%; // Wider on mobile
-        padding: 5px 10px; // Add some padding
-    }
-
-    @media screen and (max-width: 472px) {
-        font-size: 40px; // Larger font for name
-        width: 80%; // Wider on mobile
-        padding: 5px 10px; // Add some padding
-    }
-
+    /* Base styles for name variant */
     &.name {
         background: rgba(255, 255, 255, 0.7); 
         border-radius: 10px;
-        width: 48%
+        width: 0;  // Start with width 0
+        opacity: 0.5;
+        
+        &.typing {
+            animation: ${smoothTypingAnimation} 1.5s ease-in-out forwards;
+            animation-delay: ${props => props.$animationDelay || "0s"};
+        }
     }
 
+    /* Keep existing typing animation for role */
     &.role {
-      &:hover {
-      // background: rgba(255, 255, 255, 0.7); 
-      animation: ${glitchAnimation} 2s ease-in-out forwards;
-      animation-iteration-count: infinite;
-      // filter: blur(4px); /* Adjust the blur amount as needed */
-      }
+        width: 0;
+        margin-top: 20px;
+        
+        &.typing {
+            visibility: visible;
+            opacity: 1;
+            animation: ${props => typingAnimationWithSteps(props.children)} 3s steps(${props => 
+                props.children ? props.children.toString().length : 0}, end) forwards;
+            animation-delay: ${props => props.$animationDelay || "0s"};
+        }
 
-      @media screen and (max-width: 768px) {
-        font-size: 20px; // Smaller font for role
-        margin-top: 10px; // Add some spacing
-      }
-
-      @media screen and (max-width: 472px) {
-        font-size: 15px; // Larger font for name
-        width: 80%; // Wider on mobile
-        padding: 5px 10px; // Add some padding
-      }
-      
+        &:hover {
+            animation: ${glitchAnimation} 2s ease-in-out forwards;
+            animation-iteration-count: infinite;
+        }
     }
-`
+
+    @media screen and (max-width: 768px) {
+        font-size: 50px;
+        width: 80%;
+        padding: 5px 10px;
+    }
+
+    @media screen and (max-width: 472px) {
+        font-size: 40px;
+        width: 80%;
+        padding: 5px 10px;
+    }
+`;
 
 export const Cursor = styled.span`
     /* Cursor styling */
@@ -284,25 +291,25 @@ export const HomeContainerDescription = styled.div`
     margin-top: 50px;
     font-size: 18px;
     font-weight: 500;
-
-  /* Set the initial position to below the viewport */
-    transform: translateY(100%);
-    opacity: 0;
-
-    /* Apply the slide-up animation */
-    animation: ${slideUpAnimation} 1s ease-in-out forwards;
-
-    /* Hide the scrollbar during the animation */
     overflow: hidden;
 
-    &:hover {
-      // animation: ${glitchAnimation} 2s ease-in-out forwards;
-      // animation-iteration-count: infinite;
-      filter: drop-shadow(8px 5px green) sepia(60%) hue-rotate(90deg);
-      
+    /* Reset state */
+    &:not(.visible) {
+        transform: translateY(100%);
+        opacity: 0;
+        visibility: hidden;
     }
 
-    /* Account for mobile devices */
+    /* Animation state */
+    &.visible {
+        visibility: visible;
+        animation: ${slideUpAnimation} 1s ease-in-out forwards;
+    }
+
+    &:hover {
+        filter: drop-shadow(8px 5px green) sepia(60%) hue-rotate(90deg);
+    }
+
     @media screen and (max-width: 768px) {
         margin-top: 20px;
         font-size: 18px;

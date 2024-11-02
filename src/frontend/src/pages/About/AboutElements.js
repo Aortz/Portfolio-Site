@@ -1,6 +1,5 @@
 import styled, { keyframes } from 'styled-components';
 import backgroundImage from '../../assets/background.jpg'
-import animeBgImg from '../../assets/anime-background.jpg'
 
 // Helper function to calculate steps based on the text length
 function typingAnimationWithSteps(text) {
@@ -37,15 +36,6 @@ const slideDownAnimation = keyframes`
   }
 `;
 
-// Define the flip animation using keyframes
-const flipAnimation = keyframes`
-  from {
-    transform: perspective(800px) rotateY(0);
-  }
-  to {
-    transform: perspective(800px) rotateY(180deg);
-  }
-`;
 
 const glitchAnimation = keyframes`
   0% {
@@ -86,18 +76,6 @@ const slideLeftAnimation = keyframes`
     opacity: 1;
   }
 `;
-
-const slideLeftAnimationDescription = keyframes`
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-`;
-
 export const AboutParentContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr;
@@ -313,10 +291,41 @@ export const AboutContainerTitle = styled.div`
     }
 `;
 
+export const AboutDescriptionText = styled.div`
+    color: ${props => props.$inputColor || "#5f7c96"};
+    font-family: 'KolkerBrush',  monospace, 'Helvetica Neue', Arial, sans-serif; // Updated font-family;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 500;
+    align-self: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: ${props => props.$alignItems || "left"};
+    
+    /* Add these properties to constrain text within viewport */
+    max-width: 90%;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    
+    /* Ensure container doesn't overflow */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    /* Add responsive padding */
+    // padding-right: 20px;
+    
+    @media screen and (max-width: 768px) {
+        font-size: 16px;
+        padding-right: 10px;
+        margin-right: 10px;
+    }
+`;
+
 export const AboutContainerText = styled.div`
     color: ${props => props.$inputColor || "#fff"};
     font-family: 'IBMPlexMonoBold', monospace;
-    padding-left: 20px;
+    padding-left: 10px;
     font-size: ${props => props.$size || "40px"};
     font-weight: 500;
 `
@@ -324,7 +333,7 @@ export const AboutDescriptionContainer = styled.div`
     display: flex;
     justify-content: start;
     color: ${props => props.$inputColor || "#fff"};
-    padding: ${props => props.$padding || "10px"};
+    padding: ${props => props.$padding || "5px"};
     margin: ${props => props.$margin || "5px"};
     align-items: ${props => props.$alignItems || "left"};
     flex-direction: ${props => props.$flexDirection || "column"};
@@ -379,6 +388,7 @@ export const ToolsContainer = styled.div`
     width: 40%;
     margin-left: ${props => props.$marginLeft || "auto"};
     margin-right: ${props => props.$marginRight || "auto"};
+    margin-top: 100px;
     
     font-family: 'VT323', monospace;
     font-size: 30px;
@@ -470,26 +480,6 @@ export const ToolDescriptionText = styled.div`
     }
 `;
 
-export const AboutDescriptionText = styled.div`
-    color: ${props => props.$inputColor || "#5f7c96"};
-    font-family: 'KolkerBrush', monospace;
-    padding: 10px;
-    font-size: 18px;
-    font-weight: 500;
-    align-self: right;
-    display: flex;
-    justify-content: space-between;
-    align-items: ${props => props.$alignItems || "left"};
-    // border: 1px solid #ccc;
-    // border-radius: 25px;
-    /* Hide the scrollbar during the animation */
-    overflow: hidden;
-
-    &:hover {
-      filter: drop-shadow(8px 5px red) sepia(60%) hue-rotate(90deg);
-      
-    }
-`;
 // ${props => props.$flexBasis|| "0px"};  Calculate the width of each item (25% - 20px for spacing) 
 export const ToolsDescriptionContainer = styled.div`
     display: flex;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { 
   HomeContainer, 
   HomeContainerTitle, 
@@ -16,20 +16,45 @@ import {
 } from "../../editable-stuff/config.js";
 
 const Home = () => {
-  const [isVisible1, setIsVisible1] = useState(false);
-  const [isVisible2, setIsVisible2] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [isBgVisible, setIsBgVisible] = useState(false);
+  const [isDescVisible, setIsDescVisible] = useState(false);
+  
+  const homeRef = useRef(null);
 
   useEffect(() => {
-    // Component visibility timers
-    const timer1 = setTimeout(() => setIsVisible1(true), 0);
-    const timer2 = setTimeout(() => setIsVisible2(true), 2000);
-    const timer3 = setTimeout(() => setIsBgVisible(true), 500); // Adjust timing as needed
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Reset all animations
+            setIsVisible(false);
+            setIsTyping(false);
+            setIsBgVisible(false);
+            setIsDescVisible(false);
+            
+            // Trigger animations with delays
+            setTimeout(() => setIsVisible(true), 300);
+            setTimeout(() => setIsTyping(true), 1000);
+            setTimeout(() => setIsBgVisible(true), 1000);
+            setTimeout(() => setIsDescVisible(true), 1500);
+          }
+        });
+      },
+      {
+        threshold: 0.1
+      }
+    );
+
+    if (homeRef.current) {
+      observer.observe(homeRef.current);
+    }
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
+      if (homeRef.current) {
+        observer.unobserve(homeRef.current);
+      }
     };
   }, []);
 
@@ -40,18 +65,29 @@ const Home = () => {
         className={isBgVisible ? 'visible' : ''} 
         alt="Background"
       />
-      <HomeContainer>
-        <HomeContainerTitle>
+      <HomeContainer ref={homeRef}>
+        <HomeContainerTitle className={isVisible ? 'visible' : ''}>
           Hi, my name is
         </HomeContainerTitle>
-        <HomeContainerText $size="80px" $animationDelay="0s" className={isVisible1 ? 'visible name' : ''}>
+        <HomeContainerText 
+          $size="80px" 
+          $animationDelay="0s" 
+          className={`name ${isTyping ? 'typing' : ''}`}
+        >
           Junwei 
         </HomeContainerText>
-        <HomeContainerText $inputColor="#5f7c96" $animationDelay="2s" className={isVisible2 ? 'visible role' : ''}>
+        <HomeContainerText 
+          $inputColor="#5f7c96" 
+          $animationDelay="1s" 
+          className={`${isTyping ? 'typing' : ''} role`}
+        >
           Software Engineer | Coder | Gymrat
           <Cursor $inputColor="#5f7c96"/>
         </HomeContainerText>
-        <HomeContainerDescription $inputColor="#b8b8b8">
+        <HomeContainerDescription 
+          $inputColor="#b8b8b8"
+          className={isDescVisible ? 'visible' : ''}
+        >
           <p>
             I am a software engineer greatly interested in learning how to build digital experiences.
           </p>

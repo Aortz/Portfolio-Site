@@ -16,7 +16,6 @@ const slideUpAnimation = keyframes`
   }
 `;
 
-
 const slideLeftAnimation = keyframes`
   from {
     transform: translateX(0);
@@ -26,17 +25,17 @@ const slideLeftAnimation = keyframes`
   }
 `;
 
-
 export const Nav = styled.nav`
     background-color: rgba(0, 0, 0, 0.8);
-    height: 85px;
+    height: 60px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;  /* Ensure navbar sticks to top */
+    top: 0;
     z-index: 999;
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    z-index: 999; /* Ensure the navbar is on top */
 
     @media screen and (max-width: 768px) {
         justify-content: center;
@@ -44,32 +43,37 @@ export const Nav = styled.nav`
     }
 `;
 
+export const NavLogo = styled.img`
+    width: 50px;
+    height: 50px;
+    align-self: center;
+    background: none;
+    
+    &:hover {
+        align-self: flex-start;
+        background: #fff;
+        border-radius: 50px;
+    }
+`;
+
 export const VerticalNav = styled.nav`
     background-color: rgba(0, 0, 0, 0.8);
     position: fixed;
-    bottom: 0; /* Stick to the bottom of the screen */
+    bottom: 35vh; /* Stick to the bottom of the screen */
     left: 0; /* Stick to the left of the screen */
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align items to the start (left) of the flex container */
+    align-items: center; /* Center align items */
     z-index: 999;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-
-    /* Set the initial position to below the viewport */
-    opacity: 0;
-    transform: translateY(100%);
-  
-    /* Apply the slide-up animation */
+    padding: 20px;
+    opacity: 1;
+    transform: translateX(0);
     animation: ${slideUpAnimation} 2s ease-in-out forwards;
-  
-    /* Hide the scrollbar during the animation */
-    overflow: hidden;
 
     @media screen and (max-width: 768px) {
         display: none;
     }
-    
 `;
 
 export const VerticalNavLogo = styled.a`
@@ -80,22 +84,20 @@ export const VerticalNavLogo = styled.a`
     } 
 `;
 
-export const VerticalNavText = styled.div`
-    
-    height: 40px;
-    font-family: 'MajorMonoDisplay', monospace;
-    font-size: 50px;
-    font-weight: 5;
-    color: #98B4D4;
-    margin-bottom: 20px;
-    align-items: center;
+export const VerticalDivider = styled.div`
+    width: 1px;              /* Thickness of the line */
+    height: 70px;            /* Length of the line */
+    background-color: #98B4D4; /* Color of the line */
+    margin: 5px 0;          /* Spacing above and below the line */
 
+    @media screen and (max-width: 768px) {
+        display: none;       /* Hide on smaller screens if desired */
+    }
 `;
 
 export const StyledGHLogo = styled(FaGithub)`
     width: 30px;
     height: 30px;
-    // background: #98B4D4;
     color: #98B4D4;
     align-self: center;
     @media screen and (max-width: 768px) {
@@ -110,7 +112,6 @@ export const StyledGHLogo = styled(FaGithub)`
 export const StyledInstaLogo = styled(FaInstagram)`
     width: 30px;
     height: 30px;
-    // background: #98B4D4;
     color: #98B4D4;
     align-self: center;
     
@@ -131,7 +132,7 @@ export const StyledLinkedinLogo = styled(FaLinkedin)`
 `;
 
 export const NavLink = styled(Link)`
-    color: rgba(255, 255, 255);
+    color: rgba(255, 255, 255, 0.9);
     text-align: right;
     text-decoration: none;
 
@@ -141,7 +142,6 @@ export const NavLink = styled(Link)`
 
     animation: ${({ animate }) => (animate ? slideLeftAnimation : 'none')} 1s forwards;
 
-    top: 20%;
     width: 100%;
     cursor: pointer;
     &.active {
@@ -152,9 +152,8 @@ export const NavLink = styled(Link)`
         transition: all 0.2s ease-in-out;
         background: #98B4D4;
         color: #fff;
-        font-size: 50px;
-        font-weight: 5000;
-
+        font-size: 35px;
+        font-weight: 600;
     }
 
     /* Account for mobile devices */
@@ -166,35 +165,50 @@ export const NavLink = styled(Link)`
     }
 `;
 
-export const NavText = styled.div`
-    // color: #737378;
+export const NavText = styled.p`
     color: #7FCDCD;
     align-self: center;
-    
-
-    font-family: 'MajorMonoDisplay', monospace;
-    font-size: 50px;
+    margin-left: 40px;
+    font-family: 'VT323', monospace;
+    font-size: 40px; /* Reduced size for better fit */
     font-weight: bold;
     
     filter: drop-shadow(8px 5px blue) sepia(30%);
+    cursor: pointer;
 
     &:hover {
         background: #fff;
         color: #000;
         border-radius: 50px;
-
-        animation: spin;
-        animation-duration: 5000ms;
-        animation-iteration-count: infinite;
-        animation-timing-function: linear; 
+        /* Removed spin animation for simplicity */
     }
 
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
         display: none;
-
     }
-`
+`;
+
+export const NavItems = styled.div`
+    display: flex;
+    gap: 2rem;
+    margin-right: 50px;
+
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
+`;
+
+export const NavItem = styled.div`
+  cursor: pointer;
+  color: #acbcfc; /* Changed for better visibility */
+  font-size: 22px;
+  font-family: 'VT323', monospace;
+
+  &:hover {
+    color: #98B4D4;
+  }
+`;
 
 export const NavMenu = styled.div`
     overflow-y: auto;
@@ -208,7 +222,6 @@ export const NavMenu = styled.div`
     width: 100%;
     height: 100%;
     transition: transform ease-in-out 0.2s;
-    /* transition: width ease 0.2s; */
 
     /* Show the menu items when the menu is open */
     .open & {
@@ -253,17 +266,4 @@ export const NavBtn = styled(Button)`
         margin-left: auto;
     }
     
-`;
-
-export const NavLogo = styled.img`
-    width: 60px;
-    height: 60px;
-    align-self: center;
-    background: none;
-    
-    &:hover {
-        align-self: flex-start;
-        background: #fff;
-        border-radius: 50px;
-    }
 `;

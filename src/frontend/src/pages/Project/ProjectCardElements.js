@@ -108,7 +108,7 @@ export const ContainerTitle = styled.div`
     font-family: 'IBMPlexMonoBold', monospace;
     // padding: 20px;
     font-weight: 500;
-    color: ${props => props.$inputColor || "#253ea1"};
+    color: ${props => props.$inputColor || "#55B4B0"};
     font-size: ${props => props.$size || "40px"};
 
     /* Typing cursor animation */

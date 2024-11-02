@@ -83,7 +83,7 @@ const About = () => {
             $animationDelay="0s" 
             className={isTitleVisible ? 'visible title' : ''}
           >
-            ABOUT ME
+           2.ABOUT ME
           </AboutContainerTitle>
           
           <AboutDescriptionContainer 

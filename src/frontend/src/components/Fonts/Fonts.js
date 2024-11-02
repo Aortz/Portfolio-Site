@@ -34,4 +34,15 @@ export const GlobalStyles = createGlobalStyle`
     /* You can specify additional font styles here if needed, such as font-weight and font-style */
   }
 
+  body {
+    margin: 0;
+    padding: 0;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    
+    &::-webkit-scrollbar {
+      display: none;  /* Chrome, Safari and Opera */
+    }
+  }
+
 `;

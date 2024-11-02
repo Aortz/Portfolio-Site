@@ -95,7 +95,7 @@ const Project = ({ heading, username, length, specfic }) => {
   return (
     <ProjectContainer>
       <ContainerTitle $size="50px" $animationDelay="0s" className={isVisible ? 'visible' : ''}>
-        {"PROJECTS"}
+        {"3.PROJECTS"}
       </ContainerTitle>
       <CarouselWrapper>
         <CarouselContainer>
