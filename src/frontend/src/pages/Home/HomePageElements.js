@@ -109,21 +109,19 @@ export const ParentContainer = styled.div`
   position: relative;
   width: 100%;
   min-height: 100vh;
+  height: auto;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
+  grid-template-rows: auto;
   background: rgba(0,0,0,0.5);
-  overflow-y: auto;
   overflow-x: hidden;
   
-  /* Hide scrollbar for Chrome, Safari and Opera */
+  /* Hide scrollbar */
   &::-webkit-scrollbar {
     display: none;
   }
-  
-  /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 export const HomeContainer = styled.div`
@@ -135,8 +133,8 @@ export const HomeContainer = styled.div`
     background: transparent;
     width: 100%;
     color: #fff;
-    align-items: left;
-    height: 90vh;
+    min-height: 90vh;
+    height: auto;
     margin-left: 80px;
     padding: 20px;
     border-top: 1px solid #ccc;
@@ -147,10 +145,12 @@ export const HomeContainer = styled.div`
     overflow-x: hidden;
 
     @media screen and (max-width: 768px) {
-        margin-left: 0px;
+        margin-left: 20px;
+        margin-right: 20px;
         border-top: none;
         border-left: none;
-        padding: 0px;
+        padding: 20px;
+        margin-bottom: 0px;
     } 
 `;
 
@@ -179,12 +179,12 @@ export const HomeBgImg = styled.img`
   }
   
   @media screen and (max-width: 768px) {
-    top: 13%;
-    right: 7%;
-    height: 25vh;
-    width: 100%;
-    object-fit: cover;
+    top: 0%;          // Moved higher up
+    right: -20%;      // Moved more to the right
+    height: auto;     // Slightly smaller height
+    width: 100%;      // Let width adjust based on height
     opacity: 0.05;
+    transform-origin: top right; // Set transform origin for better positioning
   } 
 `;
 
@@ -194,7 +194,7 @@ export const HomeContainerTitle = styled.div`
   padding: 20px;
   font-size: 18px;
   font-weight: 50;
-  margin-top: 150px;
+  margin-top: clamp(80px, 15vh, 150px);
   
   /* Reset state */
   &:not(.visible) {
@@ -211,14 +211,12 @@ export const HomeContainerTitle = styled.div`
     animation-delay: ${props => props.$animationDelay || "0s"};
   }
 
-  @media screen and (max-width: 768px) {
-    font-size: 18px;
-  }
 
   @media screen and (max-width: 472px) {
     font-size: 15px;
-    width: 80%;
+    width: 100%;
     padding: 5px 10px;
+    margin-top: 50px;
   }
 `;
 
@@ -263,16 +261,30 @@ export const HomeContainerText = styled.div`
         }
     }
 
-    @media screen and (max-width: 768px) {
-        font-size: 50px;
-        width: 80%;
+    @media screen and (max-width: 372px) {
+        font-size: 20px;
+        width: 100%;
         padding: 5px 10px;
+        
+        &.role {
+            margin-bottom: 12px;
+            margin-top: 0px;
+            margin-right: 10px;
+            font-size: clamp(10px, 2.5vw, 12px);
+        }
     }
 
-    @media screen and (max-width: 472px) {
-        font-size: 40px;
-        width: 80%;
+    @media screen and (max-width: 768px) {
+        font-size: 24px;
+        width: 100%;
         padding: 5px 10px;
+        
+        &.role {
+            margin-bottom: 15px;
+            margin-top: 0px;
+            margin-right: 10px;
+            font-size: clamp(16px, 2.5vw, 20px);
+        }
     }
 `;
 
@@ -313,6 +325,9 @@ export const HomeContainerDescription = styled.div`
     @media screen and (max-width: 768px) {
         margin-top: 20px;
         font-size: 18px;
+        padding: 5px 8px;
+        margin-right: 10px;
+        text-align: left;
     } 
 `;
 

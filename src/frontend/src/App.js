@@ -62,7 +62,10 @@ export default function App() {
 // Styled component for sections
 const Section = styled.section`
   min-height: 100vh;
-  padding: 5px; // Optional: Add padding as needed
+  height: auto; // Allow content to determine height
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
 `;
 
 // Add a styled component for the main content
@@ -70,6 +73,7 @@ const MainContent = styled.div`
   flex: 1;
   overflow-y: auto;
   scroll-behavior: smooth;
+  height: calc(100vh - 70px); // Account for navbar height
   
   /* Hide scrollbar for Chrome, Safari and Opera */
   &::-webkit-scrollbar {
@@ -77,14 +81,15 @@ const MainContent = styled.div`
   }
   
   /* Hide scrollbar for IE, Edge and Firefox */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 // Add a styled component for the app container
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  height: 100%;
   position: relative;
-  height: 100vh;
 `;

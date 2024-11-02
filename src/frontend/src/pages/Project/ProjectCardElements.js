@@ -140,6 +140,15 @@ export const ContainerTitle = styled.div`
     grid-row: 1;
     grid-column: 1;
     z-index: 3;
+
+    /* Account for mobile devices */
+    @media screen and (max-width: 768px) {
+        text-align: center;
+        align-self: left;
+        margin-right: 10px;
+        font-size: 35px;
+        padding: 10px;
+    }
 `
 
 
@@ -180,7 +189,7 @@ export const CardContainer = styled(Col)`
     grid-column: 1;
     z-index: 1;
 
-    @media screen and (max-width: 1200px) {
+    @media screen and (max-width: 768px) {
         grid-template-columns: 1fr; // Single column on smaller screens
     }
 `
@@ -203,12 +212,20 @@ export const StyledCard = styled(Card)`
     visibility: visible;
 
     @media screen and (max-width: 768px) {
-      width: 100%;
-      min-width: unset;
-      margin: 0;
-      opacity: 1;
-      filter: none;
-      transform: scale(1);
+        width: 90%;         // Reduced from 90%
+        min-width: 280px;   // Smaller minimum width
+        max-width: 400px;   // Added maximum width for mobile
+        min-height: 250px;  // Reduced minimum height
+        margin: 0 auto;     // Center the card
+        opacity: 1;
+        filter: none;
+        transform: scale(1);
+    }
+
+    @media screen and (max-width: 480px) {
+        width: 90%;
+        min-width: 250px;   // Even smaller for very small screens
+        max-width: 400px;
     }
 
     &:hover {      
@@ -247,6 +264,20 @@ export const CardTitle = styled(Card.Title)`
     &.visible {
         visibility: visible;
     }
+
+    @media screen and (max-width: 768px) {
+        font-size: 24px;    // Smaller font size
+        max-width: 100%;    // Full width
+        min-width: unset;   // Remove min-width constraint
+        padding: 5px;
+        
+        /* Adjust folder icon size */
+        svg {
+            width: 30px;
+            height: 30px;
+            margin-right: 100px; // Reduced margin
+        }
+    }
 `
 
 export const CardText = styled(Card.Text)`
@@ -264,6 +295,17 @@ export const CardText = styled(Card.Text)`
     padding: ${props => props.$padding || "0px"};
     font-size: ${props => props.$fontSize || "16px"}; // Reduced from 20px
     font-weight: 400;
+
+    @media screen and (max-width: 768px) {
+        font-size: ${props => props.$fontSize ? 
+            `calc(${props.$fontSize} * 0.8)` : // Reduce font size by 20%
+            '14px'
+        };
+        padding: ${props => props.$padding ? 
+            `calc(${props.$padding} * 0.8)` : // Reduce padding by 20%
+            '5px'
+        };
+    }
 `
 
 export const CardLink = styled(Link)`
@@ -465,27 +507,30 @@ export const CarouselButton = styled.button`
 `;
 
 export const CarouselTrack = styled.div`
-  display: flex;
-  gap: 20px;
-  padding: 20px 40px;
-  transition: transform 0.5s ease-in-out;
-  width: 100%;
+    display: flex;
+    gap: 20px;
+    padding: 20px 40px;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+    justify-content: center; // Center the cards
 
-  @media screen and (max-width: 768px) {
-    padding: 10px;
-    gap: 0;
-    
-    /* Hide non-active cards on mobile */
-    & > * {
-      display: none;
-      width: 100%;
+    @media screen and (max-width: 768px) {
+        padding: 10px;
+        gap: 0;
+        
+        /* Hide non-active cards on mobile */
+        & > * {
+            display: none;
+            width: 100%;
+            margin: 0 auto; // Center active card
+        }
+        
+        /* Only show active card */
+        & > *[data-active="true"] {
+            display: flex;
+            justify-content: center;
+        }
     }
-    
-    /* Only show active card */
-    & > *[data-active="true"] {
-      display: flex;
-    }
-  }
 `;
 
 export const LanguageContainer = styled.div`
@@ -524,6 +569,13 @@ export const LanguageIndv = styled.a`
     color: #000;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(184, 167, 233, 0.3);
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    padding: 4px 8px;
+    min-width: 60px;
+    margin: 2px;
   }
 `;
 

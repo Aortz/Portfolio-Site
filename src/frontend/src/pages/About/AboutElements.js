@@ -82,6 +82,15 @@ export const AboutParentContainer = styled.div`
     grid-template-rows: 1fr;
     width: 100%;
     height: 100vh;
+
+    /* Account for mobile devices */
+    @media screen and (max-width: 768px) {
+        margin-left: 0px;
+        border: none;
+        padding: 0px;
+    } 
+
+
 `;
 
 export const AboutContainer = styled.div`
@@ -114,8 +123,7 @@ export const AboutContainer = styled.div`
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
         margin-left: 0px;
-        border-top: none;
-        border-left: none;
+        border: none;
         padding: 0px;
     } 
 `;
@@ -184,7 +192,7 @@ export const AboutLeftContainer = styled.div`
 
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
-        border: 1px solid #ccc;
+        border: none;
         margin-right: 10px;
         padding: 10px;
     }
@@ -284,9 +292,10 @@ export const AboutContainerTitle = styled.div`
 
     /* Account for mobile devices */
     @media screen and (max-width: 768px) {
-        text-align: left;
+        text-align: center;
         align-self: left;
         margin-right: 10px;
+        font-size: 35px;
         padding: 10px;
     }
 `;
@@ -317,8 +326,9 @@ export const AboutDescriptionText = styled.div`
     
     @media screen and (max-width: 768px) {
         font-size: 16px;
-        padding-right: 10px;
-        margin-right: 10px;
+        text-align: center;
+        padding-right: 0px;
+        margin-left: 10px;
     }
 `;
 
@@ -417,8 +427,8 @@ export const ToolsContainer = styled.div`
     @media screen and (max-width: 768px) {
         width: 90%; // Increased width for mobile
         margin: 10px auto; // Center horizontally
-        padding: 5px;
-        overflow: auto;
+        // padding: 5px;
+        border: none;
     }
 `;
 
