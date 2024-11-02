@@ -98,13 +98,6 @@ const Home = () => {
           </p>
         </HomeContainerDescription>
       </HomeContainer>
-      <About />
-      <Project
-        heading={repos.heading}
-        username={repos.gitHubUsername}
-        length={repos.reposLength}
-        specfic={repos.specificRepos}
-      />
       {/* <PointCloud imageUrl={myImage} /> */}
     </ParentContainer>
   );

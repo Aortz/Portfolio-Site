@@ -125,14 +125,14 @@ const Project = ({ heading, username, length, specfic }) => {
           projects={projectsArray} 
           currentIndex={currentIndex}
         />
-        <CarouselControls>
+        {/* <CarouselControls>
           <CarouselButton onClick={prevSlide}>
             <FaChevronLeft />
           </CarouselButton>
           <CarouselButton onClick={nextSlide}>
             <FaChevronRight />
           </CarouselButton>
-        </CarouselControls>
+        </CarouselControls> */}
       {/* </CarouselWrapper> */}
     </ProjectContainer>
   );
