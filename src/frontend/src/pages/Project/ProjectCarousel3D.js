@@ -46,6 +46,23 @@ const ProjectCarousel3D = ({ projects, currentIndex }) => {
       controlsRef.current.dampingFactor = 0.05;
       controlsRef.current.rotateSpeed = 0.5;
 
+      // Constrain rotation to just Y axis (horizontal rotation)
+      controlsRef.current.minPolarAngle = Math.PI / 2; // 90 degrees
+      controlsRef.current.maxPolarAngle = Math.PI / 2; // 90 degrees
+
+      // Optional: Limit the horizontal rotation range
+      // controlsRef.current.minAzimuthAngle = -Math.PI / 2; // -90 degrees
+      // controlsRef.current.maxAzimuthAngle = Math.PI / 2;  // 90 degrees
+
+      // Disable panning
+      controlsRef.current.enablePan = false;
+
+      // Optional: Add smooth easing to camera movement
+      controlsRef.current.enableZoom = true;
+      controlsRef.current.zoomSpeed = 0.5;
+      controlsRef.current.minDistance = 500;  // Minimum zoom distance
+      controlsRef.current.maxDistance = 1500; // Maximum zoom distance
+
       // Create cards
       const radius = 800;
       const totalCards = projects.length;
@@ -61,7 +78,9 @@ const ProjectCarousel3D = ({ projects, currentIndex }) => {
         const theta = (index / totalCards) * 2 * Math.PI;
         object.position.x = radius * Math.sin(theta);
         object.position.z = radius * Math.cos(theta);
-        object.rotation.y = -theta;
+        
+        // Adjust rotation to always face center
+        object.rotation.y = Math.PI - theta; // This fixes the inverse cards
 
         sceneRef.current.add(object);
         cardsRef.current.push(object);
@@ -83,8 +102,71 @@ const ProjectCarousel3D = ({ projects, currentIndex }) => {
       };
       window.addEventListener('resize', handleResize);
 
+      // Add smooth transitions when clicking next/prev
+      const rotateToIndex = (index) => {
+        const targetRotation = -(index / totalCards) * 2 * Math.PI;
+        const currentRotation = controlsRef.current.getAzimuthalAngle();
+        const duration = 1000; // ms
+        const startTime = Date.now();
+
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          
+          // Smooth easing
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const newRotation = currentRotation + (targetRotation - currentRotation) * eased;
+          
+          controlsRef.current.setAzimuthalAngle(newRotation);
+          
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          }
+        };
+        
+        animate();
+      };
+
+      // Add hover effect to cards
+      cardsRef.current.forEach((card, index) => {
+        card.element.addEventListener('mouseenter', () => {
+          card.scale.set(1.1, 1.1, 1.1);
+        });
+        
+        card.element.addEventListener('mouseleave', () => {
+          card.scale.set(1, 1, 1);
+        });
+        
+        // Optional: Click to rotate to card
+        card.element.addEventListener('click', () => {
+          rotateToIndex(index);
+        });
+      });
+
+      // Add smooth transitions for camera movement
+      const handleWheel = (event) => {
+        event.preventDefault();
+        const zoomSpeed = 0.1;
+        const targetZoom = cameraRef.current.position.z + event.deltaY * zoomSpeed;
+        const clampedZoom = Math.max(500, Math.min(1500, targetZoom));
+        
+        cameraRef.current.position.z = THREE.MathUtils.lerp(
+          cameraRef.current.position.z,
+          clampedZoom,
+          0.1
+        );
+      };
+
+      containerRef.current.addEventListener('wheel', handleWheel, { passive: false });
+
       return () => {
         window.removeEventListener('resize', handleResize);
+        containerRef.current?.removeEventListener('wheel', handleWheel);
+        cardsRef.current.forEach(card => {
+          card.element.removeEventListener('mouseenter', () => {});
+          card.element.removeEventListener('mouseleave', () => {});
+          card.element.removeEventListener('click', () => {});
+        });
         containerRef.current?.removeChild(cssRendererRef.current.domElement);
       };
     };

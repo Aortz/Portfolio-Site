@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { repos } from "./editable-stuff/config.js";
 import VerticalNavbar from './components/NavBar/VerticalNavbar';
 import { GlobalStyles } from './components/Fonts/Fonts';
+// import { SpeedInsights } from '@vercel/speed-insights/next';
 // import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import Home from './pages/Home/index';
@@ -33,6 +34,7 @@ export default function App() {
       <Helmet>
         <title>Lee Junwei</title>
       </Helmet>
+      {/* <SpeedInsights /> */}
       <GlobalStyles />
       <VerticalNavbar />
       <Navbar 
