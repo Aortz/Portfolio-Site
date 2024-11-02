@@ -79,8 +79,12 @@ const ProjectCarousel3D = ({ projects, currentIndex }) => {
         object.position.x = radius * Math.sin(theta);
         object.position.z = radius * Math.cos(theta);
         
-        // Adjust rotation to always face center
-        object.rotation.y = Math.PI - theta; // This fixes the inverse cards
+        if(index % 2 === 1) {
+            // Adjust rotation to always face center
+            object.rotation.y = Math.PI - theta; // This fixes the inverse cards
+        } else {
+            object.rotation.y = - theta;
+        }
 
         sceneRef.current.add(object);
         cardsRef.current.push(object);
