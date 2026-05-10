@@ -118,7 +118,7 @@ const Gallery = () => {
       ref={ref}
       className={visible ? 'visible' : ''}
     >
-      <SectionHeading number="05">SKETCH GALLERY</SectionHeading>
+      <SectionHeading number="04">SKETCH GALLERY</SectionHeading>
       <GalleryCopy>
         Side notes from the 3D modelling rabbit hole — early sketches,
         topology studies, and the half-finished stuff that didn&apos;t make

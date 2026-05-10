@@ -126,7 +126,7 @@ const ResumeSection = () => {
       className={visible ? 'visible' : ''}
     >
       <ResumeContent>
-        <SectionHeading number="04">RESUME</SectionHeading>
+        <SectionHeading number="05">RESUME</SectionHeading>
         <Copy>
           Grab a copy of my resume below — full work history, education, and
           the side projects I&apos;ve been shipping.

@@ -60,13 +60,7 @@ const Home = () => {
                 Lately I&apos;ve been gluing React Three Fiber to ROS-adjacent
                 tooling: real-time scene rendering, sensor visualization, and
                 the kind of dev-loop tooling that turns &ldquo;ssh into the lab
-                machine&rdquo; into &ldquo;open a tab.&rdquo; Most of it ends up
-                looking like a CAD app that fights back.
-              </p>
-              <AxisDivider />
-              <p>
-                Off the keyboard I&apos;m at the gym, deep in a 3D modelling
-                rabbit hole, or breaking my own setup chasing the next stack.
+                machine&rdquo; into &ldquo;open a tab.&rdquo;
               </p>
             </HomeContainerDescription>
           </HomeContent>
