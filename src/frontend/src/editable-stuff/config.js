@@ -42,6 +42,31 @@ const projects = [
   // title, description, and at least one URL (live or github).
 ];
 
+// SKETCH GALLERY SECTION — sketches, topology studies, 3D-modelling work.
+// Each entry: { title, alt, caption, src? }
+//   - src: import('../assets/gallery/your-image.png'), or null for placeholder.
+//   - Drop images into src/assets/gallery/ then import them above and reference here.
+const gallery = [
+  {
+    title: 'Drone wireframe',
+    alt: 'Drone wireframe sketch',
+    caption: 'Quick blockout for the hero asset.',
+    src: null,
+  },
+  {
+    title: 'Topology study',
+    alt: 'Edge-flow topology study',
+    caption: 'Edge-flow on a torus knot — used for the About accent.',
+    src: null,
+  },
+  {
+    title: 'Stage one',
+    alt: 'Sim setup primitives',
+    caption: "Roughing primitives for a sim setup that didn't ship.",
+    src: null,
+  },
+];
+
 // Legacy GitHub API config — left here for reference / quick revert.
 // const repos = {
 //   show: true,
@@ -51,4 +76,4 @@ const projects = [
 //   specificRepos: [],
 // };
 
-export { navBar, projects };
+export { navBar, projects, gallery };

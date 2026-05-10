@@ -11,6 +11,7 @@ import {
 } from './HomePageElements';
 import About from '../About/about';
 import Project from '../Project/project';
+import Gallery from '../Gallery';
 import ResumeSection from '../Resume/resume';
 import AxisDivider from '../../components/AxisDivider';
 
@@ -78,6 +79,7 @@ const Home = () => {
       </ParentContainer>
       <About />
       <Project />
+      <Gallery />
       <ResumeSection />
     </>
   );

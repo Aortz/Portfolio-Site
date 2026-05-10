@@ -173,10 +173,19 @@ export const HomeContainerText = styled.div`
   }
 
   &.name {
-    color: ${({ theme }) => theme.color.fg};
     font-size: ${({ theme }) => theme.size['4xl']};
-    font-weight: 700;
+    font-weight: 800;
+    letter-spacing: -0.03em;
     width: auto;
+    background: ${({ theme }) =>
+      `linear-gradient(120deg, ${theme.color.fg} 30%, ${theme.color.accent})`};
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    text-shadow:
+      0 0 32px rgba(6, 182, 212, 0.35),
+      0 0 10px rgba(6, 182, 212, 0.25);
   }
 
   &.role {

@@ -23,8 +23,7 @@ import {
   FaLinux,
 } from 'react-icons/fa';
 import { TbBrandCSharp, TbSql, TbMathFunction } from 'react-icons/tb';
-import { SiRos } from 'react-icons/si';
-import { BsCpu } from 'react-icons/bs';
+import { SiRos, SiUnrealengine } from 'react-icons/si';
 import SectionHeading from '../../components/SectionHeading';
 import AxisDivider from '../../components/AxisDivider';
 import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
@@ -46,7 +45,7 @@ const TOOL_CATEGORIES = [
     label: 'Robotics & Sim',
     items: [
       { name: 'ROS', Icon: SiRos, purpose: 'real-time control' },
-      { name: 'Gazebo', Icon: BsCpu, purpose: 'physics sim' },
+      { name: 'Unreal AirSim', Icon: SiUnrealengine, purpose: 'drone / car sim' },
       { name: 'MATLAB', Icon: TbMathFunction, purpose: 'numeric proto' },
       { name: 'Unity', Icon: FaUnity, purpose: '3D / sim' },
     ],

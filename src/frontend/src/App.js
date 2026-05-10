@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/NavBar';
 import VerticalNavbar from './components/NavBar/VerticalNavbar';
@@ -8,11 +8,16 @@ import { GlobalStyles } from './components/Fonts/Fonts';
 import { ThemeProvider } from './theme/ThemeProvider';
 import Home from './pages/Home/index';
 
+const ParticleBg = lazy(() => import('./components/ParticleBg'));
+
 export default function App() {
   return (
     <ThemeProvider>
       <Router>
         <GlobalStyles />
+        <Suspense fallback={null}>
+          <ParticleBg />
+        </Suspense>
         <Navbar />
         <VerticalNavbar />
         <RouteContainer>

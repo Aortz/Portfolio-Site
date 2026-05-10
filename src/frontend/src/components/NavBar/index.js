@@ -30,7 +30,8 @@ const Navbar = () => {
           <NavAnchor href="#home">1. HOME</NavAnchor>
           <NavAnchor href="#about">2. ABOUT ME</NavAnchor>
           <NavAnchor href="#projects">3. PROJECTS</NavAnchor>
-          <NavAnchor href="#resume">4. RESUME</NavAnchor>
+          <NavAnchor href="#gallery">4. GALLERY</NavAnchor>
+          <NavAnchor href="#resume">5. RESUME</NavAnchor>
         </NavLinkRow>
         <ThemeToggle />
       </NavRight>
