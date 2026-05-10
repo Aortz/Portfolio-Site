@@ -12,7 +12,6 @@ import HomeBg from '../../assets/homeBG.png';
 import About from '../About/about';
 import Project from '../Project/project';
 import ResumeSection from '../Resume/resume';
-import VerticalNavbar from '../../components/NavBar/VerticalNavbar';
 
 const Home = () => {
   const [isVisible1, setIsVisible1] = useState(false);
@@ -33,7 +32,6 @@ const Home = () => {
   return (
     <>
       <ParentContainer style={{ minHeight: '100vh' }}>
-        <VerticalNavbar />
         <HomeBgImg
           src={HomeBg}
           className={isBgVisible ? 'visible' : ''}
@@ -55,17 +53,17 @@ const Home = () => {
             $animationDelay="1.8s"
             className={isVisible2 ? 'visible role' : ''}
           >
-            Software Engineer
+            Software Engineer · Robotics Simulation
             <Cursor />
           </HomeContainerText>
           <HomeContainerDescription>
             <p>
-              I build full-stack web apps, with a current focus on AI/ML systems
-              and developer tooling.
+              I build software for robotics — simulation pipelines, perception
+              tooling, and the glue that holds them together.
             </p>
             <p>
-              Outside of work I&apos;m exploring 3D web experiences with React
-              Three Fiber.
+              Currently working with React Three Fiber and ROS-adjacent tooling
+              to bring robot demos into the browser.
             </p>
           </HomeContainerDescription>
         </HomeContainer>

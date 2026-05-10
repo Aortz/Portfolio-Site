@@ -13,15 +13,11 @@ const ResumeSectionRoot = styled.section`
   min-height: 100vh;
   padding: ${({ theme }) =>
     `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 80px`};
-  border-top: 1px solid ${({ theme }) => theme.color.border};
   border-left: 1px solid ${({ theme }) => theme.color.border};
-  border-radius: ${({ theme }) => `${theme.radius.xl} 0 0 0`};
 
   @media screen and (max-width: 768px) {
     padding: ${({ theme }) => theme.space[4]};
-    border-top: none;
     border-left: none;
-    border-radius: 0;
   }
 `;
 

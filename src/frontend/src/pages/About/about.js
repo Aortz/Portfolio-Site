@@ -12,9 +12,10 @@ import {
   ToolDescriptionText,
   ToolsDescriptionContainer,
 } from './AboutElements';
-import { FaPython, FaJava, FaDocker, FaReact, FaGithub, FaJs, FaCss3, FaUnity  } from 'react-icons/fa';
-import { TbBrandCSharp, TbSql } from 'react-icons/tb';
-import { BsTools } from "react-icons/bs";
+import { FaPython, FaJava, FaDocker, FaReact, FaGithub, FaJs, FaCss3, FaUnity, FaLinux } from 'react-icons/fa';
+import { TbBrandCSharp, TbSql, TbMathFunction } from 'react-icons/tb';
+import { SiRos } from 'react-icons/si';
+import { BsTools, BsCpu } from 'react-icons/bs';
 import AboutBg from '../../assets/aboutBG.png'
 
 const About = () => {
@@ -91,9 +92,12 @@ const About = () => {
             className={isDescriptionVisible ? 'visible description' : ''}
           >
             <AboutDescriptionText $inputColor="#b8b8b8" >
-              Hello! My name is Junwei and I enjoy creating things that live on the internet. 
-              You can find me tinkering with new frameworks and languages, at the gym or just chilling.
-              I'm always looking for new opportunities to learn and grow!
+              Hi, I&apos;m Junwei — a software engineer who works at the
+              intersection of robotics simulation and the web.
+              I like building tools that turn complex sim/control systems into
+              things you can actually click around on.
+              When I&apos;m not on a keyboard you&apos;ll find me at the gym or
+              chasing some new framework rabbit hole.
             </AboutDescriptionText>
 
             <ToolsContainer className={isTitleVisible ? 'visible' : ''} $border="none" $borderRadius="20px" > 
@@ -173,6 +177,34 @@ const About = () => {
                       height: 'auto',
                       width: '50px'
                     }}/> CSS
+                </ToolsDescriptionContainer>
+                <ToolsDescriptionContainer >
+                  <SiRos style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/> ROS
+                </ToolsDescriptionContainer>
+                <ToolsDescriptionContainer >
+                  <BsCpu style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/> Gazebo
+                </ToolsDescriptionContainer>
+                <ToolsDescriptionContainer >
+                  <TbMathFunction style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/> MATLAB
+                </ToolsDescriptionContainer>
+                <ToolsDescriptionContainer >
+                  <FaLinux style={{
+                      marginRight: '10px',
+                      height: 'auto',
+                      width: '50px'
+                    }}/> Linux
                 </ToolsDescriptionContainer>
               </ToolDescriptionText>
             </div>

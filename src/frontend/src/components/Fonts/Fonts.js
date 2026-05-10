@@ -37,6 +37,38 @@ export const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Subtle dot-grid backdrop — reads as a CAD/simulation canvas */
+  body {
+    background-image: radial-gradient(
+      circle,
+      ${({ theme }) => theme.color.border} 1px,
+      transparent 1px
+    );
+    background-size: 28px 28px;
+    background-attachment: fixed;
+  }
+
+  /* Custom thin scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.color.surfaceAlt};
+    border-radius: ${({ theme }) => theme.radius.pill};
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${({ theme }) => theme.color.fgSubtle};
+  }
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: ${({ theme }) =>
+      `${theme.color.surfaceAlt} transparent`};
+  }
+
   ::selection {
     background: ${({ theme }) => theme.color.accent};
     color: ${({ theme }) => theme.color.onAccent};

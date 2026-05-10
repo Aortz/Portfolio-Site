@@ -13,12 +13,14 @@ const slideLeftAnimation = keyframes`
 `;
 
 export const Nav = styled.nav`
-  background-color: transparent;
+  position: sticky;
+  top: 0;
+  background: ${({ theme }) => theme.color.bg};
   height: 85px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 999;
+  z-index: 1000;
   padding: ${({ theme }) => `${theme.space[2]} ${theme.space[6]}`};
 
   @media screen and (max-width: 768px) {
@@ -59,21 +61,22 @@ export const NavLinkRow = styled.div`
 
 export const VerticalNav = styled.nav`
   background-color: transparent;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 0;
   transform: translateY(-50%);
+  width: 56px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: ${({ theme }) => theme.space[6]};
-  z-index: 5;
-  padding: ${({ theme }) => `${theme.space[8]} ${theme.space[3]}`};
+  z-index: 999;
+  padding: ${({ theme }) => `${theme.space[8]} 0`};
   opacity: 0;
   animation: ${fadeIn} 1s ease-in-out forwards;
   animation-delay: 0.4s;
 
-  /* Thin vertical line running through the icons */
+  /* Thin vertical line dead-center on the 56px rail */
   &::before {
     content: '';
     position: absolute;
@@ -91,10 +94,12 @@ export const VerticalNav = styled.nav`
 `;
 
 export const VerticalNavLogo = styled.a`
-  padding: ${({ theme }) => theme.space[2]};
+  width: 40px;
+  height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  background: ${({ theme }) => theme.color.bg};
   border-radius: ${({ theme }) => theme.radius.pill};
   transition: transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.ease};
 
