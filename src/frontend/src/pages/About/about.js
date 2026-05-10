@@ -3,6 +3,7 @@ import {
   AboutContainer,
   AboutLeftContainer,
   AboutParentContainer,
+  AboutAccentSlot,
   AboutDescriptionContainer,
   AboutDescriptionText,
   ToolsBlock,
@@ -76,9 +77,6 @@ const About = () => {
       ref={ref}
       className={visible ? 'visible' : ''}
     >
-      <Suspense fallback={null}>
-        <AboutAccent />
-      </Suspense>
       <AboutContainer>
         <AboutLeftContainer>
           <SectionHeading number="02">ABOUT ME</SectionHeading>
@@ -119,6 +117,11 @@ const About = () => {
             </ToolsBlock>
           </AboutDescriptionContainer>
         </AboutLeftContainer>
+        <AboutAccentSlot>
+          <Suspense fallback={null}>
+            <AboutAccent />
+          </Suspense>
+        </AboutAccentSlot>
       </AboutContainer>
     </AboutParentContainer>
   );

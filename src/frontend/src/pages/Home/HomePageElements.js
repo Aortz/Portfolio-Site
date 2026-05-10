@@ -52,14 +52,13 @@ export const ParentContainer = styled.div`
 
 export const HomeContainer = styled.div`
   display: flex;
-  justify-content: center;
-  flex-direction: column;
-  text-align: left;
+  flex-direction: row;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[12]};
   background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
   min-height: 90vh;
-  gap: ${({ theme }) => theme.space[3]};
   padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} ${theme.space[16]}`};
   border-top: 2px solid ${({ theme }) => theme.color.border};
   border-left: 2px solid ${({ theme }) => theme.color.border};
@@ -69,10 +68,37 @@ export const HomeContainer = styled.div`
   overflow-x: hidden;
 
   @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: ${({ theme }) => theme.space[6]};
     padding: ${({ theme }) => theme.space[4]};
     border-top: none;
     border-left: none;
     border-radius: 0;
+  }
+`;
+
+export const HomeContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: ${({ theme }) => theme.space[3]};
+  text-align: left;
+`;
+
+export const HomeAccentSlot = styled.div`
+  flex: 0 0 360px;
+  height: 360px;
+
+  @media screen and (max-width: 1024px) {
+    flex-basis: 260px;
+    height: 260px;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
   }
 `;
 

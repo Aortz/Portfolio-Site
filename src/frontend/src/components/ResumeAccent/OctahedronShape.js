@@ -1,12 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Edges } from '@react-three/drei';
 import { useTheme } from 'styled-components';
 
-const OctahedronShape = () => {
+const OctahedronShape = ({ hovered }) => {
   const ref = useRef();
   const theme = useTheme();
-  const [hovered, setHovered] = useState(false);
 
   useFrame((_, delta) => {
     if (!ref.current || hovered) return;
@@ -15,11 +14,7 @@ const OctahedronShape = () => {
   });
 
   return (
-    <mesh
-      ref={ref}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-    >
+    <mesh ref={ref}>
       <octahedronGeometry args={[1.3, 0]} />
       <meshBasicMaterial color={theme.color.bg} transparent opacity={0.05} />
       <Edges threshold={1} color={theme.color.accent} />

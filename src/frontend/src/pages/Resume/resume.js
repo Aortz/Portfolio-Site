@@ -10,7 +10,9 @@ const ResumeAccent = lazy(() => import('../../components/ResumeAccent'));
 
 const ResumeSectionRoot = styled.section`
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[12]};
   background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
@@ -29,8 +31,32 @@ const ResumeSectionRoot = styled.section`
   }
 
   @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: ${({ theme }) => theme.space[6]};
     padding: ${({ theme }) => theme.space[4]};
     border-left: none;
+  }
+`;
+
+const ResumeContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+`;
+
+const ResumeAccentSlot = styled.div`
+  flex: 0 0 300px;
+  height: 300px;
+
+  @media screen and (max-width: 1024px) {
+    flex-basis: 220px;
+    height: 220px;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -99,34 +125,38 @@ const ResumeSection = () => {
       ref={ref}
       className={visible ? 'visible' : ''}
     >
-      <Suspense fallback={null}>
-        <ResumeAccent />
-      </Suspense>
-      <SectionHeading number="04">RESUME</SectionHeading>
-      <Copy>
-        Grab a copy of my resume below — full work history, education, and the
-        side projects I&apos;ve been shipping.
-      </Copy>
-      <AxisDivider />
-      <ButtonRow>
-        <PrimaryButton
-          href={resumePDF}
-          download="Lee_Junwei_Resume.pdf"
-          aria-label="Download resume PDF"
-        >
-          <FiDownload size={16} aria-hidden="true" />
-          Download PDF
-        </PrimaryButton>
-        <SecondaryButton
-          href={resumePDF}
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Open resume in a new tab"
-        >
-          <FiExternalLink size={16} aria-hidden="true" />
-          Open in new tab
-        </SecondaryButton>
-      </ButtonRow>
+      <ResumeContent>
+        <SectionHeading number="04">RESUME</SectionHeading>
+        <Copy>
+          Grab a copy of my resume below — full work history, education, and
+          the side projects I&apos;ve been shipping.
+        </Copy>
+        <AxisDivider />
+        <ButtonRow>
+          <PrimaryButton
+            href={resumePDF}
+            download="Lee_Junwei_Resume.pdf"
+            aria-label="Download resume PDF"
+          >
+            <FiDownload size={16} aria-hidden="true" />
+            Download PDF
+          </PrimaryButton>
+          <SecondaryButton
+            href={resumePDF}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open resume in a new tab"
+          >
+            <FiExternalLink size={16} aria-hidden="true" />
+            Open in new tab
+          </SecondaryButton>
+        </ButtonRow>
+      </ResumeContent>
+      <ResumeAccentSlot>
+        <Suspense fallback={null}>
+          <ResumeAccent />
+        </Suspense>
+      </ResumeAccentSlot>
     </ResumeSectionRoot>
   );
 };

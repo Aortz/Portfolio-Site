@@ -16,7 +16,9 @@ const slideRightAnimation = keyframes`
 
 export const ProjectContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[12]};
   background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
@@ -36,8 +38,32 @@ export const ProjectContainer = styled.div`
   }
 
   @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: ${({ theme }) => theme.space[6]};
     padding: ${({ theme }) => theme.space[3]};
     border-left: none;
+  }
+`;
+
+export const ProjectContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+`;
+
+export const ProjectAccentSlot = styled.div`
+  flex: 0 0 320px;
+  height: 320px;
+
+  @media screen and (max-width: 1024px) {
+    flex-basis: 220px;
+    height: 220px;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
   }
 `;
 

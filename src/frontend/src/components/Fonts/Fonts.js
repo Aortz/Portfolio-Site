@@ -24,7 +24,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   html {
-    font-size: 17.5px;
+    font-size: 19px;
   }
 
   html,

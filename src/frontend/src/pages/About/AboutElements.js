@@ -118,9 +118,9 @@ export const AboutParentContainer = styled.div`
 
 export const AboutContainer = styled.div`
     display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: stretch;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: ${({ theme }) => theme.space[12]};
     text-align: left;
     background: transparent;
     width: 100%;
@@ -134,14 +134,26 @@ export const AboutContainer = styled.div`
     z-index: 2;
     overflow: hidden;
 
-    @media screen and (min-width: 1025px) {
-        flex-direction: row-reverse;
-    }
-
     @media screen and (max-width: 768px) {
         padding: ${({ theme }) => theme.space[4]};
         flex-direction: column;
+        align-items: stretch;
+        gap: ${({ theme }) => theme.space[6]};
         border-left: none;
+    }
+`;
+
+export const AboutAccentSlot = styled.div`
+    flex: 0 0 360px;
+    height: 360px;
+
+    @media screen and (max-width: 1024px) {
+        flex-basis: 260px;
+        height: 260px;
+    }
+
+    @media screen and (max-width: 768px) {
+        display: none;
     }
 `;
 
@@ -189,16 +201,14 @@ export const AboutBgImg = styled.img`
 
 export const AboutLeftContainer = styled.div`
     display: flex;
-    justify-content: start;
+    justify-content: center;
     flex-direction: column;
-    align-items: left;
+    align-items: stretch;
     text-align: left;
     background: transparent;
-    width: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
     color: ${({ theme }) => theme.color.fg};
-    align-items: left;
-    min-height: 100vh; /* Use min-height instead of height to prevent overflow */
-    margin-left: 5px;
     padding: 20px;
 
     /* Add the following styles to remove the horizontal scrollbar */

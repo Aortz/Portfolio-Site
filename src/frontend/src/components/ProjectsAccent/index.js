@@ -1,46 +1,40 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import styled from 'styled-components';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import GearShape from './GearShape';
 
 const Wrapper = styled.div`
-  position: absolute;
-  top: 50%;
-  right: 6%;
-  transform: translateY(-50%);
-  width: 320px;
-  height: 320px;
-  z-index: 0;
-  pointer-events: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
 
   & canvas {
-    pointer-events: auto;
-  }
-
-  @media screen and (max-width: 1024px) {
-    width: 220px;
-    height: 220px;
-    right: 2%;
-    opacity: 0.4;
-  }
-
-  @media screen and (max-width: 768px) {
-    display: none;
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
   }
 `;
 
-const ProjectsAccent = () => (
-  <Wrapper aria-hidden="true">
-    <Canvas camera={{ position: [0, 0, 4], fov: 50 }} dpr={[1, 2]}>
-      <Suspense fallback={null}>
-        <ambientLight intensity={0.4} />
-        <pointLight position={[5, 5, 5]} intensity={0.7} />
-        <GearShape />
-        <OrbitControls enableZoom={false} enablePan={false} />
-      </Suspense>
-    </Canvas>
-  </Wrapper>
-);
+const ProjectsAccent = () => {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <Wrapper
+      aria-hidden="true"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <Canvas camera={{ position: [0, 0, 4], fov: 50 }} dpr={[1, 2]}>
+        <Suspense fallback={null}>
+          <ambientLight intensity={0.4} />
+          <pointLight position={[5, 5, 5]} intensity={0.7} />
+          <GearShape hovered={hovered} />
+          <OrbitControls enableZoom={false} enablePan={false} />
+        </Suspense>
+      </Canvas>
+    </Wrapper>
+  );
+};
 
 export default ProjectsAccent;

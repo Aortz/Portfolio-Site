@@ -1,34 +1,30 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useFrame, useLoader } from '@react-three/fiber';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
-import { MeshBasicMaterial, Box3, Vector3 } from 'three';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
+import { useGLTF } from '@react-three/drei';
+import { Box3, Vector3, MeshBasicMaterial } from 'three';
 import { useTheme } from 'styled-components';
 
-const DroneShape = () => {
+useGLTF.preload('/drone/drone.glb');
+
+const DroneShape = ({ hovered }) => {
   const ref = useRef();
   const theme = useTheme();
-  const [hovered, setHovered] = useState(false);
-  const obj = useLoader(OBJLoader, '/drone/drone.obj');
+  const { scene } = useGLTF('/drone/drone.glb');
 
-  // Clone so multiple mounts don't share materials.
   const cloned = useMemo(() => {
-    const c = obj.clone(true);
-
-    // Auto-fit: compute bounding box, normalize to ~3 units, center on origin.
+    const c = scene.clone(true);
     const bbox = new Box3().setFromObject(c);
     const size = new Vector3();
-    bbox.getSize(size);
     const center = new Vector3();
+    bbox.getSize(size);
     bbox.getCenter(center);
-
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
     const scale = 6 / maxDim;
     c.scale.setScalar(scale);
     c.position.sub(center.multiplyScalar(scale));
     return c;
-  }, [obj]);
+  }, [scene]);
 
-  // Replace every material with a wireframe in the accent color.
   useEffect(() => {
     cloned.traverse((child) => {
       if (child.isMesh) {
@@ -49,11 +45,7 @@ const DroneShape = () => {
   });
 
   return (
-    <group
-      ref={ref}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-    >
+    <group ref={ref}>
       <primitive object={cloned} />
     </group>
   );
