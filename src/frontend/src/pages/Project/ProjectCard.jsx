@@ -51,11 +51,11 @@ const PrimaryLink = styled(StyledLink)`
   }
 `;
 
-const ProjectCard = ({ project, isActive }) => {
+const ProjectCard = ({ project }) => {
   const { title, description, liveUrl, githubUrl, tags = [], screenshot } = project || {};
 
   return (
-    <StyledCard $isActive={isActive} data-active={isActive}>
+    <StyledCard>
       <CardBody>
         <CardTitle className="visible">
           <FolderGlyph />

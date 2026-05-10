@@ -21,9 +21,19 @@ export const ProjectContainer = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
   min-height: 100vh;
-  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 100px`};
+  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 136px`};
   border-left: 1px solid ${({ theme }) => theme.color.border};
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity ${({ theme }) => theme.motion.slow} ${({ theme }) => theme.motion.ease},
+    transform ${({ theme }) => theme.motion.slow} ${({ theme }) => theme.motion.ease};
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   @media screen and (max-width: 768px) {
     padding: ${({ theme }) => theme.space[3]};
@@ -87,43 +97,41 @@ export const CardContainer = styled(Col)`
   }
 `;
 
+export const ProjectGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: ${({ theme }) => theme.space[6]};
+  width: 100%;
+  margin-top: ${({ theme }) => theme.space[4]};
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.space[4]};
+  }
+`;
+
 export const StyledCard = styled(Card)`
-  width: 80%;
-  max-width: 500px;
-  min-width: 300px;
+  width: 100%;
   border-radius: ${({ theme }) => theme.radius.lg};
   border: 1px solid ${({ theme }) => theme.color.border};
   background: ${({ theme }) => theme.color.surface};
-  height: fit-content;
+  height: 100%;
   min-height: 300px;
-  margin: 0 auto;
+  margin: 0;
   position: relative;
   z-index: 1;
   display: flex;
   visibility: visible;
 
-  opacity: ${(props) => (props.$isActive ? 1 : 0.35)};
-  transform: scale(${(props) => (props.$isActive ? 1 : 0.92)});
   transition:
     transform ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
-    opacity ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
     border-color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
     box-shadow ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
 
   &:hover {
-    transform: scale(${(props) => (props.$isActive ? 1.02 : 0.92)})
-      translateY(${(props) => (props.$isActive ? '-4px' : '0')});
-    border-color: ${({ theme, $isActive }) => ($isActive ? theme.color.accent : theme.color.border)};
-    box-shadow: ${({ $isActive }) =>
-      $isActive ? '0 8px 24px rgba(6, 182, 212, 0.20)' : 'none'};
-  }
-
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    min-width: unset;
-    margin: 0;
-    opacity: 1;
-    transform: scale(1);
+    transform: translateY(-4px);
+    border-color: ${({ theme }) => theme.color.accent};
+    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.20);
   }
 `;
 

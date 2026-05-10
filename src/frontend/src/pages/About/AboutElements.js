@@ -103,7 +103,17 @@ export const AboutParentContainer = styled.div`
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity ${({ theme }) => theme.motion.slow} ${({ theme }) => theme.motion.ease},
+      transform ${({ theme }) => theme.motion.slow} ${({ theme }) => theme.motion.ease};
+
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 `;
 
 export const AboutContainer = styled.div`
@@ -116,7 +126,7 @@ export const AboutContainer = styled.div`
     width: 100%;
     color: ${({ theme }) => theme.color.fg};
     min-height: 100vh;
-    padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 100px`};
+    padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 136px`};
     border-left: 1px solid ${({ theme }) => theme.color.border};
 
     grid-row: 1;
@@ -470,6 +480,60 @@ export const AboutDescriptionText = styled.div`
     }
 `;
 // ${props => props.$flexBasis|| "0px"};  Calculate the width of each item (25% - 20px for spacing) 
+export const ToolsBlock = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.space[4]};
+    margin-top: ${({ theme }) => theme.space[6]};
+`;
+
+export const CategoryLabel = styled.div`
+    font-family: ${({ theme }) => theme.font.mono};
+    font-size: ${({ theme }) => theme.size.xs};
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: ${({ theme }) => theme.color.fgSubtle};
+    text-transform: uppercase;
+`;
+
+export const TagRow = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: ${({ theme }) => theme.space[2]};
+    margin-top: ${({ theme }) => theme.space[2]};
+`;
+
+export const ToolTag = styled.span`
+    display: inline-flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.space[2]};
+    padding: ${({ theme }) => `${theme.space[1]} ${theme.space[3]}`};
+    background: ${({ theme }) => theme.color.surfaceAlt};
+    border: 1px solid ${({ theme }) => theme.color.border};
+    border-radius: ${({ theme }) => theme.radius.pill};
+    color: ${({ theme }) => theme.color.fgMuted};
+    font-family: ${({ theme }) => theme.font.mono};
+    font-size: ${({ theme }) => theme.size.xs};
+    font-weight: 500;
+    cursor: default;
+    transition:
+      color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
+      border-color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
+      transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.ease};
+
+    & svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    &:hover {
+      color: ${({ theme }) => theme.color.fg};
+      border-color: ${({ theme }) => theme.color.accent};
+      transform: translateY(-1px);
+    }
+`;
+
 export const ToolsDescriptionContainer = styled.div`
     display: flex;
     justify-content: center;

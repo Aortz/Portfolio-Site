@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { FiDownload, FiExternalLink } from 'react-icons/fi';
 import resumePDF from '../../assets/resume/Lee_Junwei_Resume.pdf';
 import SectionHeading from '../../components/SectionHeading';
+import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
 
 const ResumeSectionRoot = styled.section`
   display: flex;
@@ -12,8 +13,18 @@ const ResumeSectionRoot = styled.section`
   color: ${({ theme }) => theme.color.fg};
   min-height: 100vh;
   padding: ${({ theme }) =>
-    `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 100px`};
+    `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 136px`};
   border-left: 1px solid ${({ theme }) => theme.color.border};
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity ${({ theme }) => theme.motion.slow} ${({ theme }) => theme.motion.ease},
+    transform ${({ theme }) => theme.motion.slow} ${({ theme }) => theme.motion.ease};
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   @media screen and (max-width: 768px) {
     padding: ${({ theme }) => theme.space[4]};
@@ -77,33 +88,41 @@ const SecondaryButton = styled(PrimaryButton)`
   }
 `;
 
-const ResumeSection = () => (
-  <ResumeSectionRoot id="resume">
-    <SectionHeading number="04">RESUME</SectionHeading>
-    <Copy>
-      Grab a copy of my resume below — full work history, education, and the
-      side projects I&apos;ve been shipping.
-    </Copy>
-    <ButtonRow>
-      <PrimaryButton
-        href={resumePDF}
-        download="Lee_Junwei_Resume.pdf"
-        aria-label="Download resume PDF"
-      >
-        <FiDownload size={16} aria-hidden="true" />
-        Download PDF
-      </PrimaryButton>
-      <SecondaryButton
-        href={resumePDF}
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Open resume in a new tab"
-      >
-        <FiExternalLink size={16} aria-hidden="true" />
-        Open in new tab
-      </SecondaryButton>
-    </ButtonRow>
-  </ResumeSectionRoot>
-);
+const ResumeSection = () => {
+  const [ref, visible] = useFadeInOnScroll();
+
+  return (
+    <ResumeSectionRoot
+      id="resume"
+      ref={ref}
+      className={visible ? 'visible' : ''}
+    >
+      <SectionHeading number="04">RESUME</SectionHeading>
+      <Copy>
+        Grab a copy of my resume below — full work history, education, and the
+        side projects I&apos;ve been shipping.
+      </Copy>
+      <ButtonRow>
+        <PrimaryButton
+          href={resumePDF}
+          download="Lee_Junwei_Resume.pdf"
+          aria-label="Download resume PDF"
+        >
+          <FiDownload size={16} aria-hidden="true" />
+          Download PDF
+        </PrimaryButton>
+        <SecondaryButton
+          href={resumePDF}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Open resume in a new tab"
+        >
+          <FiExternalLink size={16} aria-hidden="true" />
+          Open in new tab
+        </SecondaryButton>
+      </ButtonRow>
+    </ResumeSectionRoot>
+  );
+};
 
 export default ResumeSection;
