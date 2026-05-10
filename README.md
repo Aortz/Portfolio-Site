@@ -1,45 +1,41 @@
 # Creating Portfolio Site
 
-This project was was built using the Express, React, ThreeJS
+This project was built using Express, React, and ThreeJS. It's a two-package monorepo:
 
-## Available Scripts
+- `src/backend/` — Express server (port 8080)
+- `src/frontend/` — Create React App + Three.js (port 3000)
 
-## Backend
+## Getting started
 
-In the project directory, you can run:
+From the repo root, first-time bootstrap:
 
-### `npm install`
-Download the required package dependencies
+```sh
+npm install      # installs root tooling (concurrently)
+npm run setup    # installs backend (src/backend) and frontend (src/frontend) deps
+```
 
-### `node app`
-Starts up the backend
+Then to develop:
 
-## Frontend
-In the project directory, you can run:
+```sh
+npm run dev      # starts backend (:8080) and frontend (:3000) together
+```
 
-### `npm install`
-Download the required package dependencies
+Or run things individually:
 
-### `npm start`
+```sh
+npm run start:backend
+npm run start:frontend
+npm run build         # production build of frontend
+npm test              # frontend tests
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Frontend (CRA reference)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The frontend is a Create React App project. The standard CRA scripts (`start`, `build`, `test`, `eject`) are available from `src/frontend/` directly, or via the root scripts above.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Builds the app for production to the `src/frontend/build` folder. It correctly bundles React in production mode and optimizes the build for the best performance. The build is minified and the filenames include hashes.
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 

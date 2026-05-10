@@ -25,3 +25,12 @@
 **/yarn-error.log*
 
 **/package-lock.json
+
+# Local tooling / scratch
+.claude/
+.playwright-mcp/
+gh/
+UsersUserDocumentsCodePortfolio-Site/
+
+# Dev iteration screenshots (root only — does not affect src/frontend/src/assets/**)
+/*.png
