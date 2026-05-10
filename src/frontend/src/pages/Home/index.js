@@ -13,7 +13,6 @@ import About from '../About/about';
 import Project from '../Project/project';
 import Gallery from '../Gallery';
 import ResumeSection from '../Resume/resume';
-import AxisDivider from '../../components/AxisDivider';
 
 const HeroAccent = lazy(() => import('../../components/HeroAccent'));
 
@@ -51,16 +50,16 @@ const Home = () => {
             </HomeContainerText>
             <HomeContainerDescription>
               <p>
-                I&apos;m a software engineer focused on robotics simulation —
-                I build the systems that let researchers and engineers iterate
-                on perception, planning, and control without leaving their
-                browser.
+                I&apos;m a software engineer exploring{' '}
+                <strong>Unreal Engine</strong> for robotics — building immersive
+                3D environments where perception, planning, and control systems
+                can be prototyped end-to-end before they ever touch hardware.
               </p>
               <p>
-                Lately I&apos;ve been gluing React Three Fiber to ROS-adjacent
-                tooling: real-time scene rendering, sensor visualization, and
-                the kind of dev-loop tooling that turns &ldquo;ssh into the lab
-                machine&rdquo; into &ldquo;open a tab.&rdquo;
+                Outside the engine I&apos;m deep in 3D modelling pipelines:
+                Blender for asset prep, AirSim and React Three Fiber for sim
+                runtimes, and the in-between glue that keeps a CAD-driven
+                workflow from feeling like five separate tools.
               </p>
             </HomeContainerDescription>
           </HomeContent>

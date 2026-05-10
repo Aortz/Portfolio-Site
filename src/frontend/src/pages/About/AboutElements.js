@@ -1,6 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import backgroundImage from '../../assets/background.jpg'
-import animeBgImg from '../../assets/anime-background.jpg'
+import backgroundImage from '../../assets/background.jpg';
 
 // Helper function to calculate steps based on the text length
 function typingAnimationWithSteps(text) {
@@ -34,16 +33,6 @@ const slideDownAnimation = keyframes`
   to {
     transform: translateY(0);
     opacity: 1;
-  }
-`;
-
-// Define the flip animation using keyframes
-const flipAnimation = keyframes`
-  from {
-    transform: perspective(800px) rotateY(0);
-  }
-  to {
-    transform: perspective(800px) rotateY(180deg);
   }
 `;
 
@@ -87,16 +76,7 @@ const slideLeftAnimation = keyframes`
   }
 `;
 
-const slideLeftAnimationDescription = keyframes`
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-`;
+
 
 export const AboutParentContainer = styled.div`
     display: grid;

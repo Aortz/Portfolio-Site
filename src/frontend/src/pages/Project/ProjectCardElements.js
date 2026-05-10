@@ -4,11 +4,6 @@ import styled, { keyframes } from 'styled-components';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 
-const slideUpAnimation = keyframes`
-  from { transform: translateY(40px); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
-`;
-
 const slideRightAnimation = keyframes`
   from { transform: translateX(-24px); opacity: 0; }
   to   { transform: translateX(0);     opacity: 1; }
