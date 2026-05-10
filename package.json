@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio site — Express backend + React/Three.js frontend",
+  "scripts": {
+    "setup": "npm install --prefix src/backend && npm install --prefix src/frontend",
+    "start:backend": "node src/backend/app.js",
+    "start:frontend": "npm start --prefix src/frontend",
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm:start:backend\" \"npm:start:frontend\"",
+    "build": "npm run build --prefix src/frontend",
+    "test": "npm test --prefix src/frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
