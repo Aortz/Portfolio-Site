@@ -89,14 +89,16 @@ export const HomeContent = styled.div`
 `;
 
 export const HomeAccentSlot = styled.div`
-  flex: 0 0 780px;
-  height: 780px;
-  margin-right: ${({ theme }) => theme.space[8]};
+  flex: 0 0 clamp(720px, 60vw, 1100px);
+  width: clamp(720px, 60vw, 1100px);
+  height: clamp(720px, 60vw, 1100px);
+  margin-right: ${({ theme }) => theme.space[16]};
 
   @media screen and (max-width: 1024px) {
-    flex-basis: 480px;
-    height: 480px;
-    margin-right: ${({ theme }) => theme.space[4]};
+    flex-basis: 540px;
+    width: 540px;
+    height: 540px;
+    margin-right: ${({ theme }) => theme.space[6]};
   }
 
   @media screen and (max-width: 768px) {

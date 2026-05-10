@@ -2,7 +2,7 @@ import React, { Suspense, useState } from 'react';
 import styled from 'styled-components';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import OctahedronShape from './OctahedronShape';
+import HandsModel from './HandsModel';
 
 const Wrapper = styled.div`
   position: relative;
@@ -29,7 +29,7 @@ const ResumeAccent = () => {
         <Suspense fallback={null}>
           <ambientLight intensity={0.4} />
           <pointLight position={[5, 5, 5]} intensity={0.7} />
-          <OctahedronShape hovered={hovered} />
+          <HandsModel hovered={hovered} />
           <OrbitControls enableZoom={false} enablePan={false} />
         </Suspense>
       </Canvas>

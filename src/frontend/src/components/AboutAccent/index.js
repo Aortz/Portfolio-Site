@@ -27,8 +27,8 @@ const AboutAccent = () => {
     >
       <Canvas camera={{ position: [0, 0, 4], fov: 50 }} dpr={[1, 2]}>
         <Suspense fallback={null}>
-          <ambientLight intensity={0.6} />
-          <pointLight position={[5, 5, 5]} intensity={1.0} />
+          <ambientLight intensity={0.45} />
+          <pointLight position={[5, 5, 5]} intensity={0.7} />
           <IndustrialRobot hovered={hovered} />
           <OrbitControls enableZoom={false} enablePan={false} />
         </Suspense>

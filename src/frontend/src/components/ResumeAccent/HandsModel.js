@@ -4,12 +4,12 @@ import { useGLTF } from '@react-three/drei';
 import { Box3, Vector3, MeshBasicMaterial } from 'three';
 import { useTheme } from 'styled-components';
 
-useGLTF.preload('/ux3d_industrial_robot/scene.gltf');
+useGLTF.preload('/hands/scene.gltf');
 
-const IndustrialRobot = ({ hovered }) => {
+const HandsModel = ({ hovered }) => {
   const ref = useRef();
   const theme = useTheme();
-  const { scene } = useGLTF('/ux3d_industrial_robot/scene.gltf');
+  const { scene } = useGLTF('/hands/scene.gltf');
 
   const cloned = useMemo(() => {
     const c = scene.clone(true);
@@ -40,7 +40,7 @@ const IndustrialRobot = ({ hovered }) => {
 
   useFrame((_, delta) => {
     if (!ref.current || hovered) return;
-    ref.current.rotation.y += delta * 0.18;
+    ref.current.rotation.y += delta * 0.12;
   });
 
   return (
@@ -50,4 +50,4 @@ const IndustrialRobot = ({ hovered }) => {
   );
 };
 
-export default IndustrialRobot;
+export default HandsModel;

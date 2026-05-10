@@ -25,7 +25,7 @@ const HeroAccent = () => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <Canvas camera={{ position: [0, 0, 10], fov: 45 }} dpr={[1, 2]}>
+      <Canvas camera={{ position: [0, 0, 11], fov: 45 }} dpr={[1, 2]}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.45} />
           <pointLight position={[5, 5, 5]} intensity={0.7} />
