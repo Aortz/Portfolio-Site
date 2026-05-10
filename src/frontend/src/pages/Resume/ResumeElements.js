@@ -41,15 +41,15 @@ export const ResumeContainer = styled.div`
     flex-direction: column;
     align-items: left;
     text-align: left;
-    background: rgba(0,0,0,0.5);
+    background: transparent;
     width: 100%;
-    color: #fff;
+    color: ${({ theme }) => theme.color.fg};
     align-items: left;
     height: 90vh; /* Use min-height instead of height to prevent overflow */
     margin-left: 80px;
     padding: 20px;
     // border-top: 1px solid #ccc;
-    border-left: 1px solid #ccc;
+    border-left: 1px solid ${({ theme }) => theme.color.border};
     // border-radius: 25px 0 0 0;
 
     grid-row: 1;
@@ -72,10 +72,10 @@ export const ResumeContainerTitle = styled.div`
     align-items: left;
 
     text-align: left;
-    font-family: 'IBMPlexMonoBold', monospace;
+    font-family: ${({ theme }) => theme.font.mono};
     // padding: 20px;
     font-weight: 500;
-    color: ${props => props.$inputColor || "#55B4B0"};
+    color: ${props => props.$inputColor || props.theme.color.accent};
     font-size: ${props => props.$size || "40px"};
 
     /* Typing cursor animation */
@@ -93,7 +93,7 @@ export const ResumeContainerTitle = styled.div`
         
     }
 
-    filter: drop-shadow(8px 5px green) sepia(60%) hue-rotate(90deg);
+    filter: none;
 
     &:hover {
         // background: rgba(255, 255, 255, 0.7); 
@@ -145,7 +145,7 @@ export const ResumeDropdownContainer = styled.div`
     display: flex;
     flex-direction: column;
 
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: ${({ theme }) => theme.color.surface};
     z-index: 9;
     font-size: 24px;
     width: 100%;

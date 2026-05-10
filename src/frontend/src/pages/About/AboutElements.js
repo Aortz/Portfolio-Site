@@ -112,15 +112,15 @@ export const AboutContainer = styled.div`
     flex-direction: row;
     align-items: left;
     text-align: left;
-    background: rgba(0,0,0,0.3);
+    background: transparent;
     width: 100%;
-    color: #fff;
+    color: ${({ theme }) => theme.color.fg};
     align-items: left;
     height: 100vh; /* Use min-height instead of height to prevent overflow */
     margin-left: 80px;
     padding: 20px;
     // border-top: 1px solid #ccc;
-    border-left: 1px solid #ccc;
+    border-left: 1px solid ${({ theme }) => theme.color.border};
     // border-radius: 25px;
 
     grid-row: 1;
@@ -190,9 +190,9 @@ export const AboutLeftContainer = styled.div`
     flex-direction: column;
     align-items: left;
     text-align: left;
-    background: rgba(0,0,0,0.5);
+    background: transparent;
     width: 100%;
-    color: #fff;
+    color: ${({ theme }) => theme.color.fg};
     align-items: left;
     min-height: 100vh; /* Use min-height instead of height to prevent overflow */
     margin-left: 5px;
@@ -225,13 +225,13 @@ export const AboutRightContainer = styled.div`
 
 
     width: 100%;
-    color: #fff;
+    color: ${({ theme }) => theme.color.fg};
     align-items: left;
     min-height: 20vh; /* Use min-height instead of height to prevent overflow */
     margin-left: 20px;
     // padding: 20px;
-    border-top: 1px solid #ccc;
-    border-left: 1px solid #ccc;
+    border-top: 1px solid ${({ theme }) => theme.color.border};
+    border-left: 1px solid ${({ theme }) => theme.color.border};
     /* Add the following styles to remove the horizontal scrollbar */
     overflow-x: hidden;
 
@@ -273,8 +273,8 @@ export const AboutContainerTitle = styled.div`
     align-items: left;
 
     text-align: left;
-    color: ${props => props.$inputColor || "#55B4B0;"};
-    font-family: 'IBMPlexMonoBold', monospace;
+    color: ${props => props.$inputColor || props.theme.color.accent};
+    font-family: ${({ theme }) => theme.font.mono};
     // padding-left: 20px;
     font-size: ${props => props.$size || "40px"};
     font-weight: 500;
@@ -295,13 +295,13 @@ export const AboutContainerTitle = styled.div`
         animation-delay: ${props => props.$animationDelay || "0s"};
     }
 
-    filter: drop-shadow(8px 5px green) sepia(60%) hue-rotate(90deg);
+    filter: none;
 
     &:hover {
       // background: rgba(255, 255, 255, 0.7); 
       // animation: ${glitchAnimation} 2s ease-in-out forwards;
       // animation-iteration-count: infinite;
-      filter: drop-shadow(8px 5px blue) sepia(60%); /* Adjust the blur amount as needed */
+      filter: none;
     }
 
     /* Account for mobile devices */
@@ -314,8 +314,8 @@ export const AboutContainerTitle = styled.div`
 `;
 
 export const AboutContainerText = styled.div`
-    color: ${props => props.$inputColor || "#fff"};
-    font-family: 'IBMPlexMonoBold', monospace;
+    color: ${props => props.$inputColor || props.theme.color.fg};
+    font-family: ${({ theme }) => theme.font.mono};
     padding-left: 20px;
     font-size: ${props => props.$size || "40px"};
     font-weight: 500;
@@ -323,7 +323,7 @@ export const AboutContainerText = styled.div`
 export const AboutDescriptionContainer = styled.div`
     display: flex;
     justify-content: start;
-    color: ${props => props.$inputColor || "#fff"};
+    color: ${props => props.$inputColor || props.theme.color.fg};
     padding: ${props => props.$padding || "10px"};
     margin: ${props => props.$margin || "5px"};
     align-items: ${props => props.$alignItems || "left"};
@@ -332,7 +332,7 @@ export const AboutDescriptionContainer = styled.div`
     border: ${props => props.$border || "none"};
     border-radius: ${props => props.$borderRadius|| "10px"};
 
-    font-family: 'VT323', monospace;
+    font-family: ${({ theme }) => theme.font.mono};
     // font-size: 10px;
 
     /* Initial state */
@@ -367,20 +367,20 @@ export const AboutDescriptionContainer = styled.div`
 export const ToolsContainer = styled.div`
     display: flex;
     justify-content: center;
-    color: ${props => props.$inputColor || "#fff"};
+    color: ${props => props.$inputColor || props.theme.color.fg};
     padding: ${props => props.$padding || "5px"};
     
     align-items: ${props => props.$alignItems || "center"};
     flex-direction: ${props => props.$flexDirection || "column"};
     background: ${props => props.$background || "none"};
-    border: ${props => props.$border || "1px solid #fff"};
+    border: ${props => props.$border || `1px solid ${props.theme.color.border}`};
     border-radius: ${props => props.$borderRadius|| "10px"};
     
     width: 40%;
     margin-left: ${props => props.$marginLeft || "auto"};
     margin-right: ${props => props.$marginRight || "auto"};
     
-    font-family: 'VT323', monospace;
+    font-family: ${({ theme }) => theme.font.mono};
     font-size: 30px;
 
     /* Initial state */
@@ -413,8 +413,8 @@ export const ToolsContainer = styled.div`
 `;
 
 export const ToolsTitle = styled.div`
-    color: ${props => props.$inputColor || "#55B4B0"};
-    font-family: 'VT323', monospace;
+    color: ${props => props.$inputColor || props.theme.color.accent};
+    font-family: ${({ theme }) => theme.font.mono};
     text-align: center;
     align-items: center;
     padding: 20px;
@@ -444,8 +444,8 @@ export const ToolsTitle = styled.div`
 `;
 
 export const ToolDescriptionText = styled.div`
-    color: ${props => props.$inputColor || "#5f7c96"};
-    font-family: 'KolkerBrush', monospace;
+    color: ${props => props.$inputColor || props.theme.color.fgMuted};
+    font-family: ${({ theme }) => theme.font.sans};
     padding: 10px;
     font-size: 18px;
     font-weight: 500;
@@ -471,8 +471,8 @@ export const ToolDescriptionText = styled.div`
 `;
 
 export const AboutDescriptionText = styled.div`
-    color: ${props => props.$inputColor || "#5f7c96"};
-    font-family: 'KolkerBrush', monospace;
+    color: ${props => props.$inputColor || props.theme.color.fgMuted};
+    font-family: ${({ theme }) => theme.font.sans};
     padding: 10px;
     font-size: 18px;
     font-weight: 500;
@@ -486,7 +486,7 @@ export const AboutDescriptionText = styled.div`
     overflow: hidden;
 
     &:hover {
-      filter: drop-shadow(8px 5px red) sepia(60%) hue-rotate(90deg);
+      filter: none;
       
     }
 `;
@@ -494,7 +494,7 @@ export const AboutDescriptionText = styled.div`
 export const ToolsDescriptionContainer = styled.div`
     display: flex;
     justify-content: center;
-    color: ${props => props.$inputColor || "#fff"};
+    color: ${props => props.$inputColor || props.theme.color.fg};
     padding: ${props => props.$padding || "10px"};
     width: 40%;
     margin: ${props => props.$margin || "5px"};
@@ -504,7 +504,7 @@ export const ToolsDescriptionContainer = styled.div`
     border: ${props => props.$border || "none"};
     border-radius: ${props => props.$borderRadius|| "10px"};
     flex-basis: calc(25% - 20px); /* Calculate the width of each item (25% - 20px for spacing) */
-    font-family: 'VT323', monospace;
+    font-family: ${({ theme }) => theme.font.mono};
     font-size: 20px;
 
     /* Set the initial position to below the viewport */
@@ -518,9 +518,9 @@ export const ToolsDescriptionContainer = styled.div`
     overflow: hidden;
 
     &:hover {
-      background: #fff;
-      color: #000;
-      transform: translateY(1);
+      background: ${({ theme }) => theme.color.surfaceAlt};
+      color: ${({ theme }) => theme.color.fg};
+      border-color: ${({ theme }) => theme.color.accent};
     }
 
     /* Account for mobile devices */

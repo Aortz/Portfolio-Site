@@ -37,26 +37,30 @@ const Home = () => {
     <ParentContainer style={{height: '100vh'}}>
       <HomeBgImg
         src={HomeBg}
-        className={isBgVisible ? 'visible' : ''} 
-        alt="Background"
+        className={isBgVisible ? 'visible' : ''}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        width="600"
+        height="400"
       />
       <HomeContainer>
         <HomeContainerTitle>
           Hi, my name is
         </HomeContainerTitle>
-        <HomeContainerText $size="80px" $animationDelay="0s" className={isVisible1 ? 'visible name' : ''}>
-          Junwei 
+        <HomeContainerText $animationDelay="0s" className={isVisible1 ? 'visible name' : ''}>
+          Junwei
         </HomeContainerText>
-        <HomeContainerText $inputColor="#5f7c96" $animationDelay="2s" className={isVisible2 ? 'visible role' : ''}>
-          Software Engineer | Coder | Gymrat
-          <Cursor $inputColor="#5f7c96"/>
+        <HomeContainerText $animationDelay="1.8s" className={isVisible2 ? 'visible role' : ''}>
+          Software Engineer
+          <Cursor />
         </HomeContainerText>
-        <HomeContainerDescription $inputColor="#b8b8b8">
+        <HomeContainerDescription>
           <p>
-            I am a software engineer greatly interested in learning how to build digital experiences.
+            I build full-stack web apps, with a current focus on AI/ML systems and developer tooling.
           </p>
           <p>
-            Currently taking an interest in exploring AI/ML as well as metaverse technologies
+            Outside of work I&apos;m exploring 3D web experiences with React Three Fiber.
           </p>
         </HomeContainerDescription>
       </HomeContainer>

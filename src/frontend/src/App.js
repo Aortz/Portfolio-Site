@@ -12,6 +12,7 @@ import {
 } from './components/NavBar/NavbarElements';
 import VerticalNavbar from './components/NavBar/VerticalNavbar';
 import { GlobalStyles } from './components/Fonts/Fonts';
+import { ThemeProvider } from './theme/ThemeProvider';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import Home from './pages/Home/index';
@@ -47,10 +48,11 @@ export default function App() {
   };
 
   return (
-    <Router>
-      <GlobalStyles />
-      {/* Pass the state and setState to NavBar component */}
-      <Navbar navbarOpen={navbarOpen} setNavbarOpen={setNavbarOpen} />
+    <ThemeProvider>
+      <Router>
+        <GlobalStyles />
+        {/* Pass the state and setState to NavBar component */}
+        <Navbar navbarOpen={navbarOpen} setNavbarOpen={setNavbarOpen} />
       <>
         {navbarOpen ? (
           <NavMenu>
@@ -87,7 +89,8 @@ export default function App() {
           )
         }
       </>
-    </Router>
+      </Router>
+    </ThemeProvider>
   );
 }
 

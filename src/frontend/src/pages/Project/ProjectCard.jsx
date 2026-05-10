@@ -160,12 +160,7 @@ const Language = ({ languages_url, repo_url }) => {
   );
 };
 
-const StyledLanguage = styled(Language)`
-  font-family: 'VT323', monospace;
-  display: flex;
-  flex-wrap: wrap;
-  
-`
+// (StyledLanguage removed — was unused dead code referencing a deleted font.)
 const LanguageContainer = styled.div`
   display: flex;
   flex-direction: ${props => props.$flexDirection || "row"};
