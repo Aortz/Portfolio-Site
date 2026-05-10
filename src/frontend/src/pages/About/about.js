@@ -5,13 +5,13 @@ import {
   AboutParentContainer,
   AboutBgImg,
   ToolsContainer,
-  AboutContainerTitle,
   AboutDescriptionContainer,
   AboutDescriptionText,
   ToolsTitle,
   ToolDescriptionText,
   ToolsDescriptionContainer,
 } from './AboutElements';
+import SectionHeading from '../../components/SectionHeading';
 import { FaPython, FaJava, FaDocker, FaReact, FaGithub, FaJs, FaCss3, FaUnity, FaLinux } from 'react-icons/fa';
 import { TbBrandCSharp, TbSql, TbMathFunction } from 'react-icons/tb';
 import { SiRos } from 'react-icons/si';
@@ -77,14 +77,7 @@ const About = () => {
       />
       <AboutContainer>
         <AboutLeftContainer>
-          <AboutContainerTitle 
-            ref={aboutTitleRef} 
-            $size="50px" 
-            $animationDelay="0s" 
-            className={isTitleVisible ? 'visible title' : ''}
-          >
-            ABOUT ME
-          </AboutContainerTitle>
+          <SectionHeading number="02">ABOUT ME</SectionHeading>
           
           <AboutDescriptionContainer 
             ref={aboutDescriptionRef} 

@@ -37,14 +37,17 @@ export const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Subtle dot-grid backdrop — reads as a CAD/simulation canvas */
+  /* Layered backdrop: faint cool/warm color blobs + a CAD-style dot grid */
   body {
-    background-image: radial-gradient(
-      circle,
-      ${({ theme }) => theme.color.border} 1px,
-      transparent 1px
-    );
-    background-size: 28px 28px;
+    background-image:
+      radial-gradient(circle at 25% 15%, rgba(6, 182, 212, 0.07), transparent 55%),
+      radial-gradient(circle at 80% 85%, rgba(245, 158, 11, 0.04), transparent 55%),
+      radial-gradient(
+        circle,
+        ${({ theme }) => theme.color.fgSubtle} 0.8px,
+        transparent 0.8px
+      );
+    background-size: 100% 100%, 100% 100%, 32px 32px;
     background-attachment: fixed;
   }
 

@@ -3,7 +3,6 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import ProjectCard from './ProjectCard';
 import { projects } from '../../editable-stuff/config.js';
 import {
-  ContainerTitle,
   CarouselContainer,
   ProjectContainer,
   CarouselButton,
@@ -11,6 +10,7 @@ import {
   CarouselTrack,
   CarouselControls,
 } from './ProjectCardElements';
+import SectionHeading from '../../components/SectionHeading';
 
 const Project = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -31,9 +31,7 @@ const Project = () => {
 
   return (
     <ProjectContainer id="projects">
-      <ContainerTitle $size="2.25rem" className={isVisible ? 'visible' : ''}>
-        PROJECTS
-      </ContainerTitle>
+      <SectionHeading number="03">PROJECTS</SectionHeading>
       <CarouselWrapper>
         <CarouselContainer>
           <CarouselTrack>

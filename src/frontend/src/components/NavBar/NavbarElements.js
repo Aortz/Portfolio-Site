@@ -63,7 +63,7 @@ export const VerticalNav = styled.nav`
   background-color: transparent;
   position: fixed;
   top: 50%;
-  left: 0;
+  left: 24px;
   transform: translateY(-50%);
   width: 56px;
   display: flex;

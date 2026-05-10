@@ -56,7 +56,7 @@ export const HomeContainer = styled.div`
   color: ${({ theme }) => theme.color.fg};
   min-height: 90vh;
   gap: ${({ theme }) => theme.space[3]};
-  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 80px`};
+  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 100px`};
   border-top: 1px solid ${({ theme }) => theme.color.border};
   border-left: 1px solid ${({ theme }) => theme.color.border};
   border-radius: ${({ theme }) => `${theme.radius.xl} 0 0 0`};

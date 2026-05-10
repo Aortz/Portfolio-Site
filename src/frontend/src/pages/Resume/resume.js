@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FiDownload, FiExternalLink } from 'react-icons/fi';
 import resumePDF from '../../assets/resume/Lee_Junwei_Resume.pdf';
-import { ContainerTitle } from '../Project/ProjectCardElements';
+import SectionHeading from '../../components/SectionHeading';
 
 const ResumeSectionRoot = styled.section`
   display: flex;
@@ -12,7 +12,7 @@ const ResumeSectionRoot = styled.section`
   color: ${({ theme }) => theme.color.fg};
   min-height: 100vh;
   padding: ${({ theme }) =>
-    `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 80px`};
+    `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 100px`};
   border-left: 1px solid ${({ theme }) => theme.color.border};
 
   @media screen and (max-width: 768px) {
@@ -79,9 +79,7 @@ const SecondaryButton = styled(PrimaryButton)`
 
 const ResumeSection = () => (
   <ResumeSectionRoot id="resume">
-    <ContainerTitle $size="2.25rem" className="visible">
-      RESUME
-    </ContainerTitle>
+    <SectionHeading number="04">RESUME</SectionHeading>
     <Copy>
       Grab a copy of my resume below — full work history, education, and the
       side projects I&apos;ve been shipping.

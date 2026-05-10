@@ -21,7 +21,7 @@ export const ProjectContainer = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
   min-height: 100vh;
-  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 80px`};
+  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 100px`};
   border-left: 1px solid ${({ theme }) => theme.color.border};
   overflow: hidden;
 
@@ -115,7 +115,7 @@ export const StyledCard = styled(Card)`
       translateY(${(props) => (props.$isActive ? '-4px' : '0')});
     border-color: ${({ theme, $isActive }) => ($isActive ? theme.color.accent : theme.color.border)};
     box-shadow: ${({ $isActive }) =>
-      $isActive ? '0 8px 24px rgba(37, 99, 235, 0.18)' : 'none'};
+      $isActive ? '0 8px 24px rgba(6, 182, 212, 0.20)' : 'none'};
   }
 
   @media screen and (max-width: 768px) {
