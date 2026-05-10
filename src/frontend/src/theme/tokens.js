@@ -39,7 +39,7 @@ export const darkTokens = {
   ...shared,
   mode: 'dark',
   color: {
-    bg: '#0B0B0F',
+    bg: '#000000',
     surface: '#18181B',
     surfaceAlt: '#27272A',
     fg: '#FAFAFA',

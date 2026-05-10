@@ -12,6 +12,7 @@ import HomeBg from '../../assets/homeBG.png';
 import About from '../About/about';
 import Project from '../Project/project';
 import ResumeSection from '../Resume/resume';
+import VerticalNavbar from '../../components/NavBar/VerticalNavbar';
 
 const Home = () => {
   const [isVisible1, setIsVisible1] = useState(false);
@@ -32,6 +33,7 @@ const Home = () => {
   return (
     <>
       <ParentContainer style={{ minHeight: '100vh' }}>
+        <VerticalNavbar />
         <HomeBgImg
           src={HomeBg}
           className={isBgVisible ? 'visible' : ''}

@@ -7,27 +7,22 @@ import {
   NavLinkRow,
   NavAnchor,
   NavLogo,
-  NavText,
-  NavBtn,
-  NavMenuClose,
-  NavMenuOpen,
 } from './NavbarElements';
 import PersonalLogo from '../../assets/personal-icon/personal-logo-transparent.png';
 import ThemeToggle from '../ThemeToggle';
 
-const Navbar = ({ navbarOpen, setNavbarOpen }) => {
+const Navbar = () => {
   const navigate = useNavigate();
-
-  const handleLogoClick = () => {
-    navigate('/');
-    setNavbarOpen(false);
-  };
+  const handleLogoClick = () => navigate('/#home');
 
   return (
-    <Nav className={navbarOpen ? 'open' : ''}>
+    <Nav>
       <NavLeft>
-        <NavLogo src={PersonalLogo} onClick={handleLogoClick} alt="Junwei logo" />
-        <NavText onClick={handleLogoClick}>Junwei</NavText>
+        <NavLogo
+          src={PersonalLogo}
+          onClick={handleLogoClick}
+          alt="Junwei logo"
+        />
       </NavLeft>
 
       <NavRight>
@@ -38,12 +33,6 @@ const Navbar = ({ navbarOpen, setNavbarOpen }) => {
           <NavAnchor href="#resume">4. RESUME</NavAnchor>
         </NavLinkRow>
         <ThemeToggle />
-        <NavBtn
-          onClick={() => setNavbarOpen((prev) => !prev)}
-          aria-label={navbarOpen ? 'Close menu' : 'Open menu'}
-        >
-          {navbarOpen ? <NavMenuClose /> : <NavMenuOpen />}
-        </NavBtn>
       </NavRight>
     </Nav>
   );

@@ -48,13 +48,14 @@ export const ParentContainer = styled.div`
 
 export const HomeContainer = styled.div`
   display: flex;
-  justify-content: start;
+  justify-content: center;
   flex-direction: column;
   text-align: left;
   background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
   min-height: 90vh;
+  gap: ${({ theme }) => theme.space[3]};
   padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 80px`};
   border-top: 1px solid ${({ theme }) => theme.color.border};
   border-left: 1px solid ${({ theme }) => theme.color.border};
