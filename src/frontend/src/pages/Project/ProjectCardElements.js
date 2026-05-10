@@ -17,19 +17,15 @@ const slideRightAnimation = keyframes`
 export const ProjectContainer = styled.div`
   display: flex;
   flex-direction: column;
-  background: ${({ theme }) => theme.color.bg};
+  background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
   min-height: 100vh;
-  margin-left: ${({ theme }) => theme.space[16]};
-  padding: ${({ theme }) => theme.space[6]};
-  border-left: 1px solid ${({ theme }) => theme.color.border};
+  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 80px`};
   overflow: hidden;
 
   @media screen and (max-width: 768px) {
     padding: ${({ theme }) => theme.space[3]};
-    margin-left: 0;
-    border-left: none;
   }
 `;
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
+import {
   AboutContainer,
   AboutLeftContainer,
   AboutParentContainer,
@@ -8,7 +8,6 @@ import {
   AboutContainerTitle,
   AboutDescriptionContainer,
   AboutDescriptionText,
-  RightContainerImg,
   ToolsTitle,
   ToolDescriptionText,
   ToolsDescriptionContainer,

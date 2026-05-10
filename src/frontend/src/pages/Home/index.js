@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { 
-  HomeContainer, 
-  HomeContainerTitle, 
+import {
+  HomeContainer,
+  HomeContainerTitle,
   HomeContainerText,
   HomeContainerDescription,
   HomeBgImg,
   ParentContainer,
-  Cursor
+  Cursor,
 } from './HomePageElements';
-import HomeBg from '../../assets/homeBG.png'
-import About from '../About/about';
-import Project from '../Project/project';
-import {
-  repos,
-} from "../../editable-stuff/config.js";
+import HomeBg from '../../assets/homeBG.png';
 
 const Home = () => {
   const [isVisible1, setIsVisible1] = useState(false);
@@ -21,11 +16,9 @@ const Home = () => {
   const [isBgVisible, setIsBgVisible] = useState(false);
 
   useEffect(() => {
-    // Component visibility timers
     const timer1 = setTimeout(() => setIsVisible1(true), 0);
     const timer2 = setTimeout(() => setIsVisible2(true), 2000);
-    const timer3 = setTimeout(() => setIsBgVisible(true), 500); // Adjust timing as needed
-
+    const timer3 = setTimeout(() => setIsBgVisible(true), 500);
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
@@ -34,7 +27,7 @@ const Home = () => {
   }, []);
 
   return (
-    <ParentContainer style={{height: '100vh'}}>
+    <ParentContainer style={{ height: '100vh' }}>
       <HomeBgImg
         src={HomeBg}
         className={isBgVisible ? 'visible' : ''}
@@ -45,34 +38,33 @@ const Home = () => {
         height="400"
       />
       <HomeContainer>
-        <HomeContainerTitle>
-          Hi, my name is
-        </HomeContainerTitle>
-        <HomeContainerText $animationDelay="0s" className={isVisible1 ? 'visible name' : ''}>
+        <HomeContainerTitle>Hi, my name is</HomeContainerTitle>
+        <HomeContainerText
+          $animationDelay="0s"
+          className={isVisible1 ? 'visible name' : ''}
+        >
           Junwei
         </HomeContainerText>
-        <HomeContainerText $animationDelay="1.8s" className={isVisible2 ? 'visible role' : ''}>
+        <HomeContainerText
+          $animationDelay="1.8s"
+          className={isVisible2 ? 'visible role' : ''}
+        >
           Software Engineer
           <Cursor />
         </HomeContainerText>
         <HomeContainerDescription>
           <p>
-            I build full-stack web apps, with a current focus on AI/ML systems and developer tooling.
+            I build full-stack web apps, with a current focus on AI/ML systems
+            and developer tooling.
           </p>
           <p>
-            Outside of work I&apos;m exploring 3D web experiences with React Three Fiber.
+            Outside of work I&apos;m exploring 3D web experiences with React
+            Three Fiber.
           </p>
         </HomeContainerDescription>
       </HomeContainer>
-      <About />
-      <Project
-        heading={repos.heading}
-        username={repos.gitHubUsername}
-        length={repos.reposLength}
-        specfic={repos.specificRepos}
-      />
     </ParentContainer>
   );
 };
-  
+
 export default Home;

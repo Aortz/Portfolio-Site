@@ -78,11 +78,11 @@ const slideRightAnimation = keyframes`
 
 const slideLeftAnimation = keyframes`
   from {
-    transform: translateX(100%);
+    transform: translateX(40px);
     opacity: 0;
   }
   to {
-    transform: translateX(0) rotateY(20deg) rotateZ(10deg);
+    transform: translateX(0);
     opacity: 1;
   }
 `;
@@ -110,36 +110,23 @@ export const AboutContainer = styled.div`
     display: flex;
     justify-content: center;
     flex-direction: row;
-    align-items: left;
+    align-items: stretch;
     text-align: left;
     background: transparent;
     width: 100%;
     color: ${({ theme }) => theme.color.fg};
-    align-items: left;
-    height: 100vh; /* Use min-height instead of height to prevent overflow */
-    margin-left: 80px;
-    padding: 20px;
-    // border-top: 1px solid #ccc;
-    border-left: 1px solid ${({ theme }) => theme.color.border};
-    // border-radius: 25px;
+    height: 100vh;
+    padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 80px`};
 
     grid-row: 1;
     grid-column: 1;
     z-index: 2;
-
-    /* Add the following styles to remove the horizontal scrollbar */
-    overflow-x: hidden;
-
-    /* Hide the scrollbar during the animation */
     overflow: hidden;
 
-    /* Account for mobile devices */
     @media screen and (max-width: 768px) {
-        margin-left: 0px;
-        border-top: none;
-        border-left: none;
-        padding: 0px;
-    } 
+        padding: ${({ theme }) => theme.space[4]};
+        flex-direction: column;
+    }
 `;
 
 export const AboutBgImg = styled.img`
@@ -170,7 +157,7 @@ export const AboutBgImg = styled.img`
 
     /* Prevent re-triggering */
     &.visible {
-        transform: translateX(0) rotateY(20deg) rotateZ(10deg);
+        transform: translateX(0);
         opacity: 1;
     }
 
@@ -216,32 +203,22 @@ export const AboutRightContainer = styled.div`
     display: flex;
     justify-content: start;
     flex-direction: column;
-    align-items: left;
+    align-items: flex-start;
     text-align: left;
 
     background-image: url(${backgroundImage});
-    background-size: cover; /* Adjust the background size to cover the container */
-    background-position: center; /* Center the background image */
-
+    background-size: cover;
+    background-position: center;
 
     width: 100%;
     color: ${({ theme }) => theme.color.fg};
-    align-items: left;
-    min-height: 20vh; /* Use min-height instead of height to prevent overflow */
-    margin-left: 20px;
-    // padding: 20px;
-    border-top: 1px solid ${({ theme }) => theme.color.border};
-    border-left: 1px solid ${({ theme }) => theme.color.border};
-    /* Add the following styles to remove the horizontal scrollbar */
-    overflow-x: hidden;
-
-    /* Hide the scrollbar during the animation */
+    min-height: 20vh;
+    margin-left: ${({ theme }) => theme.space[4]};
     overflow: hidden;
 
-    /* Account for mobile devices */
     @media screen and (max-width: 768px) {
         display: none;
-    } 
+    }
 `;
 
 export const RightContainerImg = styled.img`

@@ -67,19 +67,12 @@ export const HomeContainer = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
   height: 90vh;
-  margin-left: ${({ theme }) => theme.space[16]};
-  padding: ${({ theme }) => theme.space[6]};
-  border-top: 1px solid ${({ theme }) => theme.color.border};
-  border-left: 1px solid ${({ theme }) => theme.color.border};
-  border-radius: ${({ theme }) => `${theme.radius.xl} 0 0 0`};
+  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 80px`};
   position: relative;
   z-index: 2;
   overflow-x: hidden;
 
   @media screen and (max-width: 768px) {
-    margin-left: 0;
-    border-top: none;
-    border-left: none;
     padding: ${({ theme }) => theme.space[4]};
   }
 `;

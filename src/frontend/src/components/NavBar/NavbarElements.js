@@ -5,9 +5,9 @@ import { MdClose } from 'react-icons/md';
 import { BiMenuAltRight } from 'react-icons/bi';
 import { FaGithub, FaLinkedin, FaInstagram } from 'react-icons/fa';
 
-const slideUpAnimation = keyframes`
-  from { transform: translateY(100%); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to   { opacity: 1; }
 `;
 
 const slideLeftAnimation = keyframes`
@@ -16,36 +16,71 @@ const slideLeftAnimation = keyframes`
 `;
 
 export const Nav = styled.nav`
-  background-color: ${({ theme }) => theme.color.bg};
+  background-color: transparent;
   height: 85px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 999;
-  padding: ${({ theme }) => theme.space[2]};
-  border-bottom: 1px solid ${({ theme }) => theme.color.border};
+  padding: ${({ theme }) => `${theme.space[2]} ${theme.space[6]}`};
 
   @media screen and (max-width: 768px) {
-    justify-content: center;
+    justify-content: space-between;
     height: 65px;
+    padding: ${({ theme }) => `${theme.space[2]} ${theme.space[3]}`};
+  }
+`;
+
+export const NavLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[3]};
+`;
+
+export const NavRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[6]};
+`;
+
+/* Desktop link row: 1. HOME / 2. ABOUT ME / 3. PROJECTS / 4. RESUME */
+export const NavLinkRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[6]};
+
+  @media screen and (max-width: 768px) {
+    display: none;
   }
 `;
 
 export const VerticalNav = styled.nav`
   background-color: transparent;
   position: fixed;
-  bottom: ${({ theme }) => theme.space[4]};
+  top: 50%;
   left: 0;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: ${({ theme }) => theme.space[3]};
   z-index: 999;
-  padding: ${({ theme }) => theme.space[3]};
-
+  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[3]}`};
   opacity: 0;
-  transform: translateY(100%);
-  animation: ${slideUpAnimation} 1s ease-in-out forwards;
+  animation: ${fadeIn} 1s ease-in-out forwards;
+  animation-delay: 0.4s;
+
+  /* Thin vertical line running through the icons */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: ${({ theme }) => theme.color.border};
+    z-index: -1;
+  }
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -53,9 +88,11 @@ export const VerticalNav = styled.nav`
 `;
 
 export const VerticalNavLogo = styled.a`
-  padding: ${({ theme }) => theme.space[1]};
-  align-self: center;
+  padding: ${({ theme }) => theme.space[2]};
+  background: ${({ theme }) => theme.color.bg};
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: ${({ theme }) => theme.radius.pill};
   transition: transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.ease};
 
@@ -65,16 +102,12 @@ export const VerticalNavLogo = styled.a`
 `;
 
 export const VerticalNavText = styled.div`
-  font-family: ${({ theme }) => theme.font.mono};
-  font-size: ${({ theme }) => theme.size['2xl']};
-  font-weight: 300;
-  color: ${({ theme }) => theme.color.fgSubtle};
-  line-height: 1;
+  display: none; /* legacy "|" marks replaced by the ::before vertical line */
 `;
 
 const iconBase = `
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   align-self: center;
   transition: color 250ms cubic-bezier(0.2, 0.8, 0.2, 1);
 `;
@@ -108,33 +141,49 @@ export const StyledLinkedinLogo = styled(FaLinkedin)`
 
 export const NavLink = styled(Link)`
   color: ${({ theme }) => theme.color.fg};
-  text-align: right;
   text-decoration: none;
   font-family: ${({ theme }) => theme.font.mono};
-  font-size: ${({ theme }) => theme.size.xl};
+  font-size: ${({ theme }) => theme.size.sm};
   font-weight: 500;
-  padding: ${({ theme }) => `${theme.space[2]} ${theme.space[4]}`};
-  width: 100%;
+  letter-spacing: 0.04em;
+  padding: ${({ theme }) => `${theme.space[1]} 0`};
   cursor: pointer;
-  transition:
-    color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
-    background ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
+  position: relative;
+  transition: color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
 
   animation: ${({ animate }) => (animate ? slideLeftAnimation : 'none')} 1s forwards;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: ${({ theme }) => theme.color.accent};
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
+  }
 
   &.active {
     color: ${({ theme }) => theme.color.accent};
   }
 
-  &:hover {
-    color: ${({ theme }) => theme.color.accent};
-    background: ${({ theme }) => theme.color.surfaceAlt};
+  &.active::after,
+  &:hover::after {
+    transform: scaleX(1);
   }
 
+  &:hover {
+    color: ${({ theme }) => theme.color.accent};
+  }
+
+  /* Mobile menu version (rendered inside <NavMenu>) */
   @media screen and (max-width: 768px) {
     text-align: center;
     font-size: ${({ theme }) => theme.size.lg};
-    font-family: ${({ theme }) => theme.font.mono};
+    padding: ${({ theme }) => theme.space[3]} 0;
   }
 `;
 
@@ -185,23 +234,22 @@ export const NavMenuClose = styled(MdClose)`
 `;
 
 export const NavBtn = styled(Button)`
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   cursor: pointer;
   background: none;
   border: none;
   padding: ${({ theme }) => theme.space[2]};
-  margin-right: ${({ theme }) => theme.space[2]};
   color: ${({ theme }) => theme.color.fg};
 
-  @media screen and (max-width: 768px) {
-    margin-left: auto;
+  @media screen and (min-width: 769px) {
+    display: none;
   }
 `;
 
 export const NavLogo = styled.img`
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   align-self: center;
   background: none;
   border-radius: ${({ theme }) => theme.radius.pill};

@@ -1,35 +1,45 @@
 // Navigation Bar SECTION
 const navBar = {
-    show: true,
-  };
-  
-  
-  // ABOUT SECTION
-  // If you want the About Section to show a profile picture you can fill the profilePictureLink either with:
-  //a) your Instagram username
-  //      i.e:profilePictureLink:"johnDoe123",
-  //b) a link to an hosted image
-  //      i.e:profilePictureLink:"www.picturesonline.com/johnDoeFancyAvatar.jpg",
-  //c) image in "editable-stuff" directory and use require("") to import here,
-  //      i.e: profilePictureLink: require("../editable-stuff/hashirshoaeb.png"),
-  //d) If you do not want any picture to be displayed, just leave it empty :)
-  //      i.e: profilePictureLink: "",
-  // For Resume either provide link to your resume or import from "editable-stuff" directory
-  //     i.e resume: require("../editable-stuff/resume.pdf"),
-  //         resume: "https://docs.google.com/document/d/13_PWdhThMr6roxb-UFiJj4YAFOj8e_bv3Vx9UHQdyBQ/edit?usp=sharing",
-  
-  
-  // PROJECTS SECTION
-  // Setting up project lenght will automatically fetch your that number of recently updated projects, or you can set this field 0 to show none.
-  //      i.e: reposLength: 0,
-  // If you want to display specfic projects, add the repository names,
-  //      i.e ["repository-1", "repo-2"]
-  const repos = {
-    show: true,
-    heading: "Recent Projects",
-    gitHubUsername: "Aortz",
-    reposLength: 4,
-    specificRepos: [],
-  };
-  
-  export { navBar,  repos };
+  show: true,
+};
+
+// PROJECTS SECTION — curated, deployed work.
+//
+// Each entry shape:
+//   {
+//     title:        string  (card heading)
+//     description:  string  (1–2 sentences)
+//     liveUrl:      string  (deployed/demo URL; pass empty string '' if none)
+//     githubUrl:    string  (source repo URL; pass empty string '' if private)
+//     tags:         string[] (tech labels — e.g. ['React', 'Three.js'])
+//     screenshot:   require('../assets/projects/foo.png')   // optional; omit if none
+//   }
+//
+// To re-enable the GitHub API mode, uncomment the `repos` block below and
+// the corresponding code in src/pages/Project/project.jsx + ProjectCard.jsx.
+// (Note: requires REACT_APP_GITHUB_TOKEN in .env and Vercel env vars.)
+
+const projects = [
+  {
+    title: 'Portfolio Site',
+    description:
+      'This site. React + styled-components + Three.js, theme tokens with light/dark mode, deployed on Vercel.',
+    liveUrl: 'https://portfolio-site-aortz.vercel.app',
+    githubUrl: 'https://github.com/Aortz/Portfolio-Site',
+    tags: ['React', 'styled-components', 'Three.js', 'Vercel'],
+  },
+  // TODO: add more deployed projects here — e.g. side projects, hackathon
+  // submissions, internal tools you can share. Each card needs at minimum
+  // title, description, and at least one URL (live or github).
+];
+
+// Legacy GitHub API config — left here for reference / quick revert.
+// const repos = {
+//   show: true,
+//   heading: 'Recent Projects',
+//   gitHubUsername: 'Aortz',
+//   reposLength: 4,
+//   specificRepos: [],
+// };
+
+export { navBar, projects };
