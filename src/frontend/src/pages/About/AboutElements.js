@@ -134,6 +134,10 @@ export const AboutContainer = styled.div`
     z-index: 2;
     overflow: hidden;
 
+    @media screen and (min-width: 1025px) {
+        flex-direction: row-reverse;
+    }
+
     @media screen and (max-width: 768px) {
         padding: ${({ theme }) => theme.space[4]};
         flex-direction: column;
@@ -485,6 +489,63 @@ export const ToolsBlock = styled.div`
     flex-direction: column;
     gap: ${({ theme }) => theme.space[4]};
     margin-top: ${({ theme }) => theme.space[6]};
+`;
+
+/* Flip card — front: icon + name; back: short purpose label */
+export const ToolFlipCard = styled.div`
+    perspective: 600px;
+    width: 140px;
+    height: 36px;
+
+    & .tool-flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 350ms ${({ theme }) => theme.motion.ease};
+    }
+
+    &:hover .tool-flip-inner,
+    &:focus-within .tool-flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    & .tool-flip-front,
+    & .tool-flip-back {
+      position: absolute;
+      inset: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: ${({ theme }) => theme.space[2]};
+      border: 1px solid ${({ theme }) => theme.color.border};
+      border-radius: ${({ theme }) => theme.radius.pill};
+      font-family: ${({ theme }) => theme.font.mono};
+      font-size: ${({ theme }) => theme.size.xs};
+      font-weight: 500;
+      backface-visibility: hidden;
+      background: ${({ theme }) => theme.color.surfaceAlt};
+      padding: 0 ${({ theme }) => theme.space[3]};
+      cursor: default;
+    }
+
+    & .tool-flip-front {
+      color: ${({ theme }) => theme.color.fgMuted};
+    }
+    & .tool-flip-front svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    & .tool-flip-back {
+      transform: rotateY(180deg);
+      background: ${({ theme }) => theme.color.accent};
+      color: ${({ theme }) => theme.color.onAccent};
+      border-color: ${({ theme }) => theme.color.accent};
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
 `;
 
 export const CategoryLabel = styled.div`

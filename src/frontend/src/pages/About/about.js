@@ -8,7 +8,7 @@ import {
   ToolsBlock,
   CategoryLabel,
   TagRow,
-  ToolTag,
+  ToolFlipCard,
 } from './AboutElements';
 import {
   FaPython,
@@ -34,35 +34,35 @@ const TOOL_CATEGORIES = [
   {
     label: 'Languages',
     items: [
-      { name: 'Python', Icon: FaPython },
-      { name: 'Java', Icon: FaJava },
-      { name: 'JavaScript', Icon: FaJs },
-      { name: 'C#', Icon: TbBrandCSharp },
-      { name: 'SQL', Icon: TbSql },
+      { name: 'Python', Icon: FaPython, purpose: 'scripting / data' },
+      { name: 'Java', Icon: FaJava, purpose: 'jvm services' },
+      { name: 'JavaScript', Icon: FaJs, purpose: 'web glue' },
+      { name: 'C#', Icon: TbBrandCSharp, purpose: 'unity gameplay' },
+      { name: 'SQL', Icon: TbSql, purpose: 'data layer' },
     ],
   },
   {
     label: 'Robotics & Sim',
     items: [
-      { name: 'ROS', Icon: SiRos },
-      { name: 'Gazebo', Icon: BsCpu },
-      { name: 'MATLAB', Icon: TbMathFunction },
-      { name: 'Unity', Icon: FaUnity },
+      { name: 'ROS', Icon: SiRos, purpose: 'real-time control' },
+      { name: 'Gazebo', Icon: BsCpu, purpose: 'physics sim' },
+      { name: 'MATLAB', Icon: TbMathFunction, purpose: 'numeric proto' },
+      { name: 'Unity', Icon: FaUnity, purpose: '3D / sim' },
     ],
   },
   {
     label: 'Web',
     items: [
-      { name: 'React', Icon: FaReact },
-      { name: 'CSS', Icon: FaCss3 },
+      { name: 'React', Icon: FaReact, purpose: 'ui' },
+      { name: 'CSS', Icon: FaCss3, purpose: 'styling' },
     ],
   },
   {
     label: 'DevOps',
     items: [
-      { name: 'Docker', Icon: FaDocker },
-      { name: 'Linux', Icon: FaLinux },
-      { name: 'Git', Icon: FaGithub },
+      { name: 'Docker', Icon: FaDocker, purpose: 'containers' },
+      { name: 'Linux', Icon: FaLinux, purpose: 'daily driver' },
+      { name: 'Git', Icon: FaGithub, purpose: 'version control' },
     ],
   },
 ];
@@ -102,11 +102,16 @@ const About = () => {
                 <div key={cat.label}>
                   <CategoryLabel>{`// ${cat.label.toUpperCase()}`}</CategoryLabel>
                   <TagRow>
-                    {cat.items.map(({ name, Icon }) => (
-                      <ToolTag key={name}>
-                        <Icon />
-                        {name}
-                      </ToolTag>
+                    {cat.items.map(({ name, Icon, purpose }) => (
+                      <ToolFlipCard key={name} tabIndex={0}>
+                        <div className="tool-flip-inner">
+                          <div className="tool-flip-front">
+                            <Icon />
+                            {name}
+                          </div>
+                          <div className="tool-flip-back">{purpose}</div>
+                        </div>
+                      </ToolFlipCard>
                     ))}
                   </TagRow>
                 </div>

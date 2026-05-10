@@ -32,7 +32,7 @@ const Wrapper = styled.div`
 
 const HeroAccent = () => (
   <Wrapper aria-hidden="true">
-    <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [0, 0, 8], fov: 45 }} dpr={[1, 2]}>
       <Suspense fallback={null}>
         <ambientLight intensity={0.45} />
         <pointLight position={[5, 5, 5]} intensity={0.7} />

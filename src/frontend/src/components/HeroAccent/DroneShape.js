@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { MeshBasicMaterial, Box3, Vector3 } from 'three';
@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components';
 const DroneShape = () => {
   const ref = useRef();
   const theme = useTheme();
+  const [hovered, setHovered] = useState(false);
   const obj = useLoader(OBJLoader, '/drone/drone.obj');
 
   // Clone so multiple mounts don't share materials.
@@ -21,7 +22,7 @@ const DroneShape = () => {
     bbox.getCenter(center);
 
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    const scale = 3 / maxDim;
+    const scale = 6 / maxDim;
     c.scale.setScalar(scale);
     c.position.sub(center.multiplyScalar(scale));
     return c;
@@ -42,14 +43,17 @@ const DroneShape = () => {
   }, [cloned, theme.color.accent]);
 
   useFrame((_, delta) => {
-    if (ref.current) {
-      ref.current.rotation.y += delta * 0.25;
-      ref.current.rotation.x = Math.sin(performance.now() * 0.0003) * 0.15;
-    }
+    if (!ref.current || hovered) return;
+    ref.current.rotation.y += delta * 0.25;
+    ref.current.rotation.x = Math.sin(performance.now() * 0.0003) * 0.15;
   });
 
   return (
-    <group ref={ref}>
+    <group
+      ref={ref}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+    >
       <primitive object={cloned} />
     </group>
   );

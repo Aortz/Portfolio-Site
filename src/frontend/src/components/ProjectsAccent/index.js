@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 import GearShape from './GearShape';
 
 const Wrapper = styled.div`
@@ -36,6 +37,7 @@ const ProjectsAccent = () => (
         <ambientLight intensity={0.4} />
         <pointLight position={[5, 5, 5]} intensity={0.7} />
         <GearShape />
+        <OrbitControls enableZoom={false} enablePan={false} />
       </Suspense>
     </Canvas>
   </Wrapper>
