@@ -1,34 +1,48 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FiDownload } from 'react-icons/fi';
+import { FiDownload, FiExternalLink } from 'react-icons/fi';
 import resumePDF from '../../assets/resume/Lee_Junwei_Resume.pdf';
-import { ParentContainer } from '../Home/HomePageElements';
 import { ContainerTitle } from '../Project/ProjectCardElements';
 
-const ResumePage = styled.div`
+const ResumeSectionRoot = styled.section`
   display: flex;
   flex-direction: column;
+  background: transparent;
   width: 100%;
+  color: ${({ theme }) => theme.color.fg};
   min-height: 100vh;
   padding: ${({ theme }) =>
     `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 80px`};
-  color: ${({ theme }) => theme.color.fg};
-  background: transparent;
+  border-top: 1px solid ${({ theme }) => theme.color.border};
+  border-left: 1px solid ${({ theme }) => theme.color.border};
+  border-radius: ${({ theme }) => `${theme.radius.xl} 0 0 0`};
 
   @media screen and (max-width: 768px) {
     padding: ${({ theme }) => theme.space[4]};
+    border-top: none;
+    border-left: none;
+    border-radius: 0;
   }
 `;
 
-const Toolbar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: ${({ theme }) => `${theme.space[4]} 0 ${theme.space[6]}`};
-  gap: ${({ theme }) => theme.space[3]};
+const Copy = styled.p`
+  color: ${({ theme }) => theme.color.fgMuted};
+  font-family: ${({ theme }) => theme.font.sans};
+  font-size: ${({ theme }) => theme.size.base};
+  line-height: 1.6;
+  margin: ${({ theme }) => `${theme.space[4]} 0`};
+  max-width: 60ch;
 `;
 
-const DownloadButton = styled.a`
+const ButtonRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[3]};
+  margin-top: ${({ theme }) => theme.space[4]};
+  flex-wrap: wrap;
+`;
+
+const PrimaryButton = styled.a`
   display: inline-flex;
   align-items: center;
   gap: ${({ theme }) => theme.space[2]};
@@ -55,48 +69,47 @@ const DownloadButton = styled.a`
   }
 `;
 
-const PdfFrame = styled.iframe`
-  width: 100%;
-  height: 80vh;
+const SecondaryButton = styled(PrimaryButton)`
+  background: transparent;
+  color: ${({ theme }) => theme.color.fg};
   border: 1px solid ${({ theme }) => theme.color.border};
-  border-radius: ${({ theme }) => theme.radius.lg};
-  background: ${({ theme }) => theme.color.surface};
+
+  &:hover {
+    background: ${({ theme }) => theme.color.surfaceAlt};
+    color: ${({ theme }) => theme.color.accent};
+    border-color: ${({ theme }) => theme.color.accent};
+  }
 `;
 
-const Fallback = styled.p`
-  color: ${({ theme }) => theme.color.fgMuted};
-  font-family: ${({ theme }) => theme.font.sans};
-  font-size: ${({ theme }) => theme.size.sm};
-  margin-top: ${({ theme }) => theme.space[3]};
-`;
-
-const Resume = () => (
-  <ParentContainer style={{ height: '100vh', overflow: 'auto' }}>
-    <ResumePage>
-      <ContainerTitle $size="2.25rem" className="visible">
-        RESUME
-      </ContainerTitle>
-      <Toolbar>
-        <DownloadButton
-          href={resumePDF}
-          download="Lee_Junwei_Resume.pdf"
-          aria-label="Download resume PDF"
-        >
-          <FiDownload size={16} />
-          Download PDF
-        </DownloadButton>
-      </Toolbar>
-      <PdfFrame
-        src={`${resumePDF}#view=FitH`}
-        title="Lee Junwei resume"
-        loading="lazy"
-      />
-      <Fallback>
-        If the preview doesn&apos;t render in your browser, use the download
-        button above.
-      </Fallback>
-    </ResumePage>
-  </ParentContainer>
+const ResumeSection = () => (
+  <ResumeSectionRoot id="resume">
+    <ContainerTitle $size="2.25rem" className="visible">
+      RESUME
+    </ContainerTitle>
+    <Copy>
+      Grab a copy of my resume below — full work history, education, and the
+      side projects I&apos;ve been shipping.
+    </Copy>
+    <ButtonRow>
+      <PrimaryButton
+        href={resumePDF}
+        download="Lee_Junwei_Resume.pdf"
+        aria-label="Download resume PDF"
+      >
+        <FiDownload size={16} aria-hidden="true" />
+        Download PDF
+      </PrimaryButton>
+      <SecondaryButton
+        href={resumePDF}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Open resume in a new tab"
+      >
+        <FiExternalLink size={16} aria-hidden="true" />
+        Open in new tab
+      </SecondaryButton>
+    </ButtonRow>
+  </ResumeSectionRoot>
 );
 
-export default Resume;
+export default ResumeSection;

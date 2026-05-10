@@ -139,16 +139,21 @@ export const StyledLinkedinLogo = styled(FaLinkedin)`
   }
 `;
 
-export const NavLink = styled(Link)`
-  color: ${({ theme }) => theme.color.fg};
+const navLinkStyles = `
+  color: var(--color-fg);
   text-decoration: none;
-  font-family: ${({ theme }) => theme.font.mono};
-  font-size: ${({ theme }) => theme.size.sm};
   font-weight: 500;
   letter-spacing: 0.04em;
-  padding: ${({ theme }) => `${theme.space[1]} 0`};
   cursor: pointer;
   position: relative;
+`;
+
+export const NavLink = styled(Link)`
+  ${navLinkStyles}
+  color: ${({ theme }) => theme.color.fg};
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.sm};
+  padding: ${({ theme }) => `${theme.space[1]} 0`};
   transition: color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
 
   animation: ${({ animate }) => (animate ? slideLeftAnimation : 'none')} 1s forwards;
@@ -166,24 +171,52 @@ export const NavLink = styled(Link)`
     transition: transform ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
   }
 
-  &.active {
-    color: ${({ theme }) => theme.color.accent};
-  }
-
+  &.active { color: ${({ theme }) => theme.color.accent}; }
   &.active::after,
-  &:hover::after {
-    transform: scaleX(1);
-  }
-
-  &:hover {
-    color: ${({ theme }) => theme.color.accent};
-  }
+  &:hover::after { transform: scaleX(1); }
+  &:hover { color: ${({ theme }) => theme.color.accent}; }
 
   /* Mobile menu version (rendered inside <NavMenu>) */
   @media screen and (max-width: 768px) {
     text-align: center;
     font-size: ${({ theme }) => theme.size.lg};
     padding: ${({ theme }) => theme.space[3]} 0;
+  }
+`;
+
+/* Anchor-style navlink for in-page hash navigation (used in the desktop nav) */
+export const NavAnchor = styled.a`
+  ${navLinkStyles}
+  color: ${({ theme }) => theme.color.fg};
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.sm};
+  padding: ${({ theme }) => `${theme.space[1]} 0`};
+  transition: color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: ${({ theme }) => theme.color.accent};
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.color.accent};
+  }
+  &:hover::after {
+    transform: scaleX(1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.color.accent};
+    outline-offset: 4px;
+    border-radius: ${({ theme }) => theme.radius.sm};
   }
 `;
 

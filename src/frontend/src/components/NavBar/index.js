@@ -5,7 +5,7 @@ import {
   NavLeft,
   NavRight,
   NavLinkRow,
-  NavLink,
+  NavAnchor,
   NavLogo,
   NavText,
   NavBtn,
@@ -32,10 +32,10 @@ const Navbar = ({ navbarOpen, setNavbarOpen }) => {
 
       <NavRight>
         <NavLinkRow>
-          <NavLink to="/" end>1. HOME</NavLink>
-          <NavLink to="/about">2. ABOUT ME</NavLink>
-          <NavLink to="/projects">3. PROJECTS</NavLink>
-          <NavLink to="/resume">4. RESUME</NavLink>
+          <NavAnchor href="#home">1. HOME</NavAnchor>
+          <NavAnchor href="#about">2. ABOUT ME</NavAnchor>
+          <NavAnchor href="#projects">3. PROJECTS</NavAnchor>
+          <NavAnchor href="#resume">4. RESUME</NavAnchor>
         </NavLinkRow>
         <ThemeToggle />
         <NavBtn

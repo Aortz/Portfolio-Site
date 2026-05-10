@@ -28,8 +28,17 @@ const projects = [
     githubUrl: 'https://github.com/Aortz/Portfolio-Site',
     tags: ['React', 'styled-components', 'Three.js', 'Vercel'],
   },
-  // TODO: add more deployed projects here — e.g. side projects, hackathon
-  // submissions, internal tools you can share. Each card needs at minimum
+  {
+    title: 'Tally Finance Dashboard',
+    // TODO: rewrite this description to match what the product actually does.
+    description:
+      'Personal finance dashboard — track spending, budgets, and goals.',
+    liveUrl: 'https://dashboard.tallyfinance.site/',
+    githubUrl: '', // TODO: fill in if the repo is public
+    // TODO: replace with the real stack labels (e.g. ['Next.js', 'TypeScript', 'Postgres']).
+    tags: ['Web App', 'Finance', 'Dashboard'],
+  },
+  // Add more deployed projects here — each card needs at minimum
   // title, description, and at least one URL (live or github).
 ];
 

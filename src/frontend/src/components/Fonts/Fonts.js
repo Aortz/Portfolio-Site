@@ -18,6 +18,11 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+  }
+
   html,
   body {
     background: ${({ theme }) => theme.color.bg};
@@ -44,6 +49,9 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
     *,
     *::before,
     *::after {

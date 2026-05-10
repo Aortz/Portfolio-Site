@@ -30,16 +30,9 @@ const slideLeftAnimation = keyframes`
 
 export const RouteContainer = styled.div`
   display: flex;
-  justify-content: start;
   flex-direction: column;
   padding: ${({ theme }) => theme.space[4]};
-  overflow: auto;
-  height: 100vh;
   background: ${({ theme }) => theme.color.bg};
-
-  &::-webkit-scrollbar { display: none; }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 `;
 
 export const ParentContainer = styled.div`
@@ -50,12 +43,7 @@ export const ParentContainer = styled.div`
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   background: transparent;
-  overflow-y: auto;
   overflow-x: hidden;
-
-  &::-webkit-scrollbar { display: none; }
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 `;
 
 export const HomeContainer = styled.div`
@@ -66,14 +54,20 @@ export const HomeContainer = styled.div`
   background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
-  height: 90vh;
+  min-height: 90vh;
   padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 80px`};
+  border-top: 1px solid ${({ theme }) => theme.color.border};
+  border-left: 1px solid ${({ theme }) => theme.color.border};
+  border-radius: ${({ theme }) => `${theme.radius.xl} 0 0 0`};
   position: relative;
   z-index: 2;
   overflow-x: hidden;
 
   @media screen and (max-width: 768px) {
     padding: ${({ theme }) => theme.space[4]};
+    border-top: none;
+    border-left: none;
+    border-radius: 0;
   }
 `;
 

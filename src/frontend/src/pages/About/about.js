@@ -69,7 +69,7 @@ const About = () => {
   }, []);
 
   return (
-    <AboutParentContainer style={{height: '100vh'}}>
+    <AboutParentContainer id="about" style={{ minHeight: '100vh' }}>
       <AboutBgImg
         src={AboutBg}
         className={isDescriptionVisible ? 'visible bg' : ''}

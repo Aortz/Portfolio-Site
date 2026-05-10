@@ -30,7 +30,7 @@ const Project = () => {
     setCurrentIndex((i) => (i === 0 ? visibleSlots - 1 : i - 1));
 
   return (
-    <ProjectContainer>
+    <ProjectContainer id="projects">
       <ContainerTitle $size="2.25rem" className={isVisible ? 'visible' : ''}>
         PROJECTS
       </ContainerTitle>
