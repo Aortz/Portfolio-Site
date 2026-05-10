@@ -12,8 +12,7 @@ const ResumeSectionRoot = styled.section`
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
   min-height: 100vh;
-  padding: ${({ theme }) =>
-    `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 136px`};
+  padding: ${({ theme }) => theme.space[6]};
   border-left: 1px solid ${({ theme }) => theme.color.border};
   opacity: 0;
   transform: translateY(24px);

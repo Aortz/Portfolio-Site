@@ -31,8 +31,12 @@ const slideLeftAnimation = keyframes`
 export const RouteContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: ${({ theme }) => theme.space[4]};
+  padding: ${({ theme }) => `${theme.space[4]} ${theme.space[4]} ${theme.space[4]} 120px`};
   background: ${({ theme }) => theme.color.bg};
+
+  @media screen and (max-width: 768px) {
+    padding: ${({ theme }) => theme.space[4]};
+  }
 `;
 
 export const ParentContainer = styled.div`
@@ -56,7 +60,7 @@ export const HomeContainer = styled.div`
   color: ${({ theme }) => theme.color.fg};
   min-height: 90vh;
   gap: ${({ theme }) => theme.space[3]};
-  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} 136px`};
+  padding: ${({ theme }) => theme.space[6]};
   border-top: 1px solid ${({ theme }) => theme.color.border};
   border-left: 1px solid ${({ theme }) => theme.color.border};
   border-radius: ${({ theme }) => `${theme.radius.xl} 0 0 0`};

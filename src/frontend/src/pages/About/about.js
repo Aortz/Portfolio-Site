@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import {
   AboutContainer,
   AboutLeftContainer,
   AboutParentContainer,
-  AboutBgImg,
   AboutDescriptionContainer,
   AboutDescriptionText,
   ToolsBlock,
@@ -25,9 +24,10 @@ import {
 import { TbBrandCSharp, TbSql, TbMathFunction } from 'react-icons/tb';
 import { SiRos } from 'react-icons/si';
 import { BsCpu } from 'react-icons/bs';
-import AboutBg from '../../assets/aboutBG.png';
 import SectionHeading from '../../components/SectionHeading';
 import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
+
+const AboutAccent = lazy(() => import('../../components/AboutAccent'));
 
 const TOOL_CATEGORIES = [
   {
@@ -75,7 +75,9 @@ const About = () => {
       ref={ref}
       className={visible ? 'visible' : ''}
     >
-      <AboutBgImg src={AboutBg} className={visible ? 'visible bg' : ''} />
+      <Suspense fallback={null}>
+        <AboutAccent />
+      </Suspense>
       <AboutContainer>
         <AboutLeftContainer>
           <SectionHeading number="02">ABOUT ME</SectionHeading>
