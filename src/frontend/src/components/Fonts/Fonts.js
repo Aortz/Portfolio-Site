@@ -21,27 +21,30 @@ export const GlobalStyles = createGlobalStyle`
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 100px;
-  }
-
-  html {
     font-size: 19px;
+    background: ${({ theme }) => theme.color.bg};
+    cursor: url('/cursors/robot-default.svg') 14 3, default;
   }
 
-  html,
   body {
-    background: ${({ theme }) => theme.color.bg};
     color: ${({ theme }) => theme.color.fg};
     font-family: ${({ theme }) => theme.font.sans};
     line-height: 1.6;
+    background: transparent;
     transition:
-      background ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
       color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Layered backdrop: faint cool/warm color blobs + a CAD-style dot grid */
-  body {
+  /* Layered backdrop (gradient blobs + dot grid) on a dedicated layer
+     behind the particle canvas. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
     background-image:
       radial-gradient(circle at 25% 15%, rgba(6, 182, 212, 0.07), transparent 55%),
       radial-gradient(circle at 80% 85%, rgba(245, 158, 11, 0.04), transparent 55%),
@@ -51,7 +54,12 @@ export const GlobalStyles = createGlobalStyle`
         transparent 0.8px
       );
     background-size: 100% 100%, 100% 100%, 32px 32px;
-    background-attachment: fixed;
+  }
+
+  /* Robot-claw cursor on clickable elements */
+  a, button, [role="button"], summary, label, select,
+  input[type="submit"], input[type="button"], input[type="reset"] {
+    cursor: url('/cursors/robot-pointer.svg') 14 3, pointer;
   }
 
   /* Custom thin scrollbar */

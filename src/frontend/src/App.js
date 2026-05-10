@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/NavBar';
 import VerticalNavbar from './components/NavBar/VerticalNavbar';
 import Telemetry from './components/Telemetry';
+import GridOverlay from './components/GridOverlay';
 import { RouteContainer } from './pages/Home/HomePageElements';
 import { GlobalStyles } from './components/Fonts/Fonts';
 import { ThemeProvider } from './theme/ThemeProvider';
@@ -18,6 +19,7 @@ export default function App() {
         <Suspense fallback={null}>
           <ParticleBg />
         </Suspense>
+        <GridOverlay />
         <Navbar />
         <VerticalNavbar />
         <RouteContainer>

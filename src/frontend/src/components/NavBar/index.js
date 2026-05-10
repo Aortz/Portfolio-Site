@@ -10,6 +10,7 @@ import {
 } from './NavbarElements';
 import PersonalLogo from '../../assets/personal-icon/personal-logo-transparent.png';
 import ThemeToggle from '../ThemeToggle';
+import GridToggle from '../GridToggle';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const Navbar = () => {
           <NavAnchor href="#gallery">4. GALLERY</NavAnchor>
           <NavAnchor href="#resume">5. RESUME</NavAnchor>
         </NavLinkRow>
+        <GridToggle />
         <ThemeToggle />
       </NavRight>
     </Nav>
