@@ -4,12 +4,17 @@ import { tokensFor } from './tokens';
 
 const THEME_KEY = 'portfolio-theme';
 const GRID_KEY = 'portfolio-grid';
+const PARTICLE_SPEED_KEY = 'portfolio-particle-speed';
+
+const SPEED_ORDER = ['slow', 'normal', 'fast'];
 
 const ThemeModeContext = createContext({
   mode: 'dark',
   toggleMode: () => {},
   gridVisible: false,
   toggleGrid: () => {},
+  particleSpeed: 'normal',
+  cycleParticleSpeed: () => {},
 });
 
 const initialMode = () => {
@@ -24,9 +29,16 @@ const initialGrid = () => {
   return window.localStorage.getItem(GRID_KEY) === 'on';
 };
 
+const initialParticleSpeed = () => {
+  if (typeof window === 'undefined') return 'normal';
+  const stored = window.localStorage.getItem(PARTICLE_SPEED_KEY);
+  return SPEED_ORDER.includes(stored) ? stored : 'normal';
+};
+
 export const ThemeProvider = ({ children }) => {
   const [mode, setMode] = useState(initialMode);
   const [gridVisible, setGridVisible] = useState(initialGrid);
+  const [particleSpeed, setParticleSpeed] = useState(initialParticleSpeed);
 
   useEffect(() => {
     document.documentElement.dataset.theme = mode;
@@ -37,14 +49,24 @@ export const ThemeProvider = ({ children }) => {
     window.localStorage.setItem(GRID_KEY, gridVisible ? 'on' : 'off');
   }, [gridVisible]);
 
+  useEffect(() => {
+    window.localStorage.setItem(PARTICLE_SPEED_KEY, particleSpeed);
+  }, [particleSpeed]);
+
   const value = useMemo(
     () => ({
       mode,
       toggleMode: () => setMode((m) => (m === 'dark' ? 'light' : 'dark')),
       gridVisible,
       toggleGrid: () => setGridVisible((v) => !v),
+      particleSpeed,
+      cycleParticleSpeed: () =>
+        setParticleSpeed((s) => {
+          const idx = SPEED_ORDER.indexOf(s);
+          return SPEED_ORDER[(idx + 1) % SPEED_ORDER.length];
+        }),
     }),
-    [mode, gridVisible]
+    [mode, gridVisible, particleSpeed]
   );
 
   return (

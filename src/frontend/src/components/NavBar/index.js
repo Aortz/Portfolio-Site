@@ -11,6 +11,7 @@ import {
 import PersonalLogo from '../../assets/personal-icon/personal-logo-transparent.png';
 import ThemeToggle from '../ThemeToggle';
 import GridToggle from '../GridToggle';
+import ParticleSpeedToggle from '../ParticleSpeedToggle';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ const Navbar = () => {
           <NavAnchor href="#resume">5. RESUME</NavAnchor>
         </NavLinkRow>
         <GridToggle />
+        <ParticleSpeedToggle />
         <ThemeToggle />
       </NavRight>
     </Nav>

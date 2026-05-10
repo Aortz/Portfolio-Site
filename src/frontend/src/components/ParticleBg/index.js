@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import styled, { useTheme } from 'styled-components';
+import { useThemeMode } from '../../theme/ThemeProvider';
 
 const FONT_SIZE = 14;
 const TRAIL_LENGTH = 12;
 const SPAWN_DENSITY = 0.6;
+const SPEED_MAP = { slow: 0.5, normal: 1, fast: 2 };
 
 const hexToRgb = (hex) => {
   const m = (hex || '#06B6D4').replace('#', '');
@@ -30,6 +32,12 @@ const Wrapper = styled.div`
 const ParticleBg = () => {
   const canvasRef = useRef(null);
   const theme = useTheme();
+  const { particleSpeed } = useThemeMode();
+  const speedRef = useRef(SPEED_MAP[particleSpeed] ?? 1);
+
+  useEffect(() => {
+    speedRef.current = SPEED_MAP[particleSpeed] ?? 1;
+  }, [particleSpeed]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -81,7 +89,7 @@ const ParticleBg = () => {
           }
           ctx.fillText(d.chars[i], d.x, charY);
         }
-        d.y += d.speed * FONT_SIZE * 0.5;
+        d.y += d.speed * FONT_SIZE * 0.5 * speedRef.current;
         if (d.y - d.chars.length * FONT_SIZE > canvas.height) {
           d.y = Math.random() * -200;
           d.speed = 0.4 + Math.random() * 0.9;
