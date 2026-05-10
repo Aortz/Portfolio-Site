@@ -52,7 +52,7 @@ export const ParentContainer = styled.div`
 
 export const HomeContainer = styled.div`
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   align-items: center;
   gap: ${({ theme }) => theme.space[12]};
   background: transparent;
@@ -89,12 +89,14 @@ export const HomeContent = styled.div`
 `;
 
 export const HomeAccentSlot = styled.div`
-  flex: 0 0 520px;
-  height: 520px;
+  flex: 0 0 780px;
+  height: 780px;
+  margin-right: ${({ theme }) => theme.space[8]};
 
   @media screen and (max-width: 1024px) {
-    flex-basis: 360px;
-    height: 360px;
+    flex-basis: 480px;
+    height: 480px;
+    margin-right: ${({ theme }) => theme.space[4]};
   }
 
   @media screen and (max-width: 768px) {
