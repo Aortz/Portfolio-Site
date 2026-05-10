@@ -1,0 +1,11 @@
+Model Information:
+* title:	GQ EFSF MS Hands ver. 1.1 [FREE]
+* source:	https://sketchfab.com/3d-models/gq-efsf-ms-hands-ver-11-free-29fe4fdf07cd4f78a668cf7d6a2047de
+* author:	HoliestMallard (https://sketchfab.com/holiestmallard)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "GQ EFSF MS Hands ver. 1.1 [FREE]" (https://sketchfab.com/3d-models/gq-efsf-ms-hands-ver-11-free-29fe4fdf07cd4f78a668cf7d6a2047de) by HoliestMallard (https://sketchfab.com/holiestmallard) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
