@@ -3,13 +3,15 @@ import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { Box3, Vector3, MeshBasicMaterial } from 'three';
 import { useTheme } from 'styled-components';
+import { useThemeMode } from '../../theme/ThemeProvider';
 
-useGLTF.preload('/robots/scene.gltf');
+useGLTF.preload('/robots/scene.glb');
 
 const RobotsModel = ({ hovered }) => {
   const ref = useRef();
   const theme = useTheme();
-  const { scene } = useGLTF('/robots/scene.gltf');
+  const { reducedMotion } = useThemeMode();
+  const { scene } = useGLTF('/robots/scene.glb');
 
   const cloned = useMemo(() => {
     const c = scene.clone(true);
@@ -39,7 +41,7 @@ const RobotsModel = ({ hovered }) => {
   }, [cloned, theme.color.accent]);
 
   useFrame((_, delta) => {
-    if (!ref.current || hovered) return;
+    if (!ref.current || hovered || reducedMotion) return;
     ref.current.rotation.y += delta * 0.2;
   });
 

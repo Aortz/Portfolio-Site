@@ -3,12 +3,14 @@ import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { Box3, Vector3, MeshBasicMaterial } from 'three';
 import { useTheme } from 'styled-components';
+import { useThemeMode } from '../../theme/ThemeProvider';
 
 useGLTF.preload('/drone/drone.glb');
 
 const DroneShape = ({ hovered }) => {
   const ref = useRef();
   const theme = useTheme();
+  const { reducedMotion } = useThemeMode();
   const { scene } = useGLTF('/drone/drone.glb');
 
   const cloned = useMemo(() => {
@@ -39,7 +41,7 @@ const DroneShape = ({ hovered }) => {
   }, [cloned, theme.color.accent]);
 
   useFrame((_, delta) => {
-    if (!ref.current || hovered) return;
+    if (!ref.current || hovered || reducedMotion) return;
     ref.current.rotation.y += delta * 0.25;
     ref.current.rotation.x = Math.sin(performance.now() * 0.0003) * 0.15;
   });

@@ -5,6 +5,7 @@ import { tokensFor } from './tokens';
 const THEME_KEY = 'portfolio-theme';
 const GRID_KEY = 'portfolio-grid';
 const PARTICLE_SPEED_KEY = 'portfolio-particle-speed';
+const REDUCED_MOTION_KEY = 'portfolio-reduced-motion';
 
 const SPEED_ORDER = ['slow', 'normal', 'fast'];
 
@@ -15,6 +16,8 @@ const ThemeModeContext = createContext({
   toggleGrid: () => {},
   particleSpeed: 'normal',
   cycleParticleSpeed: () => {},
+  reducedMotion: false,
+  toggleReducedMotion: () => {},
 });
 
 const initialMode = () => {
@@ -35,10 +38,20 @@ const initialParticleSpeed = () => {
   return SPEED_ORDER.includes(stored) ? stored : 'normal';
 };
 
+const initialReducedMotion = () => {
+  if (typeof window === 'undefined') return false;
+  const stored = window.localStorage.getItem(REDUCED_MOTION_KEY);
+  if (stored === 'on') return true;
+  if (stored === 'off') return false;
+  // Honor OS preference at first paint when no manual override exists.
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
+
 export const ThemeProvider = ({ children }) => {
   const [mode, setMode] = useState(initialMode);
   const [gridVisible, setGridVisible] = useState(initialGrid);
   const [particleSpeed, setParticleSpeed] = useState(initialParticleSpeed);
+  const [reducedMotion, setReducedMotion] = useState(initialReducedMotion);
 
   useEffect(() => {
     document.documentElement.dataset.theme = mode;
@@ -53,6 +66,11 @@ export const ThemeProvider = ({ children }) => {
     window.localStorage.setItem(PARTICLE_SPEED_KEY, particleSpeed);
   }, [particleSpeed]);
 
+  useEffect(() => {
+    document.documentElement.dataset.reducedMotion = reducedMotion ? 'on' : 'off';
+    window.localStorage.setItem(REDUCED_MOTION_KEY, reducedMotion ? 'on' : 'off');
+  }, [reducedMotion]);
+
   const value = useMemo(
     () => ({
       mode,
@@ -65,8 +83,10 @@ export const ThemeProvider = ({ children }) => {
           const idx = SPEED_ORDER.indexOf(s);
           return SPEED_ORDER[(idx + 1) % SPEED_ORDER.length];
         }),
+      reducedMotion,
+      toggleReducedMotion: () => setReducedMotion((v) => !v),
     }),
-    [mode, gridVisible, particleSpeed]
+    [mode, gridVisible, particleSpeed, reducedMotion]
   );
 
   return (

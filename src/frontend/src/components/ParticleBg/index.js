@@ -32,7 +32,7 @@ const Wrapper = styled.div`
 const ParticleBg = () => {
   const canvasRef = useRef(null);
   const theme = useTheme();
-  const { particleSpeed } = useThemeMode();
+  const { particleSpeed, reducedMotion } = useThemeMode();
   const speedRef = useRef(SPEED_MAP[particleSpeed] ?? 1);
 
   useEffect(() => {
@@ -45,6 +45,14 @@ const ParticleBg = () => {
     const ctx = canvas.getContext('2d');
     let raf;
     let drops = [];
+
+    if (reducedMotion) {
+      // Honor reduced-motion: clear once and don't schedule the rAF loop.
+      const w = (canvas.width = window.innerWidth);
+      const h = (canvas.height = window.innerHeight);
+      ctx.clearRect(0, 0, w, h);
+      return undefined;
+    }
 
     const { r, g, b } = hexToRgb(theme.color.accent);
 
@@ -104,7 +112,7 @@ const ParticleBg = () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
     };
-  }, [theme.color.accent]);
+  }, [theme.color.accent, reducedMotion]);
 
   return (
     <Wrapper aria-hidden="true">

@@ -26,6 +26,10 @@ export const GlobalStyles = createGlobalStyle`
     cursor: url('/cursors/robot-default.svg') 16 3, default;
   }
 
+  html[data-theme='light'] {
+    cursor: url('/cursors/robot-default-light.svg') 16 3, default;
+  }
+
   body {
     color: ${({ theme }) => theme.color.fg};
     font-family: ${({ theme }) => theme.font.sans};
@@ -60,6 +64,18 @@ export const GlobalStyles = createGlobalStyle`
   a, button, [role="button"], summary, label, select,
   input[type="submit"], input[type="button"], input[type="reset"] {
     cursor: url('/cursors/robot-pointer.svg') 20 9, pointer;
+  }
+
+  html[data-theme='light'] a,
+  html[data-theme='light'] button,
+  html[data-theme='light'] [role="button"],
+  html[data-theme='light'] summary,
+  html[data-theme='light'] label,
+  html[data-theme='light'] select,
+  html[data-theme='light'] input[type="submit"],
+  html[data-theme='light'] input[type="button"],
+  html[data-theme='light'] input[type="reset"] {
+    cursor: url('/cursors/robot-pointer-light.svg') 20 9, pointer;
   }
 
   /* Custom thin scrollbar */
@@ -106,5 +122,17 @@ export const GlobalStyles = createGlobalStyle`
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+
+  /* Manual reduced-motion override (in-app toggle) — same effect as the
+     OS media query above. */
+  html[data-reduced-motion='on'],
+  html[data-reduced-motion='on'] *,
+  html[data-reduced-motion='on'] *::before,
+  html[data-reduced-motion='on'] *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 `;
