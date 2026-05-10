@@ -32,7 +32,7 @@ export const RouteContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: ${({ theme }) => `${theme.space[4]} ${theme.space[4]} ${theme.space[4]} 120px`};
-  background: ${({ theme }) => theme.color.bg};
+  background: transparent;
 
   @media screen and (max-width: 768px) {
     padding: ${({ theme }) => theme.space[4]};

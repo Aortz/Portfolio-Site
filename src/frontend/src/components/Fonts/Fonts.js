@@ -23,7 +23,7 @@ export const GlobalStyles = createGlobalStyle`
     scroll-padding-top: 100px;
     font-size: 19px;
     background: ${({ theme }) => theme.color.bg};
-    cursor: url('/cursors/robot-default.svg') 14 3, default;
+    cursor: url('/cursors/robot-default.svg') 16 3, default;
   }
 
   body {
@@ -59,7 +59,7 @@ export const GlobalStyles = createGlobalStyle`
   /* Robot-claw cursor on clickable elements */
   a, button, [role="button"], summary, label, select,
   input[type="submit"], input[type="button"], input[type="reset"] {
-    cursor: url('/cursors/robot-pointer.svg') 14 3, pointer;
+    cursor: url('/cursors/robot-pointer.svg') 20 9, pointer;
   }
 
   /* Custom thin scrollbar */

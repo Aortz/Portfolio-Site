@@ -504,8 +504,8 @@ export const ToolsBlock = styled.div`
 /* Flip card — front: icon + name; back: short purpose label */
 export const ToolFlipCard = styled.div`
     perspective: 600px;
-    width: 140px;
-    height: 36px;
+    width: 168px;
+    height: 48px;
 
     & .tool-flip-inner {
       position: relative;
@@ -527,15 +527,15 @@ export const ToolFlipCard = styled.div`
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: ${({ theme }) => theme.space[2]};
+      gap: ${({ theme }) => theme.space[3]};
       border: 1px solid ${({ theme }) => theme.color.border};
       border-radius: ${({ theme }) => theme.radius.pill};
       font-family: ${({ theme }) => theme.font.mono};
-      font-size: ${({ theme }) => theme.size.xs};
+      font-size: ${({ theme }) => theme.size.sm};
       font-weight: 500;
       backface-visibility: hidden;
       background: ${({ theme }) => theme.color.surfaceAlt};
-      padding: 0 ${({ theme }) => theme.space[3]};
+      padding: 0 ${({ theme }) => theme.space[4]};
       cursor: default;
     }
 
@@ -543,8 +543,8 @@ export const ToolFlipCard = styled.div`
       color: ${({ theme }) => theme.color.fgMuted};
     }
     & .tool-flip-front svg {
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       flex-shrink: 0;
     }
 
