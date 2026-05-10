@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import styled from 'styled-components';
 import { FiDownload, FiExternalLink } from 'react-icons/fi';
 import resumePDF from '../../assets/resume/Lee_Junwei_Resume.pdf';
 import SectionHeading from '../../components/SectionHeading';
 import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
+import AxisDivider from '../../components/AxisDivider';
+
+const ResumeAccent = lazy(() => import('../../components/ResumeAccent'));
 
 const ResumeSectionRoot = styled.section`
   display: flex;
@@ -13,7 +16,7 @@ const ResumeSectionRoot = styled.section`
   color: ${({ theme }) => theme.color.fg};
   min-height: 100vh;
   padding: ${({ theme }) => theme.space[6]};
-  border-left: 1px solid ${({ theme }) => theme.color.border};
+  border-left: 2px solid ${({ theme }) => theme.color.border};
   opacity: 0;
   transform: translateY(24px);
   transition:
@@ -96,11 +99,15 @@ const ResumeSection = () => {
       ref={ref}
       className={visible ? 'visible' : ''}
     >
+      <Suspense fallback={null}>
+        <ResumeAccent />
+      </Suspense>
       <SectionHeading number="04">RESUME</SectionHeading>
       <Copy>
         Grab a copy of my resume below — full work history, education, and the
         side projects I&apos;ve been shipping.
       </Copy>
+      <AxisDivider />
       <ButtonRow>
         <PrimaryButton
           href={resumePDF}

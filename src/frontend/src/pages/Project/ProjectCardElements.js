@@ -22,7 +22,7 @@ export const ProjectContainer = styled.div`
   color: ${({ theme }) => theme.color.fg};
   min-height: 100vh;
   padding: ${({ theme }) => theme.space[6]};
-  border-left: 1px solid ${({ theme }) => theme.color.border};
+  border-left: 2px solid ${({ theme }) => theme.color.border};
   overflow: hidden;
   opacity: 0;
   transform: translateY(24px);

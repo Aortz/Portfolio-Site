@@ -25,6 +25,7 @@ import { TbBrandCSharp, TbSql, TbMathFunction } from 'react-icons/tb';
 import { SiRos } from 'react-icons/si';
 import { BsCpu } from 'react-icons/bs';
 import SectionHeading from '../../components/SectionHeading';
+import AxisDivider from '../../components/AxisDivider';
 import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
 
 const AboutAccent = lazy(() => import('../../components/AboutAccent'));
@@ -93,6 +94,8 @@ const About = () => {
               actually click around on. When I&apos;m not on a keyboard you&apos;ll
               find me at the gym or chasing some new framework rabbit hole.
             </AboutDescriptionText>
+
+            <AxisDivider />
 
             <ToolsBlock>
               {TOOL_CATEGORIES.map((cat) => (

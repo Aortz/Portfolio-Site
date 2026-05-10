@@ -1,17 +1,16 @@
 import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import DroneShape from './DroneShape';
+import GearShape from './GearShape';
 
 const Wrapper = styled.div`
   position: absolute;
   top: 50%;
-  right: 5%;
+  right: 6%;
   transform: translateY(-50%);
-  width: 360px;
-  height: 360px;
-  z-index: 1;
+  width: 320px;
+  height: 320px;
+  z-index: 0;
   pointer-events: none;
 
   & canvas {
@@ -19,10 +18,10 @@ const Wrapper = styled.div`
   }
 
   @media screen and (max-width: 1024px) {
-    width: 240px;
-    height: 240px;
+    width: 220px;
+    height: 220px;
     right: 2%;
-    opacity: 0.6;
+    opacity: 0.4;
   }
 
   @media screen and (max-width: 768px) {
@@ -30,17 +29,16 @@ const Wrapper = styled.div`
   }
 `;
 
-const HeroAccent = () => (
+const ProjectsAccent = () => (
   <Wrapper aria-hidden="true">
-    <Canvas camera={{ position: [0, 0, 5], fov: 45 }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [0, 0, 4], fov: 50 }} dpr={[1, 2]}>
       <Suspense fallback={null}>
-        <ambientLight intensity={0.45} />
+        <ambientLight intensity={0.4} />
         <pointLight position={[5, 5, 5]} intensity={0.7} />
-        <DroneShape />
-        <OrbitControls enableZoom={false} enablePan={false} />
+        <GearShape />
       </Suspense>
     </Canvas>
   </Wrapper>
 );
 
-export default HeroAccent;
+export default ProjectsAccent;

@@ -23,12 +23,15 @@ export const GlobalStyles = createGlobalStyle`
     scroll-padding-top: 100px;
   }
 
+  html {
+    font-size: 17.5px;
+  }
+
   html,
   body {
     background: ${({ theme }) => theme.color.bg};
     color: ${({ theme }) => theme.color.fg};
     font-family: ${({ theme }) => theme.font.sans};
-    font-size: ${({ theme }) => theme.size.base};
     line-height: 1.6;
     transition:
       background ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
