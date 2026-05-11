@@ -49,12 +49,12 @@ export const ProjectContent = styled.div`
 `;
 
 export const ProjectAccentSlot = styled.div`
-  flex: 0 0 320px;
-  height: 320px;
+  flex: 0 0 480px;
+  height: 480px;
 
   @media screen and (max-width: 1024px) {
-    flex-basis: 220px;
-    height: 220px;
+    flex-basis: 320px;
+    height: 320px;
   }
 
   @media screen and (max-width: 768px) {
