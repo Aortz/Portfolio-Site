@@ -52,10 +52,22 @@ export const NavLinkRow = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.space[6]};
 
+  /* On a phone we lean on single-scroll + the side-rail anchors; the inline
+     nav links eat too much width and would force a wrap anyway. */
   @media screen and (max-width: 768px) {
-    gap: ${({ theme }) => theme.space[3]};
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    display: none;
+  }
+`;
+
+/* Wrapper for navbar controls that only make sense on a real cursor + viewport
+   (grid lines, particle speed). Hidden on phones. */
+export const DesktopOnly = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[6]};
+
+  @media screen and (max-width: 768px) {
+    display: none;
   }
 `;
 

@@ -7,6 +7,7 @@ import {
   NavLinkRow,
   NavAnchor,
   NavLogo,
+  DesktopOnly,
 } from './NavbarElements';
 import PersonalLogo from '../../assets/personal-icon/personal-logo-transparent.png';
 import ThemeToggle from '../ThemeToggle';
@@ -36,9 +37,11 @@ const Navbar = () => {
           <NavAnchor href="#gallery">4. GALLERY</NavAnchor>
           <NavAnchor href="#resume">5. RESUME</NavAnchor>
         </NavLinkRow>
-        <GridToggle />
+        <DesktopOnly>
+          <GridToggle />
+          <ParticleSpeedToggle />
+        </DesktopOnly>
         <ReducedMotionToggle />
-        <ParticleSpeedToggle />
         <ThemeToggle />
       </NavRight>
     </Nav>

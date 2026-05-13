@@ -26,6 +26,14 @@ export const GlobalStyles = createGlobalStyle`
     cursor: url('/cursors/robot-default.svg') 16 3, default;
   }
 
+  /* Phone-sized root: 19 px is great on a desktop, oversized at 375 px.
+     Drop to the browser default so every rem-based size scales sensibly. */
+  @media (max-width: 768px) {
+    html {
+      font-size: 16px;
+    }
+  }
+
   html[data-theme='light'] {
     cursor: url('/cursors/robot-default-light.svg') 16 3, default;
   }
@@ -41,8 +49,8 @@ export const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Layered backdrop (gradient blobs + dot grid) on a dedicated layer
-     behind the particle canvas. */
+  /* Layered backdrop (soft gradient blobs) on a dedicated layer behind the
+     particle canvas. The opt-in CAD grid lives on <GridOverlay>, not here. */
   body::before {
     content: '';
     position: fixed;
@@ -51,13 +59,8 @@ export const GlobalStyles = createGlobalStyle`
     pointer-events: none;
     background-image:
       radial-gradient(circle at 25% 15%, rgba(6, 182, 212, 0.07), transparent 55%),
-      radial-gradient(circle at 80% 85%, rgba(245, 158, 11, 0.04), transparent 55%),
-      radial-gradient(
-        circle,
-        ${({ theme }) => theme.color.fgSubtle} 0.8px,
-        transparent 0.8px
-      );
-    background-size: 100% 100%, 100% 100%, 32px 32px;
+      radial-gradient(circle at 80% 85%, rgba(245, 158, 11, 0.04), transparent 55%);
+    background-size: 100% 100%, 100% 100%;
   }
 
   /* Robot-claw cursor on clickable elements */

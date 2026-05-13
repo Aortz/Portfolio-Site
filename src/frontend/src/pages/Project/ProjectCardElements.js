@@ -49,12 +49,12 @@ export const ProjectContent = styled.div`
 `;
 
 export const ProjectAccentSlot = styled.div`
-  flex: 0 0 480px;
-  height: 480px;
+  flex: 0 0 560px;
+  height: 560px;
 
   @media screen and (max-width: 1024px) {
-    flex-basis: 320px;
-    height: 320px;
+    flex-basis: 380px;
+    height: 380px;
   }
 
   @media screen and (max-width: 768px) {
@@ -133,7 +133,7 @@ export const ProjectGrid = styled.div`
 
 export const StyledCard = styled(Card)`
   width: 100%;
-  border-radius: ${({ theme }) => theme.radius.lg};
+  border-radius: ${({ theme }) => theme.radius.sm};
   border: 1px solid ${({ theme }) => theme.color.border};
   background: ${({ theme }) => theme.color.surface};
   height: 100%;
@@ -143,16 +143,56 @@ export const StyledCard = styled(Card)`
   z-index: 1;
   display: flex;
   visibility: visible;
+  overflow: hidden;
 
   transition:
     transform ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
     border-color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
     box-shadow ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
 
+  /* Top-left L-bracket */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 12px;
+    height: 12px;
+    border-top: 1.5px solid ${({ theme }) => theme.color.accent};
+    border-left: 1.5px solid ${({ theme }) => theme.color.accent};
+    opacity: 0.65;
+    transition: opacity ${({ theme }) => theme.motion.base}
+      ${({ theme }) => theme.motion.ease};
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Bottom-right L-bracket */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 12px;
+    height: 12px;
+    border-bottom: 1.5px solid ${({ theme }) => theme.color.accent};
+    border-right: 1.5px solid ${({ theme }) => theme.color.accent};
+    opacity: 0.65;
+    transition: opacity ${({ theme }) => theme.motion.base}
+      ${({ theme }) => theme.motion.ease};
+    pointer-events: none;
+    z-index: 2;
+  }
+
   &:hover {
     transform: translateY(-4px);
     border-color: ${({ theme }) => theme.color.accent};
     box-shadow: 0 8px 24px rgba(6, 182, 212, 0.20);
+  }
+
+  &:hover::before,
+  &:hover::after {
+    opacity: 1;
   }
 `;
 
@@ -442,4 +482,55 @@ export const LanguagePercentage = styled.div`
   font-family: ${({ theme }) => theme.font.mono};
   font-size: ${({ theme }) => theme.size.xs};
   margin-left: ${({ theme }) => theme.space[1]};
+`;
+
+/* Mono code label that prefixes each project title (e.g. "PRJ-01"). */
+export const CodeLabel = styled.span`
+  display: inline-block;
+  margin-right: ${({ theme }) => theme.space[2]};
+  padding: 2px 6px;
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.xs};
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: ${({ theme }) => theme.color.accent};
+  background: ${({ theme }) => theme.color.surfaceAlt};
+  border: 1px solid ${({ theme }) => theme.color.border};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  text-transform: uppercase;
+`;
+
+/* Status-indicator pill for the language/tool tags. */
+export const TagChip = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[1]};
+  padding: ${({ theme }) => `${theme.space[1]} ${theme.space[3]}`};
+  margin: 2px;
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.xs};
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.color.fgMuted};
+  background: ${({ theme }) => theme.color.surfaceAlt};
+  border: 1px solid ${({ theme }) => theme.color.border};
+  border-radius: ${({ theme }) => theme.radius.sm};
+
+  &::before {
+    content: '●';
+    color: ${({ theme }) => theme.color.accent};
+    font-size: 0.7em;
+    line-height: 1;
+  }
+`;
+
+/* Small mono subtitle that sits below a SectionHeading.
+   Example use: <SectionCaption>// DEPLOYED SYSTEMS — 6 ENTRIES</SectionCaption> */
+export const SectionCaption = styled.p`
+  margin: 0 0 ${({ theme }) => theme.space[4]};
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.sm};
+  letter-spacing: 0.04em;
+  color: ${({ theme }) => theme.color.fgSubtle};
 `;

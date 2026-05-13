@@ -13,7 +13,8 @@ import {
   ButtonContainer,
   StyledLink,
   LanguageContainer,
-  LanguageIndv,
+  CodeLabel,
+  TagChip,
 } from './ProjectCardElements';
 
 const FolderGlyph = styled(BsFolder)`
@@ -51,15 +52,19 @@ const PrimaryLink = styled(StyledLink)`
   }
 `;
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, index = 0 }) => {
   const { title, description, liveUrl, githubUrl, tags = [], screenshot } = project || {};
+  const code = `PRJ-${String(index + 1).padStart(2, '0')}`;
 
   return (
     <StyledCard>
       <CardBody>
         <CardTitle className="visible">
           <FolderGlyph />
-          <TitleText>{title}</TitleText>
+          <TitleText>
+            <CodeLabel>{code}</CodeLabel>
+            {title}
+          </TitleText>
           <CardBtn>
             {githubUrl && (
               <ButtonContainer>
@@ -99,9 +104,7 @@ const ProjectCard = ({ project }) => {
             <Divider />
             <LanguageContainer>
               {tags.map((tag) => (
-                <LanguageIndv as="span" key={tag}>
-                  {tag}
-                </LanguageIndv>
+                <TagChip key={tag}>{tag}</TagChip>
               ))}
             </LanguageContainer>
           </>

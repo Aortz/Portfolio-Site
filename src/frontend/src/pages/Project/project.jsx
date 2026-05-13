@@ -6,6 +6,7 @@ import {
   ProjectContent,
   ProjectAccentSlot,
   ProjectGrid,
+  SectionCaption,
 } from './ProjectCardElements';
 import SectionHeading from '../../components/SectionHeading';
 import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
@@ -23,12 +24,16 @@ const Project = () => {
     >
       <ProjectContent>
         <SectionHeading number="03">PROJECTS</SectionHeading>
+        <SectionCaption>
+          {`// DEPLOYED SYSTEMS — ${String(projects.length).padStart(2, '0')} ENTRIES`}
+        </SectionCaption>
         {projects.length > 0 ? (
           <ProjectGrid>
             {projects.map((project, index) => (
               <ProjectCard
                 key={project.title || `project-${index}`}
                 project={project}
+                index={index}
               />
             ))}
           </ProjectGrid>

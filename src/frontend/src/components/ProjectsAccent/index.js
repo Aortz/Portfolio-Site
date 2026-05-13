@@ -25,7 +25,7 @@ const ProjectsAccent = () => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <Canvas camera={{ position: [0, 0, 4], fov: 50 }} dpr={[1, 2]}>
+      <Canvas camera={{ position: [0, 0, 5.5], fov: 50 }} dpr={[1, 2]}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.4} />
           <pointLight position={[5, 5, 5]} intensity={0.7} />

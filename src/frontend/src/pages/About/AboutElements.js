@@ -536,6 +536,23 @@ export const ToolFlipCard = styled.div`
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
+
+    @media screen and (max-width: 768px) {
+      width: 150px;
+      height: 46px;
+
+      & .tool-flip-front,
+      & .tool-flip-back {
+        font-size: ${({ theme }) => theme.size.sm};
+        gap: ${({ theme }) => theme.space[2]};
+        padding: 0 ${({ theme }) => theme.space[3]};
+      }
+
+      & .tool-flip-front svg {
+        width: 14px;
+        height: 14px;
+      }
+    }
 `;
 
 export const CategoryLabel = styled.div`

@@ -21,7 +21,7 @@ const RobotsModel = ({ hovered }) => {
     bbox.getSize(size);
     bbox.getCenter(center);
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    const scale = 3 / maxDim;
+    const scale = 3.6 / maxDim;
     c.scale.setScalar(scale);
     c.position.sub(center.multiplyScalar(scale));
     return c;
