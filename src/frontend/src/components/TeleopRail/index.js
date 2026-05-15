@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTeleop } from '../../teleop/TeleopProvider';
 import {
   RailRoot,
@@ -57,6 +57,31 @@ const formatYawDeg = (rad) => {
 const TeleopRail = () => {
   const { expanded, armed, hud, toggleExpanded, toggleArmed, halt } = useTeleop();
   const pressedSet = new Set(hud.pressed);
+
+  // The rail only drives the hero drone, so it's only meaningful while the
+  // Home section is on screen. Track that via IntersectionObserver and
+  // unmount the rail otherwise.
+  const [homeVisible, setHomeVisible] = useState(true);
+
+  useEffect(() => {
+    const el = document.getElementById('home');
+    if (!el) return undefined;
+    const obs = new IntersectionObserver(
+      ([entry]) => setHomeVisible(entry.intersectionRatio >= 0.5),
+      { threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  // Reset rail state when leaving Home so it returns clean on scroll-back.
+  useEffect(() => {
+    if (homeVisible) return;
+    if (expanded) toggleExpanded();
+    if (armed)    toggleArmed();
+  }, [homeVisible, expanded, armed, toggleExpanded, toggleArmed]);
+
+  if (!homeVisible) return null;
 
   return (
     <RailRoot $expanded={expanded} aria-label="Teleop console">

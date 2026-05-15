@@ -13,7 +13,7 @@ export const ProjectContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: ${({ theme }) => theme.space[10]};
+  gap: ${({ theme }) => theme.space[24]};
   background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
@@ -33,23 +33,9 @@ export const ProjectContainer = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    gap: ${({ theme }) => theme.space[6]};
+    gap: ${({ theme }) => theme.space[12]};
     padding: ${({ theme }) => theme.space[3]};
     border-left: none;
-  }
-`;
-
-/* Top row: card grid (left) + system-metrics HUD (right). */
-export const ProjectTopRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: ${({ theme }) => theme.space[8]};
-  width: 100%;
-
-  @media screen and (max-width: 1024px) {
-    flex-direction: column;
-    gap: ${({ theme }) => theme.space[6]};
   }
 `;
 
@@ -58,50 +44,6 @@ export const ProjectContent = styled.div`
   flex-direction: column;
   flex: 1 1 auto;
   min-width: 0;
-`;
-
-/* Narrow right column. Holds the // SYSTEM METRICS HUD now that the 3D model
-   has moved below the cards. Bracket framing matches StyledCard. */
-export const ProjectSidePanel = styled.div`
-  flex: 0 0 320px;
-  position: relative;
-  align-self: stretch;
-  background: ${({ theme }) => theme.color.surface};
-  border: 1px solid ${({ theme }) => theme.color.border};
-  border-radius: ${({ theme }) => theme.radius.sm};
-  padding: ${({ theme }) => theme.space[5]};
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.space[3]};
-  font-family: ${({ theme }) => theme.font.mono};
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border-color: ${({ theme }) => theme.color.accent};
-    opacity: 0.65;
-    pointer-events: none;
-  }
-  &::before {
-    top: 8px;
-    left: 8px;
-    border-top: 1.5px solid;
-    border-left: 1.5px solid;
-  }
-  &::after {
-    bottom: 8px;
-    right: 8px;
-    border-bottom: 1.5px solid;
-    border-right: 1.5px solid;
-  }
-
-  @media screen and (max-width: 1024px) {
-    flex-basis: auto;
-    width: 100%;
-  }
 `;
 
 /* Full-content-width container for the 3D robots showcase, below the top row. */
@@ -617,78 +559,6 @@ export const SectionCaption = styled.p`
   font-family: ${({ theme }) => theme.font.mono};
   font-size: ${({ theme }) => theme.size.sm};
   letter-spacing: 0.04em;
-  color: ${({ theme }) => theme.color.fgSubtle};
-`;
-
-/* ----- System Metrics HUD (right of the card grid) ----- */
-
-const ledPulse = keyframes`
-  0%, 100% { opacity: 1;   transform: scale(1); }
-  50%      { opacity: 0.55; transform: scale(0.9); }
-`;
-
-export const MetricsHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: ${({ theme }) => theme.font.mono};
-  font-size: ${({ theme }) => theme.size.xs};
-  letter-spacing: 0.06em;
-  color: ${({ theme }) => theme.color.fgSubtle};
-`;
-
-export const MetricsStatus = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.space[2]};
-  font-family: ${({ theme }) => theme.font.mono};
-  font-size: ${({ theme }) => theme.size.sm};
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: ${({ theme }) => theme.color.accent};
-`;
-
-export const MetricsLed = styled.span`
-  display: inline-block;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.color.accent};
-  border: 1.5px solid ${({ theme }) => theme.color.accent};
-  box-shadow: 0 0 8px ${({ theme }) => theme.color.accent};
-  animation: ${ledPulse} 1.8s ease-in-out infinite;
-`;
-
-export const MetricsDivider = styled.hr`
-  border: none;
-  border-top: 1px solid ${({ theme }) => theme.color.border};
-  margin: ${({ theme }) => `${theme.space[1]} 0`};
-`;
-
-export const MetricsRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: ${({ theme }) => theme.space[3]};
-  font-family: ${({ theme }) => theme.font.mono};
-  font-size: ${({ theme }) => theme.size.xs};
-
-  & .label {
-    color: ${({ theme }) => theme.color.fgSubtle};
-    letter-spacing: 0.06em;
-  }
-  & .value {
-    color: ${({ theme }) => theme.color.fg};
-    font-variant-numeric: tabular-nums;
-    text-align: right;
-  }
-`;
-
-export const MetricsFooter = styled.p`
-  margin: 0;
-  font-family: ${({ theme }) => theme.font.mono};
-  font-size: 10px;
-  letter-spacing: 0.05em;
   color: ${({ theme }) => theme.color.fgSubtle};
 `;
 
