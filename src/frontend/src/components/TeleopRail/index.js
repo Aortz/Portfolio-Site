@@ -66,9 +66,9 @@ const TeleopRail = () => {
           onClick={toggleExpanded}
           aria-label="Expand teleop console"
         >
-          <span className="tab-chevron" aria-hidden="true">▸</span>
+          <span className="tab-chevron" aria-hidden="true">◂</span>
           <span className="tab-label">TELEOP</span>
-          <span className="tab-chevron" aria-hidden="true">▸</span>
+          <span className="tab-chevron" aria-hidden="true">◂</span>
         </CollapsedTab>
       )}
 
@@ -82,7 +82,7 @@ const TeleopRail = () => {
               aria-label="Collapse teleop console"
               title="Collapse"
             >
-              ◂
+              ▸
             </CollapseButton>
           </PanelHeader>
 

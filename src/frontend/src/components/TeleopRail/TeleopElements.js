@@ -9,7 +9,7 @@ const pulse = keyframes`
    Width animates between collapsed (36 px tab) and expanded (280 px panel). */
 export const RailRoot = styled.aside`
   position: fixed;
-  left: 0;
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
   z-index: 998;
@@ -22,11 +22,9 @@ export const RailRoot = styled.aside`
 
   background: ${({ theme }) => theme.color.surface};
   border: 1px solid ${({ theme }) => theme.color.border};
-  border-left: none;
-  border-radius: 0
-    ${({ theme }) => theme.radius.sm}
-    ${({ theme }) => theme.radius.sm}
-    0;
+  border-right: none;
+  border-radius: ${({ theme }) => theme.radius.sm} 0 0
+    ${({ theme }) => theme.radius.sm};
 
   font-family: ${({ theme }) => theme.font.mono};
   color: ${({ theme }) => theme.color.fg};
@@ -35,7 +33,8 @@ export const RailRoot = styled.aside`
     width 280ms ${({ theme }) => theme.motion.ease},
     border-color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
 
-  /* Top-left + bottom-right brackets, mirroring the Phase 22 cards. */
+  /* Top-left + bottom-left brackets, facing into the page (mirrors the Phase
+     22 cards' bracket pattern, flipped to suit a right-edge dock). */
   &::before,
   &::after {
     content: '';
@@ -48,15 +47,15 @@ export const RailRoot = styled.aside`
   }
   &::before {
     top: 6px;
-    right: 6px;
+    left: 6px;
     border-top: 1.5px solid;
-    border-right: 1.5px solid;
+    border-left: 1.5px solid;
   }
   &::after {
     bottom: 6px;
-    right: 6px;
+    left: 6px;
     border-bottom: 1.5px solid;
-    border-right: 1.5px solid;
+    border-left: 1.5px solid;
   }
 
   @media screen and (max-width: 768px) {
