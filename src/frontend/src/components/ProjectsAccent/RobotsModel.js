@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
-import { Box3, Vector3, MeshBasicMaterial } from 'three';
+import { Box3, Sphere, MeshBasicMaterial } from 'three';
 import { useTheme } from 'styled-components';
 import { useThemeMode } from '../../theme/ThemeProvider';
 
@@ -15,15 +15,17 @@ const RobotsModel = ({ hovered }) => {
 
   const cloned = useMemo(() => {
     const c = scene.clone(true);
+    // Scale by bounding-sphere radius instead of longest-axis: the sphere is
+    // rotation-invariant, so the model is guaranteed to fit at every angle.
+    // Visible vertical half-extent at z=0 with cam z=5.5 fov=50° is ~2.57, so a
+    // target radius of 2.0 leaves a comfortable ~22% margin around the model.
     const bbox = new Box3().setFromObject(c);
-    const size = new Vector3();
-    const center = new Vector3();
-    bbox.getSize(size);
-    bbox.getCenter(center);
-    const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    const scale = 3.6 / maxDim;
+    const sphere = new Sphere();
+    bbox.getBoundingSphere(sphere);
+    const TARGET_RADIUS = 2.0;
+    const scale = TARGET_RADIUS / (sphere.radius || 1);
     c.scale.setScalar(scale);
-    c.position.sub(center.multiplyScalar(scale));
+    c.position.sub(sphere.center.clone().multiplyScalar(scale));
     return c;
   }, [scene]);
 
