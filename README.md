@@ -1,6 +1,8 @@
 # Portfolio Site
 
-Express + React + Three.js portfolio with a robotics theme. Two-package monorepo:
+Express + React + Three.js portfolio, presented as an **orbital cyberscape**: a quadruped
+field unit (RECON-2) flies a route between five floating platforms — one per section — and
+the section's content docks in as a glass panel when it arrives. Two-package monorepo:
 
 - `src/backend/` — Express server (port 8080)
 - `src/frontend/` — Create React App + React Three Fiber (port 3000)
@@ -9,8 +11,8 @@ Express + React + Three.js portfolio with a robotics theme. Two-package monorepo
 
 **Frontend:** React 18, react-router-dom, Create React App (`react-scripts`), styled-components
 with a token-based theme (`src/frontend/src/theme/`), Three.js via `@react-three/fiber` +
-`@react-three/drei` (+ `@react-three/rapier` / `@react-three/postprocessing` installed),
-MUI + Emotion, react-bootstrap, react-infinite-scroll-component, `@vercel/speed-insights`.
+`@react-three/drei` (`Text`, `Billboard`, `useGLTF` with DRACO), react-bootstrap,
+`@vercel/speed-insights`.
 
 **Backend:** Express 4. Minimal — serves static files and a `/cors` test route. The frontend
 does not proxy to it, so it is optional for local development.
@@ -42,57 +44,77 @@ npm test              # frontend tests
 The standard CRA scripts (`start`, `build`, `test`, `eject`) are also available directly from
 `src/frontend/`. See `src/frontend/README.md` for CRA reference docs.
 
-## Site structure
+## How the site works
 
-Single-page scroll; sections are hash anchors in order: `#home`, `#about`, `#projects`,
-`#gallery`, `#resume` (`src/frontend/src/pages/Home/index.js`).
+### Two layouts
 
-**Content lives in `src/frontend/src/editable-stuff/config.js`** — project cards, gallery
-entries, nav toggles. Edit that file rather than the page components.
+`hooks/useIsDesktop3D.js` picks one at runtime:
 
-### Theme and toggles
+- **World mode** (desktop ≥ 768px, mouse/trackpad, WebGL available) — a full-screen R3F canvas
+  behind the chrome (`world/WorldCanvas.js`), the section panel (`components/SectionDock`),
+  the teleop console (`components/TeleopRail`) and the first-visit hint. The document itself
+  does not scroll; the panel is the only scrollable surface.
+- **Page mode** (phones, touch-only tablets, no WebGL) — the plain vertical site
+  (`pages/Home/index.js`): hero, About, Projects, Gallery, Resume as hash-anchored sections.
+  No canvas, no console.
 
-`src/frontend/src/theme/tokens.js` defines color/space/type tokens for light and dark modes;
-`theme/ThemeProvider.js` exposes `useThemeMode()` with four localStorage-persisted toggles:
-theme mode, grid overlay, particle speed, and reduced motion (honours
-`prefers-reduced-motion` by default). Reduced motion pauses all 3D idle animation and CSS
-transitions.
+Sections are the same components in both modes; `layout/LayoutContext.js` tells them whether
+they're `docked` so they drop full-height/border styling and scroll-triggered fade-ins.
 
-### 3D accents
+### The world
 
-Each section has a wireframe GLB accent rendered in the theme accent color:
-
-| Asset | Path | Size | Used by |
-|---|---|---|---|
-| Drone | `public/drone/drone.glb` | 843 KB | Hero |
-| Industrial robot | `public/ux3d_industrial_robot/scene.glb` | 5.4 MB | About |
-| Robots (RECON-2) | `public/robots/scene.glb` | 2.4 MB | Teleop unit |
-| Hands | `public/hands/scene.glb` | 295 KB | Resume |
-
-~9 MB total. Each model directory has a `license.txt` — keep the attribution. Models are
-loaded with `useGLTF` inside `React.lazy` chunks so they download per section; no DRACO
-compression is currently applied.
-
-### Teleop console (page-walk)
-
-The `TELEOP` tab on the right edge opens a console that drives the RECON-2 field unit shown
-in a fixed box at the bottom-left. Driving the robot walks the page:
-
-| Key | Action |
+| File | Role |
 |---|---|
-| `Space` | Arm / disarm |
-| `W` / `S` (or arrows) | Walk up / down the page (scrolls) |
-| `A` / `D` | Yaw the robot |
-| `Q` / `E` | Strafe inside its box |
-| `X` | Halt — recentre yaw/strafe |
+| `world/route.js` | Platform list, positions, and pre-computed arc-length fractions. No `three` import so the provider stays light. |
+| `world/path.js` | Catmull-Rom spline through spawn + platforms; `getPointAt(t)` / `getTangentAt(t)`. Warns in dev if `route.js` constants are stale. |
+| `world/Starfield.js` | 2,500-point starfield, slow rotation. |
+| `world/Platform.js` | Wireframe hex pad, beacon pillar, pulsing orb, billboarded label (drei `Text`, `public/fonts/IBMPlexMono-Bold.ttf`). |
+| `world/Landmarks.js` | Per-platform set piece: drone orbits HOME, industrial arm on ABOUT, icosahedron on PROJECTS, torus knot on GALLERY, hands over RESUME. |
+| `world/PlayerRobot.js` | RECON-2 on the spline: position from `t`, heading from the tangent, user yaw/strafe on top, walk bob when moving. |
+| `world/ChaseCamera.js` | Smoothed third-person follow. Follows route heading (not user yaw). Starts wide during the fly-in. |
+| `world/models/useWireframeGLTF.js` | Shared loader: DRACO, `SkeletonUtils.clone` (RECON-2 is rigged), sphere/axis fit, accent-coloured wireframe that tracks the theme. |
 
-HUD shows speed, current waypoint (section) and page progress. Mouse-wheel scrolling while
-armed pauses the motor briefly so you can always override. With reduced motion on, `W`/`S`
-step one screen per press instead of scrolling continuously. The on-screen key caps are
-clickable. Keyboard-only; console and unit are hidden below 768px.
+### Teleop / navigation
 
-Code: `src/frontend/src/teleop/TeleopProvider.js` (input + integration loop),
-`components/TeleopRail` (console UI), `components/TeleopUnit` (robot canvas).
+`teleop/TeleopProvider.js` owns one scalar `t ∈ [0, 1]` — the robot's progress along the
+route (HOME = 0, RESUME = 1). Everything that moves the robot writes `t`:
+
+| Input | Effect |
+|---|---|
+| Mouse wheel (anywhere outside the panel) | Nudges `t`; no arming needed |
+| Click-drag on the background | Orbits the camera around the robot (yaw + pitch); eases back to the chase view once the robot moves |
+| Nav link / logo / `#hash` in URL / back-forward | Eased tween to that platform |
+| First visit | Auto fly-in from off-route spawn to HOME, then a hint toast (`sessionStorage` flag) |
+| `TELEOP` tab → `Space` | Arm; then `W`/`S` drive along the route, `A`/`D` yaw, `Q`/`E` strafe, `X` halt |
+
+The panel opens when `t` is within `ARRIVE_RADIUS` of a platform and closes between them;
+the URL hash follows arrival. Reduced motion (nav toggle or OS): no fly-in, camera/panel snap,
+wheel and `W`/`S` step one whole platform at a time, canvas renders on demand.
+
+### Content and theme
+
+- **Content** lives in `src/frontend/src/editable-stuff/config.js` (project cards, gallery,
+  nav). Edit that, not the page components.
+- `theme/tokens.js` — colour/space/type tokens for light and dark. `theme/ThemeProvider.js` →
+  `useThemeMode()` exposes `mode`, `reducedMotion`, `quality` (localStorage-persisted).
+
+### 3D assets
+
+| Asset | Path | Size | Where |
+|---|---|---|---|
+| RECON-2 (rigged) | `public/robots/scene.glb` | 80 KB | Player |
+| Drone | `public/drone/drone.glb` | 63 KB | HOME |
+| Industrial arm | `public/ux3d_industrial_robot/scene.glb` | 142 KB | ABOUT |
+| Hands | `public/hands/scene.glb` | 420 KB | RESUME |
+
+All DRACO-compressed with textures shrunk to 8×8 (they render as wireframes, so textures are
+never sampled). Decoder is served from `public/draco/`. Each model directory has a
+`license.txt` — keep the attribution. To re-process a model:
+
+```sh
+npx @gltf-transform/cli resize in.glb tmp.glb --width 8 --height 8
+npx @gltf-transform/cli optimize tmp.glb out.glb --compress draco --texture-compress false --simplify false
+```
 
 ## Deployment
 
@@ -113,5 +135,10 @@ a CI build. Run `npm start` locally to see them.
 - **`'onAfterSetupMiddleware' option is deprecated` / `onBeforeSetupMiddleware`** — emitted
   by the webpack-dev-server config bundled inside react-scripts 5. Harmless, and not fixable
   without ejecting.
+- **`useTeleop must be used inside <TeleopProvider>` after editing `TeleopProvider.js` with
+  the dev server running** — hot-reload swapped the context object while the R3F canvas kept
+  the old one. Hard-reload the tab; not a code bug.
+- **`[route] PLATFORM_T/SPAWN_T in world/route.js are stale`** — you moved a platform. Run
+  the snippet in the header of `world/path.js` and paste the new numbers into `route.js`.
 - **Backend crashes with `path is not defined`** — `src/backend/app.js` uses `path` without
   requiring it; add `const path = require('path');`. Backend is not needed for frontend dev.

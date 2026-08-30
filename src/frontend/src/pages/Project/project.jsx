@@ -9,14 +9,17 @@ import {
 } from './ProjectCardElements';
 import SectionHeading from '../../components/SectionHeading';
 import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
+import { useLayout } from '../../layout/LayoutContext';
 
 const Project = () => {
-  const [ref, visible] = useFadeInOnScroll();
+  const { docked } = useLayout();
+  const [ref, visible] = useFadeInOnScroll({ disabled: docked });
 
   return (
     <ProjectContainer
       id="projects"
       ref={ref}
+      $docked={docked}
       className={visible ? 'visible' : ''}
     >
       <ProjectContent>

@@ -17,9 +17,9 @@ export const ProjectContainer = styled.div`
   background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
-  min-height: 100vh;
+  min-height: ${({ $docked }) => ($docked ? '0' : '100vh')};
   padding: ${({ theme }) => theme.space[6]};
-  border-left: 2px solid ${({ theme }) => theme.color.border};
+  border-left: ${({ theme, $docked }) => ($docked ? 'none' : `2px solid ${theme.color.border}`)};
   overflow: hidden;
   opacity: 0;
   transform: translateY(24px);

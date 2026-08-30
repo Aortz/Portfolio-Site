@@ -1,9 +1,8 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import {
   AboutContainer,
   AboutLeftContainer,
   AboutParentContainer,
-  AboutAccentSlot,
   AboutDescriptionContainer,
   AboutDescriptionText,
   ToolsBlock,
@@ -27,8 +26,7 @@ import { SiRos, SiUnrealengine } from 'react-icons/si';
 import SectionHeading from '../../components/SectionHeading';
 import AxisDivider from '../../components/AxisDivider';
 import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
-
-const AboutAccent = lazy(() => import('../../components/AboutAccent'));
+import { useLayout } from '../../layout/LayoutContext';
 
 const TOOL_CATEGORIES = [
   {
@@ -68,15 +66,17 @@ const TOOL_CATEGORIES = [
 ];
 
 const About = () => {
-  const [ref, visible] = useFadeInOnScroll();
+  const { docked } = useLayout();
+  const [ref, visible] = useFadeInOnScroll({ disabled: docked });
 
   return (
     <AboutParentContainer
       id="about"
       ref={ref}
+      $docked={docked}
       className={visible ? 'visible' : ''}
     >
-      <AboutContainer>
+      <AboutContainer $docked={docked}>
         <AboutLeftContainer>
           <SectionHeading number="02">ABOUT ME</SectionHeading>
 
@@ -116,11 +116,6 @@ const About = () => {
             </ToolsBlock>
           </AboutDescriptionContainer>
         </AboutLeftContainer>
-        <AboutAccentSlot>
-          <Suspense fallback={null}>
-            <AboutAccent />
-          </Suspense>
-        </AboutAccentSlot>
       </AboutContainer>
     </AboutParentContainer>
   );

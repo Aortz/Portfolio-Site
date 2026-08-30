@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Nav,
   NavLeft,
@@ -7,40 +6,49 @@ import {
   NavLinkRow,
   NavAnchor,
   NavLogo,
-  DesktopOnly,
 } from './NavbarElements';
 import PersonalLogo from '../../assets/personal-icon/personal-logo-transparent.png';
 import ThemeToggle from '../ThemeToggle';
-import GridToggle from '../GridToggle';
 import ReducedMotionToggle from '../ReducedMotionToggle';
-import ParticleSpeedToggle from '../ParticleSpeedToggle';
+import { useTeleop } from '../../teleop/TeleopProvider';
+
+const LINKS = [
+  { id: 'home', label: '1. HOME' },
+  { id: 'about', label: '2. ABOUT ME' },
+  { id: 'projects', label: '3. PROJECTS' },
+  { id: 'gallery', label: '4. GALLERY' },
+  { id: 'resume', label: '5. RESUME' },
+];
 
 const Navbar = () => {
-  const navigate = useNavigate();
-  const handleLogoClick = () => navigate('/#home');
+  const { mode, goTo } = useTeleop();
+
+  // World mode: fly the robot to the platform instead of jumping the page.
+  // The href stays for a11y / middle-click / page mode.
+  const onLink = (id) => (e) => {
+    if (mode !== 'world') return;
+    e.preventDefault();
+    goTo(id);
+  };
 
   return (
     <Nav>
       <NavLeft>
         <NavLogo
           src={PersonalLogo}
-          onClick={handleLogoClick}
+          onClick={() => goTo('home')}
           alt="Junwei logo"
         />
       </NavLeft>
 
       <NavRight>
         <NavLinkRow>
-          <NavAnchor href="#home">1. HOME</NavAnchor>
-          <NavAnchor href="#about">2. ABOUT ME</NavAnchor>
-          <NavAnchor href="#projects">3. PROJECTS</NavAnchor>
-          <NavAnchor href="#gallery">4. GALLERY</NavAnchor>
-          <NavAnchor href="#resume">5. RESUME</NavAnchor>
+          {LINKS.map(({ id, label }) => (
+            <NavAnchor key={id} href={`#${id}`} onClick={onLink(id)}>
+              {label}
+            </NavAnchor>
+          ))}
         </NavLinkRow>
-        <DesktopOnly>
-          <GridToggle />
-          <ParticleSpeedToggle />
-        </DesktopOnly>
         <ReducedMotionToggle />
         <ThemeToggle />
       </NavRight>

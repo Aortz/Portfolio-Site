@@ -58,11 +58,14 @@ export const HomeContainer = styled.div`
   background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
-  min-height: 90vh;
-  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} ${theme.space[16]}`};
-  border-top: 2px solid ${({ theme }) => theme.color.border};
-  border-left: 2px solid ${({ theme }) => theme.color.border};
-  border-radius: ${({ theme }) => `${theme.radius.xl} 0 0 0`};
+  min-height: ${({ $docked }) => ($docked ? '0' : '90vh')};
+  padding: ${({ theme, $docked }) =>
+    $docked
+      ? theme.space[6]
+      : `${theme.space[6]} ${theme.space[6]} ${theme.space[6]} ${theme.space[16]}`};
+  border-top: ${({ theme, $docked }) => ($docked ? 'none' : `2px solid ${theme.color.border}`)};
+  border-left: ${({ theme, $docked }) => ($docked ? 'none' : `2px solid ${theme.color.border}`)};
+  border-radius: ${({ theme, $docked }) => ($docked ? '0' : `${theme.radius.xl} 0 0 0`)};
   position: relative;
   z-index: 2;
   overflow-x: hidden;
@@ -86,24 +89,6 @@ export const HomeContent = styled.div`
   min-width: 0;
   gap: ${({ theme }) => theme.space[3]};
   text-align: left;
-`;
-
-export const HomeAccentSlot = styled.div`
-  flex: 0 0 clamp(720px, 60vw, 1100px);
-  width: clamp(720px, 60vw, 1100px);
-  height: clamp(720px, 60vw, 1100px);
-  margin-right: ${({ theme }) => theme.space[16]};
-
-  @media screen and (max-width: 1024px) {
-    flex-basis: 540px;
-    width: 540px;
-    height: 540px;
-    margin-right: ${({ theme }) => theme.space[6]};
-  }
-
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
 `;
 
 export const HomeBgImg = styled.img`

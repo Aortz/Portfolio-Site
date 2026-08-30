@@ -3,41 +3,45 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/NavBar';
 import VerticalNavbar from './components/NavBar/VerticalNavbar';
 import Telemetry from './components/Telemetry';
-import GridOverlay from './components/GridOverlay';
-import ScrollToTop from './components/ScrollToTop';
 import TeleopRail from './components/TeleopRail';
+import HintToast from './components/HintToast';
 import { RouteContainer } from './pages/Home/HomePageElements';
 import { GlobalStyles } from './components/Fonts/Fonts';
 import { ThemeProvider } from './theme/ThemeProvider';
 import { TeleopProvider } from './teleop/TeleopProvider';
+import useIsDesktop3D from './hooks/useIsDesktop3D';
 import Home from './pages/Home/index';
 
-const ParticleBg = lazy(() => import('./components/ParticleBg'));
-const TeleopUnit = lazy(() => import('./components/TeleopUnit'));
+const WorldCanvas = lazy(() => import('./world/WorldCanvas'));
+const WorldGlobalStyles = lazy(() => import('./world/WorldGlobalStyles'));
+const SectionDock = lazy(() => import('./components/SectionDock'));
 
 export default function App() {
+  const world = useIsDesktop3D();
+
   return (
     <ThemeProvider>
-      <TeleopProvider>
+      <TeleopProvider mode={world ? 'world' : 'page'}>
         <Router>
           <GlobalStyles />
-          <Suspense fallback={null}>
-            <ParticleBg />
-          </Suspense>
-          <GridOverlay />
           <Navbar />
           <VerticalNavbar />
-          <TeleopRail />
-          <Suspense fallback={null}>
-            <TeleopUnit />
-          </Suspense>
-          <RouteContainer>
-            <Routes>
-              <Route path="*" element={<Home />} />
-            </Routes>
-          </RouteContainer>
+          {world ? (
+            <Suspense fallback={null}>
+              <WorldGlobalStyles />
+              <WorldCanvas />
+              <SectionDock />
+              <TeleopRail />
+              <HintToast />
+            </Suspense>
+          ) : (
+            <RouteContainer>
+              <Routes>
+                <Route path="*" element={<Home />} />
+              </Routes>
+            </RouteContainer>
+          )}
           <Telemetry />
-          <ScrollToTop />
         </Router>
       </TeleopProvider>
     </ThemeProvider>

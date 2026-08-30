@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { gallery } from '../../editable-stuff/config.js';
 import SectionHeading from '../../components/SectionHeading';
 import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
+import { useLayout } from '../../layout/LayoutContext';
 
 const GallerySectionRoot = styled.section`
   display: flex;
@@ -10,9 +11,9 @@ const GallerySectionRoot = styled.section`
   background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
-  min-height: 100vh;
+  min-height: ${({ $docked }) => ($docked ? '0' : '100vh')};
   padding: ${({ theme }) => theme.space[6]};
-  border-left: 2px solid ${({ theme }) => theme.color.border};
+  border-left: ${({ theme, $docked }) => ($docked ? 'none' : `2px solid ${theme.color.border}`)};
   opacity: 0;
   transform: translateY(24px);
   transition:
@@ -110,12 +111,14 @@ const CardCaption = styled.p`
 `;
 
 const Gallery = () => {
-  const [ref, visible] = useFadeInOnScroll();
+  const { docked } = useLayout();
+  const [ref, visible] = useFadeInOnScroll({ disabled: docked });
 
   return (
     <GallerySectionRoot
       id="gallery"
       ref={ref}
+      $docked={docked}
       className={visible ? 'visible' : ''}
     >
       <SectionHeading number="04">SKETCH GALLERY</SectionHeading>

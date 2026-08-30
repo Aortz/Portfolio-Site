@@ -50,7 +50,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   /* Layered backdrop (soft gradient blobs) on a dedicated layer behind the
-     particle canvas. The opt-in CAD grid lives on <GridOverlay>, not here. */
+     world canvas. */
   body::before {
     content: '';
     position: fixed;

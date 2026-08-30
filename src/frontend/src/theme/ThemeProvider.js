@@ -3,21 +3,16 @@ import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { tokensFor } from './tokens';
 
 const THEME_KEY = 'portfolio-theme';
-const GRID_KEY = 'portfolio-grid';
-const PARTICLE_SPEED_KEY = 'portfolio-particle-speed';
 const REDUCED_MOTION_KEY = 'portfolio-reduced-motion';
-
-const SPEED_ORDER = ['slow', 'normal', 'fast'];
+const QUALITY_KEY = 'portfolio-quality';
 
 const ThemeModeContext = createContext({
   mode: 'dark',
   toggleMode: () => {},
-  gridVisible: false,
-  toggleGrid: () => {},
-  particleSpeed: 'normal',
-  cycleParticleSpeed: () => {},
   reducedMotion: false,
   toggleReducedMotion: () => {},
+  quality: 'standard',
+  toggleQuality: () => {},
 });
 
 const initialMode = () => {
@@ -25,17 +20,6 @@ const initialMode = () => {
   const stored = window.localStorage.getItem(THEME_KEY);
   if (stored === 'light' || stored === 'dark') return stored;
   return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-};
-
-const initialGrid = () => {
-  if (typeof window === 'undefined') return false;
-  return window.localStorage.getItem(GRID_KEY) === 'on';
-};
-
-const initialParticleSpeed = () => {
-  if (typeof window === 'undefined') return 'normal';
-  const stored = window.localStorage.getItem(PARTICLE_SPEED_KEY);
-  return SPEED_ORDER.includes(stored) ? stored : 'normal';
 };
 
 const initialReducedMotion = () => {
@@ -47,11 +31,15 @@ const initialReducedMotion = () => {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
+const initialQuality = () => {
+  if (typeof window === 'undefined') return 'standard';
+  return window.localStorage.getItem(QUALITY_KEY) === 'high' ? 'high' : 'standard';
+};
+
 export const ThemeProvider = ({ children }) => {
   const [mode, setMode] = useState(initialMode);
-  const [gridVisible, setGridVisible] = useState(initialGrid);
-  const [particleSpeed, setParticleSpeed] = useState(initialParticleSpeed);
   const [reducedMotion, setReducedMotion] = useState(initialReducedMotion);
+  const [quality, setQuality] = useState(initialQuality);
 
   useEffect(() => {
     document.documentElement.dataset.theme = mode;
@@ -59,34 +47,24 @@ export const ThemeProvider = ({ children }) => {
   }, [mode]);
 
   useEffect(() => {
-    window.localStorage.setItem(GRID_KEY, gridVisible ? 'on' : 'off');
-  }, [gridVisible]);
-
-  useEffect(() => {
-    window.localStorage.setItem(PARTICLE_SPEED_KEY, particleSpeed);
-  }, [particleSpeed]);
-
-  useEffect(() => {
     document.documentElement.dataset.reducedMotion = reducedMotion ? 'on' : 'off';
     window.localStorage.setItem(REDUCED_MOTION_KEY, reducedMotion ? 'on' : 'off');
   }, [reducedMotion]);
+
+  useEffect(() => {
+    window.localStorage.setItem(QUALITY_KEY, quality);
+  }, [quality]);
 
   const value = useMemo(
     () => ({
       mode,
       toggleMode: () => setMode((m) => (m === 'dark' ? 'light' : 'dark')),
-      gridVisible,
-      toggleGrid: () => setGridVisible((v) => !v),
-      particleSpeed,
-      cycleParticleSpeed: () =>
-        setParticleSpeed((s) => {
-          const idx = SPEED_ORDER.indexOf(s);
-          return SPEED_ORDER[(idx + 1) % SPEED_ORDER.length];
-        }),
       reducedMotion,
       toggleReducedMotion: () => setReducedMotion((v) => !v),
+      quality,
+      toggleQuality: () => setQuality((q) => (q === 'high' ? 'standard' : 'high')),
     }),
-    [mode, gridVisible, particleSpeed, reducedMotion]
+    [mode, reducedMotion, quality]
   );
 
   return (

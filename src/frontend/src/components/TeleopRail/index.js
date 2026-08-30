@@ -106,7 +106,7 @@ const TeleopRail = () => {
           <ReadoutBlock>
             <Readout>
               <span className="label">SPEED</span>
-              <span className="value">{Math.abs(hud.vel.scroll).toFixed(0)} px/s</span>
+              <span className="value">{(Math.abs(hud.vel.progress) * 100).toFixed(0)} %/s</span>
             </Readout>
             <Readout>
               <span className="label">ANG</span>
@@ -174,7 +174,7 @@ const TeleopRail = () => {
           </Actions>
 
           <Hint>
-            W/S walk page · A/D yaw · Q/E strafe · Space arm · X halt
+            W/S fly route · A/D yaw · Q/E strafe · Space arm · X halt
           </Hint>
         </Panel>
       )}

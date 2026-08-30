@@ -83,7 +83,7 @@ export const AboutParentContainer = styled.div`
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
     width: 100%;
-    min-height: 100vh;
+    min-height: ${({ $docked }) => ($docked ? '0' : '100vh')};
     opacity: 0;
     transform: translateY(24px);
     transition:
@@ -105,9 +105,9 @@ export const AboutContainer = styled.div`
     background: transparent;
     width: 100%;
     color: ${({ theme }) => theme.color.fg};
-    min-height: 100vh;
+    min-height: ${({ $docked }) => ($docked ? '0' : '100vh')};
     padding: ${({ theme }) => theme.space[6]};
-    border-left: 2px solid ${({ theme }) => theme.color.border};
+    border-left: ${({ theme, $docked }) => ($docked ? 'none' : `2px solid ${theme.color.border}`)};
 
     grid-row: 1;
     grid-column: 1;
@@ -120,20 +120,6 @@ export const AboutContainer = styled.div`
         align-items: stretch;
         gap: ${({ theme }) => theme.space[6]};
         border-left: none;
-    }
-`;
-
-export const AboutAccentSlot = styled.div`
-    flex: 0 0 360px;
-    height: 360px;
-
-    @media screen and (max-width: 1024px) {
-        flex-basis: 260px;
-        height: 260px;
-    }
-
-    @media screen and (max-width: 768px) {
-        display: none;
     }
 `;
 

@@ -1,12 +1,11 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FiDownload, FiExternalLink } from 'react-icons/fi';
 import resumePDF from '../../assets/resume/Lee_Junwei_Resume.pdf';
 import SectionHeading from '../../components/SectionHeading';
 import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
 import AxisDivider from '../../components/AxisDivider';
-
-const ResumeAccent = lazy(() => import('../../components/ResumeAccent'));
+import { useLayout } from '../../layout/LayoutContext';
 
 const ResumeSectionRoot = styled.section`
   display: flex;
@@ -16,9 +15,9 @@ const ResumeSectionRoot = styled.section`
   background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
-  min-height: 100vh;
+  min-height: ${({ $docked }) => ($docked ? '0' : '100vh')};
   padding: ${({ theme }) => theme.space[6]};
-  border-left: 2px solid ${({ theme }) => theme.color.border};
+  border-left: ${({ theme, $docked }) => ($docked ? 'none' : `2px solid ${theme.color.border}`)};
   opacity: 0;
   transform: translateY(24px);
   transition:
@@ -44,20 +43,6 @@ const ResumeContent = styled.div`
   flex-direction: column;
   flex: 1 1 auto;
   min-width: 0;
-`;
-
-const ResumeAccentSlot = styled.div`
-  flex: 0 0 300px;
-  height: 300px;
-
-  @media screen and (max-width: 1024px) {
-    flex-basis: 220px;
-    height: 220px;
-  }
-
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
 `;
 
 const Copy = styled.p`
@@ -117,12 +102,14 @@ const SecondaryButton = styled(PrimaryButton)`
 `;
 
 const ResumeSection = () => {
-  const [ref, visible] = useFadeInOnScroll();
+  const { docked } = useLayout();
+  const [ref, visible] = useFadeInOnScroll({ disabled: docked });
 
   return (
     <ResumeSectionRoot
       id="resume"
       ref={ref}
+      $docked={docked}
       className={visible ? 'visible' : ''}
     >
       <ResumeContent>
@@ -152,11 +139,6 @@ const ResumeSection = () => {
           </SecondaryButton>
         </ButtonRow>
       </ResumeContent>
-      <ResumeAccentSlot>
-        <Suspense fallback={null}>
-          <ResumeAccent />
-        </Suspense>
-      </ResumeAccentSlot>
     </ResumeSectionRoot>
   );
 };
