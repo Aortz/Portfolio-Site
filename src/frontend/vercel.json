@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "create-react-app",
+  "rewrites": [{ "source": "/((?!static/|draco/|fonts/|robots/|drone/|hands/|ux3d_industrial_robot/|cursors/).*)", "destination": "/index.html" }],
+  "headers": [
+    {
+      "source": "/(draco|fonts|robots|drone|hands|ux3d_industrial_robot|cursors)/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/static/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/draco/(.*).wasm",
+      "headers": [{ "key": "Content-Type", "value": "application/wasm" }]
+    }
+  ]
+}

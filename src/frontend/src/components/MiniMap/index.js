@@ -8,18 +8,20 @@ import { PLATFORMS, PLATFORM_T, SPAWN_POS } from '../../world/route';
    interpolated piecewise-linearly between platforms from `hud.progress`,
    which is close enough for a map. Toggle with M or the console's Map button. */
 
-const SIZE = 220;
-const PAD = 32;
+const SIZE = 280;          // width
+const H = SIZE - 60;       // height
+const PAD = 34;
 
 const Root = styled.div`
   position: fixed;
-  left: 120px;
-  bottom: 24px;
+  right: 0;
+  bottom: 64px; /* clears the Telemetry pill */
   z-index: 15;
   width: ${SIZE}px;
-  height: ${SIZE}px;
+  height: ${SIZE - 60}px;
   border: 1px solid ${({ theme }) => theme.color.border};
-  border-radius: ${({ theme }) => theme.radius.md};
+  border-right: none;
+  border-radius: ${({ theme }) => `${theme.radius.sm} 0 0 ${theme.radius.sm}`};
   background: ${({ theme }) => theme.color.surface};
   overflow: hidden;
   font-family: ${({ theme }) => theme.font.mono};
@@ -35,7 +37,7 @@ const Root = styled.div`
     opacity: 0.65;
   }
   &::before { top: 6px; left: 6px; border-top: 1.5px solid; border-left: 1.5px solid; }
-  &::after { bottom: 6px; right: 6px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+  &::after { bottom: 6px; left: 6px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
 
   @media screen and (max-width: 768px) {
     display: none;
@@ -70,11 +72,11 @@ const MiniMap = () => {
     const minX = Math.min(...xs), maxX = Math.max(...xs);
     const minZ = Math.min(...zs), maxZ = Math.max(...zs);
     const span = Math.max(maxX - minX, maxZ - minZ) || 1;
-    const scale = (SIZE - PAD * 2) / span;
+    const scale = Math.min(SIZE - PAD * 2, H - PAD * 2) / span;
     const cx = (minX + maxX) / 2, cz = (minZ + maxZ) / 2;
     const map = ([x, , z]) => ({
       x: SIZE / 2 + (x - cx) * scale,
-      y: SIZE / 2 + 16 + (z - cz) * scale, // +z is toward the camera → down the map; +16 clears the title
+      y: H / 2 + 10 + (z - cz) * scale, // +z is toward the camera → down the map; +10 clears the title
     });
     return { points: PLATFORMS.map((p) => map(p.pos)), spawn: map(SPAWN_POS) };
   }, []);
@@ -94,7 +96,7 @@ const MiniMap = () => {
   return (
     <Root aria-label="Route map" role="img">
       <Title>{'// ROUTE MAP'}</Title>
-      <svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
+      <svg width={SIZE} height={H} viewBox={`0 0 ${SIZE} ${H}`}>
         <path d={path} fill="none" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1" strokeDasharray="3 3" style={{ color: 'var(--map-fg, #71717A)' }} />
         {points.map((p, k) => {
           const active = hud.waypointId === PLATFORMS[k].id;

@@ -5,19 +5,18 @@ const pulse = keyframes`
   50%      { opacity: 0.55; transform: scale(0.9); }
 `;
 
-/* Outer fixed dock — pinned to the right edge, vertically centered.
+/* Outer fixed dock — pinned to the right edge, just below the nav.
    Width animates between collapsed (36 px tab) and expanded (280 px panel). */
 export const RailRoot = styled.aside`
   position: fixed;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 101px;
   z-index: 998;
 
   display: flex;
   flex-direction: column;
   width: ${({ $expanded }) => ($expanded ? '280px' : '36px')};
-  max-height: 86vh;
+  max-height: calc(100vh - 101px - 300px); /* leave room for the route map below */
   overflow: hidden;
 
   background: ${({ theme }) => theme.color.surface};
