@@ -28,9 +28,10 @@ const hexToRgb = (hex) => {
 const Panel = styled.section`
   position: fixed;
   top: 101px;
-  right: 56px; /* clears the 36px TELEOP tab on the right edge */
-  bottom: 24px;
-  width: min(560px, 42vw);
+  /* Sit left of the teleop console: 280px panel or 36px collapsed tab. */
+  right: ${({ $railOpen }) => ($railOpen ? '304px' : '60px')};
+  max-height: min(62vh, 640px);
+  width: min(440px, 34vw);
   z-index: 10;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -46,6 +47,7 @@ const Panel = styled.section`
   opacity: 0;
   transform: translateX(24px);
   transition:
+    right ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
     opacity ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
     transform ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
 
@@ -57,12 +59,12 @@ const Panel = styled.section`
     `}
 
   @media screen and (max-width: 1024px) {
-    width: min(480px, 50vw);
+    width: min(400px, 44vw);
   }
 `;
 
 const SectionDock = () => {
-  const { hud } = useTeleop();
+  const { hud, expanded } = useTeleop();
   const { reducedMotion } = useThemeMode();
   const targetId = hud.waypointId;
 
@@ -104,6 +106,7 @@ const SectionDock = () => {
       <Panel
         ref={panelRef}
         $shown={shown}
+        $railOpen={expanded}
         aria-live="polite"
         onWheel={(e) => e.stopPropagation()}
       >

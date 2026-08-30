@@ -5,6 +5,7 @@ import VerticalNavbar from './components/NavBar/VerticalNavbar';
 import Telemetry from './components/Telemetry';
 import TeleopRail from './components/TeleopRail';
 import HintToast from './components/HintToast';
+import MiniMap from './components/MiniMap';
 import { RouteContainer } from './pages/Home/HomePageElements';
 import { GlobalStyles } from './components/Fonts/Fonts';
 import { ThemeProvider } from './theme/ThemeProvider';
@@ -33,6 +34,7 @@ export default function App() {
               <SectionDock />
               <TeleopRail />
               <HintToast />
+              <MiniMap />
             </Suspense>
           ) : (
             <RouteContainer>

@@ -47,7 +47,7 @@ const HintToast = () => {
   if (!hint) return null;
   return (
     <Toast role="status">
-      PRESS <kbd>SPACE</kbd> TO TAKE CONTROL · SCROLL TO EXPLORE
+      <kbd>W</kbd>/<kbd>S</kbd> FLY · <kbd>SPACE</kbd> JUMP · <kbd>M</kbd> MAP · SCROLL TO EXPLORE
     </Toast>
   );
 };

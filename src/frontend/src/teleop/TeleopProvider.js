@@ -55,6 +55,8 @@ const GOTO_DURATION = 1.4;       // seconds
 const TOUR_DURATION = 2.5;       // seconds
 const HASH_DEBOUNCE = 250;       // ms
 const TOUR_FLAG = 'recon2-toured';
+const JUMP_VELOCITY = 7.5;     // world units/sec
+const GRAVITY = 18;            // world units/sec²
 
 const KEY_MAP = {
   KeyW: 'up',
@@ -67,8 +69,9 @@ const KEY_MAP = {
   ArrowRight: 'yaw-',
   KeyQ: 'left',
   KeyE: 'right',
-  Space: 'arm',
+  Space: 'jump',
   KeyX: 'halt',
+  KeyM: 'map',
 };
 
 const LABEL_BY_ID = Object.fromEntries(PLATFORMS.map((p) => [p.id, p.label]));
@@ -83,8 +86,10 @@ const hashId = () => {
 
 export const TeleopProvider = ({ mode = 'world', children }) => {
   const { reducedMotion } = useThemeMode();
-  const [expanded, setExpanded] = useState(false);
-  const [armed, setArmed] = useState(false);
+  // Console open and armed by default — the robot is the site's navigation.
+  const [expanded, setExpanded] = useState(true);
+  const [armed, setArmed] = useState(true);
+  const [mapOpen, setMapOpen] = useState(false);
   const [touring, setTouring] = useState(false);
   const [hint, setHint] = useState(false);
 
@@ -102,11 +107,12 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
   });
 
   const tRef = useRef(hud.progress);
-  const poseRef = useRef({ t: hud.progress, yaw: 0, strafe: 0, moving: false });
+  const poseRef = useRef({ t: hud.progress, yaw: 0, strafe: 0, moving: false, jumpY: 0 });
+  const jumpRef = useRef({ y: 0, vy: 0 });
   const velRef = useRef({ progress: 0, strafe: 0, ang: 0 });
   const pressedRef = useRef(new Set());
-  const armedRef = useRef(false);
-  const expandedRef = useRef(false);
+  const armedRef = useRef(true);
+  const expandedRef = useRef(true);
   const reducedRef = useRef(false);
   const modeRef = useRef(mode);
   const haltRef = useRef(null);
@@ -172,6 +178,14 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
   const toggleExpanded = useCallback(() => setExpanded((e) => !e), []);
   const toggleArmed = useCallback(() => setArmed((a) => !a), []);
   const dismissHint = useCallback(() => setHint(false), []);
+  const toggleMap = useCallback(() => setMapOpen((m) => !m), []);
+
+  const jump = useCallback(() => {
+    const j = jumpRef.current;
+    if (j.y > 0.01) return; // already airborne
+    j.vy = JUMP_VELOCITY;
+    j.y = 0.011;
+  }, []);
 
   const halt = useCallback(() => {
     haltRef.current = {
@@ -185,9 +199,10 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
   const pressKey = useCallback((code) => {
     const action = KEY_MAP[code];
     if (!action || !expandedRef.current) return;
-    if (action === 'arm') { setArmed((a) => !a); return; }
     if (action === 'halt') { halt(); return; }
+    if (action === 'map') { setMapOpen((m) => !m); return; }
     if (!armedRef.current) return;
+    if (action === 'jump') { jump(); return; }
     cancelTween();
     if (reducedRef.current && (action === 'up' || action === 'down')) {
       const i = stepPlatform(tRef.current, action === 'up' ? 1 : -1);
@@ -195,7 +210,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       return;
     }
     pressedRef.current.add(code);
-  }, [halt]);
+  }, [halt, jump]);
 
   const releaseKey = useCallback((code) => { pressedRef.current.delete(code); }, []);
 
@@ -205,14 +220,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
     const onKeyDown = (e) => {
       const action = KEY_MAP[e.code];
       if (!action) return;
-      // Space while the first-visit hint is up arms the unit directly.
-      if (action === 'arm' && hint && !expandedRef.current) {
-        e.preventDefault();
-        setExpanded(true);
-        setArmed(true);
-        setHint(false);
-        return;
-      }
+      if (hint) setHint(false);
       if (!expandedRef.current) return;
       e.preventDefault();
       if (e.repeat) return;
@@ -351,6 +359,15 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       p.t = tRef.current;
       p.moving = !!tw || Math.abs(v.progress) > MOVING_THRESHOLD;
 
+      // Jump: simple ballistic hop above the route.
+      const j = jumpRef.current;
+      if (j.y > 0 || j.vy > 0) {
+        j.vy -= GRAVITY * dt;
+        j.y = Math.max(0, j.y + j.vy * dt);
+        if (j.y === 0) j.vy = 0;
+      }
+      p.jumpY = j.y;
+
       subscribersRef.current.forEach((cb) => cb(p));
 
       // Waypoint detection every frame (cheap), HUD flush at HUD_HZ.
@@ -396,6 +413,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       armed,
       touring,
       hint,
+      mapOpen,
       hud,
       toggleExpanded,
       toggleArmed,
@@ -404,11 +422,13 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       releaseKey,
       goTo,
       nudge,
+      jump,
       dismissHint,
+      toggleMap,
       subscribePose,
     }),
-    [mode, expanded, armed, touring, hint, hud, toggleExpanded, toggleArmed, halt,
-      pressKey, releaseKey, goTo, nudge, dismissHint, subscribePose]
+    [mode, expanded, armed, touring, hint, mapOpen, hud, toggleExpanded, toggleArmed, halt,
+      pressKey, releaseKey, goTo, nudge, jump, dismissHint, toggleMap, subscribePose]
   );
 
   return <TeleopContext.Provider value={value}>{children}</TeleopContext.Provider>;

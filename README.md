@@ -85,7 +85,8 @@ route (HOME = 0, RESUME = 1). Everything that moves the robot writes `t`:
 | Click-drag on the background | Orbits the camera around the robot (yaw + pitch); eases back to the chase view once the robot moves |
 | Nav link / logo / `#hash` in URL / back-forward | Eased tween to that platform |
 | First visit | Auto fly-in from off-route spawn to HOME, then a hint toast (`sessionStorage` flag) |
-| `TELEOP` tab → `Space` | Arm; then `W`/`S` drive along the route, `A`/`D` yaw, `Q`/`E` strafe, `X` halt |
+| Console (open + armed by default) | `W`/`S` drive along the route, `A`/`D` yaw, `Q`/`E` strafe, `Space` jump, `X` halt, `M` route map |
+| `M` / Map button | Toggles a top-down route minimap (bottom-left) with the robot's position |
 
 The panel opens when `t` is within `ARRIVE_RADIUS` of a platform and closes between them;
 the URL hash follows arrival. Reduced motion (nav toggle or OS): no fly-in, camera/panel snap,

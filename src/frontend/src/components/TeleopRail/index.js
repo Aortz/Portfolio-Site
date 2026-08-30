@@ -34,7 +34,7 @@ const KEY_ROWS = [
     { code: 'KeyD', label: 'D' },
   ],
   [
-    { code: 'Space', label: 'SPACE', span: 'span 2' },
+    { code: 'Space', label: 'JUMP', span: 'span 2' },
     { code: 'KeyX', label: 'X' },
   ],
 ];
@@ -65,6 +65,8 @@ const TeleopRail = () => {
     halt,
     pressKey,
     releaseKey,
+    mapOpen,
+    toggleMap,
   } = useTeleop();
   const pressedSet = new Set(hud.pressed);
 
@@ -171,10 +173,13 @@ const TeleopRail = () => {
             <ActionButton type="button" onClick={halt}>
               Halt
             </ActionButton>
+            <ActionButton type="button" $on={mapOpen} onClick={toggleMap} aria-pressed={mapOpen}>
+              Map
+            </ActionButton>
           </Actions>
 
           <Hint>
-            W/S fly route · A/D yaw · Q/E strafe · Space arm · X halt
+            W/S fly route · A/D yaw · Q/E strafe · Space jump · X halt · M map
           </Hint>
         </Panel>
       )}

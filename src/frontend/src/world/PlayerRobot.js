@@ -35,12 +35,12 @@ const PlayerRobot = ({ robotRef }) => {
   const { subscribePose } = useTeleop();
   const { invalidate } = useThree();
 
-  const poseRef = useRef({ t: 0, yaw: 0, strafe: 0, moving: false });
+  const poseRef = useRef({ t: 0, yaw: 0, strafe: 0, moving: false, jumpY: 0 });
 
   useEffect(() => subscribePose((p) => {
     const mine = poseRef.current;
-    const changed = mine.t !== p.t || mine.yaw !== p.yaw || mine.strafe !== p.strafe || mine.moving !== p.moving;
-    mine.t = p.t; mine.yaw = p.yaw; mine.strafe = p.strafe; mine.moving = p.moving;
+    const changed = mine.t !== p.t || mine.yaw !== p.yaw || mine.strafe !== p.strafe || mine.moving !== p.moving || mine.jumpY !== p.jumpY;
+    mine.t = p.t; mine.yaw = p.yaw; mine.strafe = p.strafe; mine.moving = p.moving; mine.jumpY = p.jumpY;
     if (changed) invalidate();
   }), [subscribePose, invalidate]);
 
@@ -55,7 +55,7 @@ const PlayerRobot = ({ robotRef }) => {
     _side.crossVectors(_tan, UP).normalize();
 
     _pos.addScaledVector(_side, p.strafe);
-    _pos.y += HOVER_HEIGHT;
+    _pos.y += HOVER_HEIGHT + p.jumpY;
     const walking = p.moving && !reducedMotion;
     if (walking) _pos.y += Math.sin(time * BOB_HZ) * BOB_AMP;
     g.position.copy(_pos);
