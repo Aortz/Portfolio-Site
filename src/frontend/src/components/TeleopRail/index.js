@@ -48,6 +48,8 @@ const formatUptime = (s) => {
   return `${m}:${ss}`;
 };
 
+const formatRun = (s) => `${s.toFixed(1)}s`;
+
 const formatYawDeg = (rad) => {
   // Wrap to [-180, 180] for readability.
   let deg = (rad * 180) / Math.PI;
@@ -67,7 +69,15 @@ const TeleopRail = () => {
     releaseKey,
     mapOpen,
     toggleMap,
+    mission,
+    run,
+    startRun,
   } = useTeleop();
+  const lastSplit = run.splits[run.splits.length - 1];
+  let runLabel = '--';
+  if (run.pending) runLabel = 'TO START';
+  else if (run.active) runLabel = formatRun(run.elapsed);
+  else if (mission.best != null) runLabel = `BEST ${formatRun(mission.best)}`;
   const pressedSet = new Set(hud.pressed);
 
   return (
@@ -140,6 +150,33 @@ const TeleopRail = () => {
 
           <Divider />
 
+          <ReadoutBlock>
+            <Readout>
+              <span className="label">CORES</span>
+              <span className="value">{`${mission.cores.length}/5${mission.cores.length === 5 ? ' ✓' : ''}`}</span>
+            </Readout>
+            <Readout>
+              <span className="label">SURVEY</span>
+              <span className="value">{`${mission.visited.length}/5`}</span>
+            </Readout>
+            <Readout>
+              <span className="label">RUN</span>
+              <span className="value">{runLabel}</span>
+            </Readout>
+            {lastSplit && (
+              <Readout>
+                <span className="label">SPLIT</span>
+                <span className="value">{`${lastSplit.id.toUpperCase()} ${formatRun(lastSplit.t)}`}</span>
+              </Readout>
+            )}
+            <Readout>
+              <span className="label">BADGES</span>
+              <span className="value">{`${mission.achievements.length}/7`}</span>
+            </Readout>
+          </ReadoutBlock>
+
+          <Divider />
+
           <KeyGrid>
             {KEY_ROWS.flatMap((row, ri) =>
               row.map(({ code, label, span }) => (
@@ -173,13 +210,16 @@ const TeleopRail = () => {
             <ActionButton type="button" onClick={halt}>
               Halt
             </ActionButton>
-            <ActionButton type="button" $on={mapOpen} onClick={toggleMap} aria-pressed={mapOpen}>
+            <ActionButton type="button" $primary $on={mapOpen} onClick={toggleMap} aria-pressed={mapOpen}>
               Map
+            </ActionButton>
+            <ActionButton type="button" $primary $on={run.active || run.pending} onClick={startRun}>
+              Run
             </ActionButton>
           </Actions>
 
           <Hint>
-            W/S fly route · A/D yaw · Q/E strafe · Space jump · X halt · M map
+            W/S fly · A/D yaw · Q/E strafe · Space jump · X halt · M map · T time trial · jump at a pad to grab its core
           </Hint>
         </Panel>
       )}

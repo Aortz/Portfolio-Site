@@ -16,7 +16,8 @@ export const RailRoot = styled.aside`
   display: flex;
   flex-direction: column;
   width: ${({ $expanded }) => ($expanded ? '280px' : '36px')};
-  max-height: calc(100vh - 101px - 300px); /* leave room for the route map below */
+  max-height: calc(100vh - 101px - 236px); /* leave room for the route map below */
+  overflow-y: auto;
   overflow: hidden;
 
   background: ${({ theme }) => theme.color.surface};
@@ -258,7 +259,8 @@ export const ProgressTrack = styled.div`
 `;
 
 export const Actions = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: ${({ theme }) => theme.space[2]};
 `;
 

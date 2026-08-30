@@ -7,6 +7,7 @@ import { useTeleop } from '../teleop/TeleopProvider';
 import Starfield from './Starfield';
 import Platform from './Platform';
 import Landmarks from './Landmarks';
+import Cores from './Cores';
 import PlayerRobot from './PlayerRobot';
 import ChaseCamera from './ChaseCamera';
 import { PLATFORMS } from './path';
@@ -40,6 +41,7 @@ const WorldScene = () => {
         <Platform key={p.id} platform={p} active={hud.waypointId === p.id} />
       ))}
       <Landmarks />
+      <Cores />
       <Suspense fallback={null}>
         <PlayerRobot robotRef={robotRef} />
       </Suspense>

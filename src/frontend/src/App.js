@@ -6,6 +6,7 @@ import Telemetry from './components/Telemetry';
 import TeleopRail from './components/TeleopRail';
 import HintToast from './components/HintToast';
 import MiniMap from './components/MiniMap';
+import AchievementToast from './components/AchievementToast';
 import { RouteContainer } from './pages/Home/HomePageElements';
 import { GlobalStyles } from './components/Fonts/Fonts';
 import { ThemeProvider } from './theme/ThemeProvider';
@@ -35,6 +36,7 @@ export default function App() {
               <TeleopRail />
               <HintToast />
               <MiniMap />
+              <AchievementToast />
             </Suspense>
           ) : (
             <RouteContainer>

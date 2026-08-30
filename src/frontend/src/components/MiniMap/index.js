@@ -9,13 +9,13 @@ import { PLATFORMS, PLATFORM_T, SPAWN_POS } from '../../world/route';
    which is close enough for a map. Toggle with M or the console's Map button. */
 
 const SIZE = 280;          // width
-const H = SIZE - 60;       // height
+const H = 200;             // height
 const PAD = 34;
 
 const Root = styled.div`
   position: fixed;
   right: 0;
-  bottom: 64px; /* clears the Telemetry pill */
+  bottom: 20px;
   z-index: 15;
   width: ${SIZE}px;
   height: ${SIZE - 60}px;

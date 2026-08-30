@@ -82,11 +82,25 @@ route (HOME = 0, RESUME = 1). Everything that moves the robot writes `t`:
 | Input | Effect |
 |---|---|
 | Mouse wheel (anywhere outside the panel) | Nudges `t`; no arming needed |
-| Click-drag on the background | Orbits the camera around the robot (yaw + pitch); eases back to the chase view once the robot moves |
 | Nav link / logo / `#hash` in URL / back-forward | Eased tween to that platform |
 | First visit | Auto fly-in from off-route spawn to HOME, then a hint toast (`sessionStorage` flag) |
 | Console (open + armed by default) | `W`/`S` drive along the route, `A`/`D` yaw, `Q`/`E` strafe, `Space` jump, `X` halt, `M` route map |
-| `M` / Map button | Toggles a top-down route minimap (bottom-left) with the robot's position |
+| `M` / Map button | Toggles a top-down route minimap (under the console) with the robot's position |
+| `T` / Run button | Time trial: flies to HOME, starts the clock, splits at each platform, stops at RESUME. Best time persists |
+| Click-drag on the background | Orbits the camera around the robot (yaw + pitch); eases back to the chase view once the robot moves |
+
+### Mission layer
+
+Light gamification, all state in `localStorage` (`recon2-mission`), rendered by the console's
+CORES / SURVEY / RUN / BADGES readouts and `components/AchievementToast`:
+
+- **Data cores** (`world/Cores.js`) — one octahedron hovering over each pad at jump height.
+  Jump while docked to collect it. 5/5 unlocks *ARCHIVE COMPLETE*.
+- **Survey** — docking at all five platforms unlocks *FULL SURVEY*.
+- **Time trial** — `T`; *TIME TRIAL* on finish, *AFTERBURNER* under `SUB_TIME` (9s; a
+  full-throttle run is ~8.3s, so it needs a clean line).
+- Also: *LIFT-OFF* (first jump), *CORE SAMPLE* (first core), *SKYWALKER* (25 jumps).
+  Definitions in `ACHIEVEMENTS` at the top of `teleop/TeleopProvider.js`.
 
 The panel opens when `t` is within `ARRIVE_RADIUS` of a platform and closes between them;
 the URL hash follows arrival. Reduced motion (nav toggle or OS): no fly-in, camera/panel snap,

@@ -57,6 +57,27 @@ const HASH_DEBOUNCE = 250;       // ms
 const TOUR_FLAG = 'recon2-toured';
 const JUMP_VELOCITY = 7.5;     // world units/sec
 const GRAVITY = 18;            // world units/sec²
+const CORE_JUMP_HEIGHT = 1.0;  // jumpY needed to grab a core while docked
+const MISSION_KEY = 'recon2-mission';
+const SUB_TIME = 9;            // seconds — full-throttle route is ~8.3s, so this needs a clean run
+
+export const ACHIEVEMENTS = {
+  'first-jump':  { title: 'LIFT-OFF',         desc: 'First jump' },
+  'first-core':  { title: 'CORE SAMPLE',      desc: 'Collected a data core' },
+  'all-visited': { title: 'FULL SURVEY',      desc: 'Docked at every platform' },
+  'all-cores':   { title: 'ARCHIVE COMPLETE', desc: 'All five data cores recovered' },
+  'speedrun':    { title: 'TIME TRIAL',       desc: 'Completed a HOME→RESUME run' },
+  'sub-time':    { title: 'AFTERBURNER',      desc: `Run under ${SUB_TIME}s` },
+  'skywalker':   { title: 'SKYWALKER',        desc: '25 jumps' },
+};
+
+const loadMission = () => {
+  const empty = { cores: [], visited: ['home'], achievements: [], best: null, jumps: 0 };
+  try {
+    const raw = window.localStorage.getItem(MISSION_KEY);
+    return raw ? { ...empty, ...JSON.parse(raw) } : empty;
+  } catch { return empty; }
+};
 
 const KEY_MAP = {
   KeyW: 'up',
@@ -72,6 +93,7 @@ const KEY_MAP = {
   Space: 'jump',
   KeyX: 'halt',
   KeyM: 'map',
+  KeyT: 'run',
 };
 
 const LABEL_BY_ID = Object.fromEntries(PLATFORMS.map((p) => [p.id, p.label]));
@@ -90,6 +112,24 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
   const [expanded, setExpanded] = useState(true);
   const [armed, setArmed] = useState(true);
   const [mapOpen, setMapOpen] = useState(false);
+  const [mission, setMission] = useState(loadMission);
+  const [unlocks, setUnlocks] = useState([]); // achievement toast queue
+  const [run, setRun] = useState({ active: false, pending: false, elapsed: 0, splits: [] });
+  const missionRef = useRef(mission);
+  const runRef = useRef({ active: false, pending: false, start: 0, splits: [], next: 1 });
+  useEffect(() => { missionRef.current = mission; }, [mission]);
+  useEffect(() => {
+    try { window.localStorage.setItem(MISSION_KEY, JSON.stringify(mission)); } catch { /* private mode */ }
+  }, [mission]);
+
+  // Award an achievement once; queues a toast.
+  const unlock = useCallback((id) => {
+    if (missionRef.current.achievements.includes(id)) return;
+    missionRef.current = { ...missionRef.current, achievements: [...missionRef.current.achievements, id] };
+    setMission(missionRef.current);
+    setUnlocks((q) => [...q, id]);
+  }, []);
+  const popUnlock = useCallback(() => setUnlocks((q) => q.slice(1)), []);
   const [touring, setTouring] = useState(false);
   const [hint, setHint] = useState(false);
 
@@ -185,7 +225,24 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
     if (j.y > 0.01) return; // already airborne
     j.vy = JUMP_VELOCITY;
     j.y = 0.011;
-  }, []);
+    const m = missionRef.current;
+    missionRef.current = { ...m, jumps: (m.jumps || 0) + 1 };
+    setMission(missionRef.current);
+    unlock('first-jump');
+    if (missionRef.current.jumps >= 25) unlock('skywalker');
+  }, [unlock]);
+
+  // Time trial: fly to HOME, start the clock on arrival, split at each
+  // platform in order, stop at RESUME.
+  const startRun = useCallback(() => {
+    const r = runRef.current;
+    r.active = false; r.pending = true; r.splits = []; r.next = 1;
+    setRun({ active: false, pending: true, elapsed: 0, splits: [] });
+    startTween(0, GOTO_DURATION, easeInOutCubic, () => {
+      r.pending = false; r.active = true; r.start = performance.now() / 1000;
+      setRun({ active: true, pending: false, elapsed: 0, splits: [] });
+    });
+  }, [startTween]);
 
   const halt = useCallback(() => {
     haltRef.current = {
@@ -201,6 +258,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
     if (!action || !expandedRef.current) return;
     if (action === 'halt') { halt(); return; }
     if (action === 'map') { setMapOpen((m) => !m); return; }
+    if (action === 'run') { startRun(); return; }
     if (!armedRef.current) return;
     if (action === 'jump') { jump(); return; }
     cancelTween();
@@ -210,7 +268,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       return;
     }
     pressedRef.current.add(code);
-  }, [halt, jump]);
+  }, [halt, jump, startRun]);
 
   const releaseKey = useCallback((code) => { pressedRef.current.delete(code); }, []);
 
@@ -368,6 +426,34 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       }
       p.jumpY = j.y;
 
+      // ---- Mission: cores, survey, time trial --------------------------
+      const m = missionRef.current;
+      const dockedId = waypointRef.current;
+      if (dockedId && j.y > CORE_JUMP_HEIGHT && !m.cores.includes(dockedId)) {
+        missionRef.current = { ...m, cores: [...m.cores, dockedId] };
+        setMission(missionRef.current);
+        unlock('first-core');
+        if (missionRef.current.cores.length === PLATFORMS.length) unlock('all-cores');
+      }
+      const r = runRef.current;
+      if (r.active) {
+        const elapsed = now - r.start;
+        if (dockedId === PLATFORMS[r.next]?.id) {
+          r.splits = [...r.splits, { id: dockedId, t: elapsed }];
+          r.next += 1;
+          if (r.next >= PLATFORMS.length) {
+            r.active = false;
+            const mm = missionRef.current;
+            const best = mm.best == null || elapsed < mm.best ? elapsed : mm.best;
+            missionRef.current = { ...mm, best };
+            setMission(missionRef.current);
+            unlock('speedrun');
+            if (elapsed < SUB_TIME) unlock('sub-time');
+          }
+          setRun({ active: r.active, pending: false, elapsed, splits: r.splits });
+        }
+      }
+
       subscribersRef.current.forEach((cb) => cb(p));
 
       // Waypoint detection every frame (cheap), HUD flush at HUD_HZ.
@@ -375,6 +461,11 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       const wp = near.distance < ARRIVE_RADIUS && !tw ? near.platform.id : null;
       if (wp !== waypointRef.current) {
         waypointRef.current = wp;
+        if (wp && !missionRef.current.visited.includes(wp)) {
+          missionRef.current = { ...missionRef.current, visited: [...missionRef.current.visited, wp] };
+          setMission(missionRef.current);
+          if (missionRef.current.visited.length === PLATFORMS.length) unlock('all-visited');
+        }
         window.clearTimeout(hashTimerRef.current);
         if (wp) {
           hashTimerRef.current = window.setTimeout(() => {
@@ -386,6 +477,9 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       hudClock += dt;
       if (hudClock > 1 / HUD_HZ) {
         hudClock = 0;
+        if (runRef.current.active) {
+          setRun((s) => ({ ...s, elapsed: now - runRef.current.start }));
+        }
         setHud((h) => ({
           ...h,
           pose: { strafe: p.strafe, yaw: p.yaw },
@@ -404,7 +498,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       cancelAnimationFrame(raf);
       window.clearTimeout(hashTimerRef.current);
     };
-  }, [mode]);
+  }, [mode, unlock]);
 
   const value = useMemo(
     () => ({
@@ -414,6 +508,9 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       touring,
       hint,
       mapOpen,
+      mission,
+      run,
+      unlocks,
       hud,
       toggleExpanded,
       toggleArmed,
@@ -425,10 +522,12 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       jump,
       dismissHint,
       toggleMap,
+      startRun,
+      popUnlock,
       subscribePose,
     }),
-    [mode, expanded, armed, touring, hint, mapOpen, hud, toggleExpanded, toggleArmed, halt,
-      pressKey, releaseKey, goTo, nudge, jump, dismissHint, toggleMap, subscribePose]
+    [mode, expanded, armed, touring, hint, mapOpen, mission, run, unlocks, hud, toggleExpanded, toggleArmed, halt,
+      pressKey, releaseKey, goTo, nudge, jump, dismissHint, toggleMap, startRun, popUnlock, subscribePose]
   );
 
   return <TeleopContext.Provider value={value}>{children}</TeleopContext.Provider>;
