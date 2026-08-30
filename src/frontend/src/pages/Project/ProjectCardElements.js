@@ -13,7 +13,7 @@ export const ProjectContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: ${({ theme }) => theme.space[24]};
+  gap: ${({ theme }) => theme.space[12]};
   background: transparent;
   width: 100%;
   color: ${({ theme }) => theme.color.fg};
@@ -47,48 +47,6 @@ export const ProjectContent = styled.div`
 `;
 
 /* Full-content-width container for the 3D robots showcase, below the top row. */
-export const ProjectShowcase = styled.div`
-  position: relative;
-  width: 100%;
-  height: 540px;
-  border: 1px solid ${({ theme }) => theme.color.border};
-  border-radius: ${({ theme }) => theme.radius.sm};
-  background: ${({ theme }) => theme.color.surface};
-  overflow: hidden;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    border-color: ${({ theme }) => theme.color.accent};
-    opacity: 0.65;
-    pointer-events: none;
-    z-index: 2;
-  }
-  &::before {
-    top: 10px;
-    left: 10px;
-    border-top: 1.5px solid;
-    border-left: 1.5px solid;
-  }
-  &::after {
-    bottom: 10px;
-    right: 10px;
-    border-bottom: 1.5px solid;
-    border-right: 1.5px solid;
-  }
-
-  @media screen and (max-width: 1024px) {
-    height: 420px;
-  }
-
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`;
-
 export const ContainerTitle = styled.div`
   text-align: left;
   font-family: ${({ theme }) => theme.font.mono};
@@ -563,14 +521,3 @@ export const SectionCaption = styled.p`
 `;
 
 /* Tiny corner badge over the 3D showcase canvas, e.g. "// FIELD UNIT". */
-export const ShowcaseBadge = styled.div`
-  position: absolute;
-  top: ${({ theme }) => theme.space[3]};
-  right: ${({ theme }) => theme.space[3]};
-  font-family: ${({ theme }) => theme.font.mono};
-  font-size: ${({ theme }) => theme.size.xs};
-  letter-spacing: 0.06em;
-  color: ${({ theme }) => theme.color.fgSubtle};
-  z-index: 3;
-  pointer-events: none;
-`;

@@ -5,7 +5,7 @@ const pulse = keyframes`
   50%      { opacity: 0.55; transform: scale(0.9); }
 `;
 
-/* Outer fixed dock — pinned to the left edge, vertically centered.
+/* Outer fixed dock — pinned to the right edge, vertically centered.
    Width animates between collapsed (36 px tab) and expanded (280 px panel). */
 export const RailRoot = styled.aside`
   position: fixed;
@@ -216,7 +216,12 @@ export const KeyGrid = styled.div`
   gap: ${({ theme }) => theme.space[1]};
 `;
 
-export const KeyCap = styled.span`
+export const KeyCap = styled.button`
+  appearance: none;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -234,14 +239,23 @@ export const KeyCap = styled.span`
   border-radius: ${({ theme }) => theme.radius.sm};
   transition: all 80ms linear;
   grid-column: ${({ $span }) => $span || 'auto'};
+`;
 
-  /* Empty placeholder cells keep the QWE/ASD layout aligned. */
-  ${({ $placeholder }) =>
-    $placeholder &&
-    css`
-      border-color: transparent;
-      background: transparent;
-    `};
+export const ProgressTrack = styled.div`
+  position: relative;
+  height: 4px;
+  border-radius: ${({ theme }) => theme.radius.pill};
+  background: ${({ theme }) => theme.color.border};
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: ${({ $value }) => `${Math.round(($value || 0) * 100)}%`};
+    background: ${({ theme }) => theme.color.accent};
+    transition: width 120ms linear;
+  }
 `;
 
 export const Actions = styled.div`

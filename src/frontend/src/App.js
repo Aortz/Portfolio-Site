@@ -13,6 +13,7 @@ import { TeleopProvider } from './teleop/TeleopProvider';
 import Home from './pages/Home/index';
 
 const ParticleBg = lazy(() => import('./components/ParticleBg'));
+const TeleopUnit = lazy(() => import('./components/TeleopUnit'));
 
 export default function App() {
   return (
@@ -27,6 +28,9 @@ export default function App() {
           <Navbar />
           <VerticalNavbar />
           <TeleopRail />
+          <Suspense fallback={null}>
+            <TeleopUnit />
+          </Suspense>
           <RouteContainer>
             <Routes>
               <Route path="*" element={<Home />} />

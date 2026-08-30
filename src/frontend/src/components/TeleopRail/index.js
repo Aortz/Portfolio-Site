@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTeleop } from '../../teleop/TeleopProvider';
 import {
   RailRoot,
@@ -11,6 +11,7 @@ import {
   Led,
   ReadoutBlock,
   Readout,
+  ProgressTrack,
   KeyGrid,
   KeyCap,
   Actions,
@@ -55,33 +56,17 @@ const formatYawDeg = (rad) => {
 };
 
 const TeleopRail = () => {
-  const { expanded, armed, hud, toggleExpanded, toggleArmed, halt } = useTeleop();
+  const {
+    expanded,
+    armed,
+    hud,
+    toggleExpanded,
+    toggleArmed,
+    halt,
+    pressKey,
+    releaseKey,
+  } = useTeleop();
   const pressedSet = new Set(hud.pressed);
-
-  // The rail only drives the hero drone, so it's only meaningful while the
-  // Home section is on screen. Track that via IntersectionObserver and
-  // unmount the rail otherwise.
-  const [homeVisible, setHomeVisible] = useState(true);
-
-  useEffect(() => {
-    const el = document.getElementById('home');
-    if (!el) return undefined;
-    const obs = new IntersectionObserver(
-      ([entry]) => setHomeVisible(entry.intersectionRatio >= 0.5),
-      { threshold: [0, 0.25, 0.5, 0.75, 1] }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  // Reset rail state when leaving Home so it returns clean on scroll-back.
-  useEffect(() => {
-    if (homeVisible) return;
-    if (expanded) toggleExpanded();
-    if (armed)    toggleArmed();
-  }, [homeVisible, expanded, armed, toggleExpanded, toggleArmed]);
-
-  if (!homeVisible) return null;
 
   return (
     <RailRoot $expanded={expanded} aria-label="Teleop console">
@@ -100,7 +85,7 @@ const TeleopRail = () => {
       {expanded && (
         <Panel>
           <PanelHeader>
-            <span>// TELEOP CONSOLE</span>
+            <span>{'// TELEOP CONSOLE'}</span>
             <CollapseButton
               type="button"
               onClick={toggleExpanded}
@@ -120,8 +105,8 @@ const TeleopRail = () => {
 
           <ReadoutBlock>
             <Readout>
-              <span className="label">LIN</span>
-              <span className="value">{hud.vel.lin.toFixed(2)} m/s</span>
+              <span className="label">SPEED</span>
+              <span className="value">{Math.abs(hud.vel.scroll).toFixed(0)} px/s</span>
             </Readout>
             <Readout>
               <span className="label">ANG</span>
@@ -137,13 +122,14 @@ const TeleopRail = () => {
 
           <ReadoutBlock>
             <Readout>
-              <span className="label">X</span>
-              <span className="value">{formatSigned(hud.pose.x)}</span>
+              <span className="label">WPT</span>
+              <span className="value">{hud.waypoint}</span>
             </Readout>
             <Readout>
-              <span className="label">Y</span>
-              <span className="value">{formatSigned(hud.pose.y)}</span>
+              <span className="label">PROG</span>
+              <span className="value">{Math.round(hud.progress * 100)}%</span>
             </Readout>
+            <ProgressTrack $value={hud.progress} aria-hidden="true" />
             <Readout>
               <span className="label">YAW</span>
               <span className="value">{formatYawDeg(hud.pose.yaw)}</span>
@@ -157,8 +143,15 @@ const TeleopRail = () => {
               row.map(({ code, label, span }) => (
                 <KeyCap
                   key={`${ri}-${code}`}
+                  type="button"
+                  tabIndex={-1}
+                  aria-label={`Key ${label}`}
                   $on={pressedSet.has(code)}
                   $span={span}
+                  onPointerDown={(e) => { e.preventDefault(); pressKey(code); }}
+                  onPointerUp={() => releaseKey(code)}
+                  onPointerLeave={() => releaseKey(code)}
+                  onPointerCancel={() => releaseKey(code)}
                 >
                   {label}
                 </KeyCap>
@@ -181,7 +174,7 @@ const TeleopRail = () => {
           </Actions>
 
           <Hint>
-            WASD / Arrows · QE strafe · Space arm · X halt
+            W/S walk page · A/D yaw · Q/E strafe · Space arm · X halt
           </Hint>
         </Panel>
       )}

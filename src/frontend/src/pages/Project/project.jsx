@@ -1,18 +1,14 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import ProjectCard from './ProjectCard';
 import { projects } from '../../editable-stuff/config.js';
 import {
   ProjectContainer,
   ProjectContent,
-  ProjectShowcase,
   ProjectGrid,
   SectionCaption,
-  ShowcaseBadge,
 } from './ProjectCardElements';
 import SectionHeading from '../../components/SectionHeading';
 import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
-
-const ProjectsAccent = lazy(() => import('../../components/ProjectsAccent'));
 
 const Project = () => {
   const [ref, visible] = useFadeInOnScroll();
@@ -43,12 +39,6 @@ const Project = () => {
         )}
       </ProjectContent>
 
-      <ProjectShowcase aria-label="Robots field unit showcase">
-        <ShowcaseBadge>// FIELD UNIT — RECON-2</ShowcaseBadge>
-        <Suspense fallback={null}>
-          <ProjectsAccent />
-        </Suspense>
-      </ProjectShowcase>
     </ProjectContainer>
   );
 };
