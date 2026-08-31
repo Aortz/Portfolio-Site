@@ -16,7 +16,7 @@ export const RailRoot = styled.aside`
   display: flex;
   flex-direction: column;
   width: ${({ $expanded }) => ($expanded ? '280px' : '36px')};
-  max-height: calc(100vh - 101px - 236px); /* leave room for the route map below */
+  max-height: calc(100vh - 101px - 340px); /* leave room for the tactical map below */
   overflow-y: auto;
   overflow: hidden;
 

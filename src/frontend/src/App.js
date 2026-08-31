@@ -5,7 +5,7 @@ import VerticalNavbar from './components/NavBar/VerticalNavbar';
 import Telemetry from './components/Telemetry';
 import TeleopRail from './components/TeleopRail';
 import HintToast from './components/HintToast';
-import MiniMap from './components/MiniMap';
+
 import AchievementToast from './components/AchievementToast';
 import { RouteContainer } from './pages/Home/HomePageElements';
 import { GlobalStyles } from './components/Fonts/Fonts';
@@ -17,6 +17,7 @@ import Home from './pages/Home/index';
 const WorldCanvas = lazy(() => import('./world/WorldCanvas'));
 const WorldGlobalStyles = lazy(() => import('./world/WorldGlobalStyles'));
 const SectionDock = lazy(() => import('./components/SectionDock'));
+const MiniMap = lazy(() => import('./components/MiniMap'));
 
 export default function App() {
   const world = useIsDesktop3D();

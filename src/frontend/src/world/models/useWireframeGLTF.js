@@ -17,7 +17,7 @@ export const DRACO_PATH = '/draco/';
    - Replaces every material with an accent-coloured wireframe that follows
      theme changes.
    --------------------------------------------------------------------------- */
-export default function useWireframeGLTF(url, { radius, maxDim, opacity = 0.7 } = {}) {
+export default function useWireframeGLTF(url, { radius, maxDim, opacity = 0.7, textured = false } = {}) {
   const theme = useTheme();
   const { scene } = useGLTF(url, DRACO_PATH);
 
@@ -48,6 +48,18 @@ export default function useWireframeGLTF(url, { radius, maxDim, opacity = 0.7 } 
   }, [scene, radius, maxDim]);
 
   useEffect(() => {
+    if (textured) {
+      // Keep the GLB's own materials, but metallic PBR is near-black without
+      // an environment map — clamp toward diffuse so scene lights land.
+      object.traverse((child) => {
+        if (child.isMesh && child.material) {
+          const m = child.material;
+          if ('metalness' in m) m.metalness = Math.min(m.metalness, 0.25);
+          if ('roughness' in m) m.roughness = Math.max(m.roughness, 0.55);
+        }
+      });
+      return;
+    }
     object.traverse((child) => {
       if (child.isMesh) {
         child.material = new MeshBasicMaterial({
@@ -58,7 +70,7 @@ export default function useWireframeGLTF(url, { radius, maxDim, opacity = 0.7 } 
         });
       }
     });
-  }, [object, theme.color.accent, opacity]);
+  }, [object, theme.color.accent, opacity, textured]);
 
   return object;
 }

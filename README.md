@@ -70,7 +70,7 @@ they're `docked` so they drop full-height/border styling and scroll-triggered fa
 | `world/Starfield.js` | 2,500-point starfield, slow rotation. |
 | `world/Platform.js` | Wireframe hex pad, beacon pillar, pulsing orb, billboarded label (drei `Text`, `public/fonts/IBMPlexMono-Bold.ttf`). |
 | `world/Landmarks.js` | Per-platform set piece: drone orbits HOME, industrial arm on ABOUT, icosahedron on PROJECTS, torus knot on GALLERY, hands over RESUME. |
-| `world/PlayerRobot.js` | RECON-2 on the spline: position from `t`, heading from the tangent, user yaw/strafe on top, walk bob when moving. |
+| `world/PlayerRobot.js` | RECON-2 on the spline — the one textured (non-wireframe) model, lit by the scene's hemisphere/directional rig. Procedural trot gait drives the GLB's leg bones (`LF*/LB*` chains) while moving; legs tuck mid-jump. |
 | `world/ChaseCamera.js` | Smoothed third-person follow. Follows route heading (not user yaw). Starts wide during the fly-in. |
 | `world/models/useWireframeGLTF.js` | Shared loader: DRACO, `SkeletonUtils.clone` (RECON-2 is rigged), sphere/axis fit, accent-coloured wireframe that tracks the theme. |
 
@@ -85,7 +85,7 @@ route (HOME = 0, RESUME = 1). Everything that moves the robot writes `t`:
 | Nav link / logo / `#hash` in URL / back-forward | Eased tween to that platform |
 | First visit | Auto fly-in from off-route spawn to HOME, then a hint toast (`sessionStorage` flag) |
 | Console (open + armed by default) | `W`/`S` drive along the route, `A`/`D` yaw, `Q`/`E` strafe, `Space` jump, `X` halt, `M` route map |
-| `M` / Map button | Toggles a top-down route minimap (under the console) with the robot's position |
+| `M` / Map button | Tactical map (under the console): true route shape, travelled/ahead split, per-pad core + visited markers, robot heading — **click a pad to fly there** |
 | `T` / Run button | Time trial: flies to HOME, starts the clock, splits at each platform, stops at RESUME. Best time persists |
 | Click-drag on the background | Orbits the camera around the robot (yaw + pitch); eases back to the chase view once the robot moves |
 
@@ -117,7 +117,7 @@ wheel and `W`/`S` step one whole platform at a time, canvas renders on demand.
 
 | Asset | Path | Size | Where |
 |---|---|---|---|
-| RECON-2 (rigged) | `public/robots/scene.glb` | 80 KB | Player |
+| RECON-2 (rigged, textured 512px WebP) | `public/robots/scene.glb` | 272 KB | Player |
 | Drone | `public/drone/drone.glb` | 63 KB | HOME |
 | Industrial arm | `public/ux3d_industrial_robot/scene.glb` | 142 KB | ABOUT |
 | Hands | `public/hands/scene.glb` | 420 KB | RESUME |
