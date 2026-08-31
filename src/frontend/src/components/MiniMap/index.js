@@ -168,14 +168,15 @@ const MiniMap = () => {
           const active = hud.waypointId === p.id;
           const visited = mission.visited.includes(p.id);
           const coreCollected = mission.cores.includes(p.id);
+          const discovered = !p.hidden || visited;
           return (
             <Node
               key={p.id}
               role="button"
               tabIndex={0}
               aria-label={`Fly to ${p.label}`}
-              onClick={() => goTo(p.id)}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') goTo(p.id); }}
+              onClick={() => { if (discovered) goTo(p.id); }}
+              onKeyDown={(e) => { if (discovered && (e.key === 'Enter' || e.key === ' ')) goTo(p.id); }}
             >
               <circle cx={p.x} cy={p.y} r="12" fill="transparent" />
               <circle className="hover-ring" cx={p.x} cy={p.y} r="9" fill="none" stroke={accent} strokeWidth="1" />
@@ -190,8 +191,7 @@ const MiniMap = () => {
                 stroke={accent}
                 strokeWidth="1.2"
               />
-              {/* core diamond */}
-              <rect
+              {!p.hidden && (<rect
                 x={p.x - 3}
                 y={p.y - 14.5}
                 width="6"
@@ -201,9 +201,9 @@ const MiniMap = () => {
                 stroke={accent}
                 strokeWidth="1"
                 opacity={coreCollected ? 1 : 0.55}
-              />
+              />)}
               <NodeLabel x={p.x} y={p.y + 18} textAnchor="middle" $active={active}>
-                {`${p.number} ${p.label}`}
+                {discovered ? `${p.number} ${p.label}` : '??'}
               </NodeLabel>
             </Node>
           );

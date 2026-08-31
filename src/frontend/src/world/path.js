@@ -1,31 +1,33 @@
 import { CatmullRomCurve3, Vector3 } from 'three';
-import { PLATFORMS, SPAWN_POS, SPAWN_T, PLATFORM_T } from './route';
+import { ROUTE_POINTS, SPAWN_POS, SPAWN_T, PLATFORM_T } from './route';
 
 /* ---------------------------------------------------------------------------
-   The orbital route as geometry. Player `t` is remapped so HOME = 0 and
-   RESUME = 1 (spawn < 0); `getPointAt`/`getTangentAt` are arc-length
-   parameterised, so constant dt = constant world speed.
+   The orbital route as geometry. Player `t` is remapped so HOME = 0 and the
+   route's last platform = 1 (spawn < 0); `getPointAt`/`getTangentAt` are
+   arc-length parameterised, so constant dt = constant world speed.
 
    Constants live in ./route.js (no `three` import) — recompute them with:
 
      node -e '
        const {CatmullRomCurve3,Vector3}=require("three");
-       const P=[SPAWN_POS,...PLATFORMS.map(p=>p.pos)].map(a=>new Vector3(...a));
+       const PTS=[SPAWN_POS, ...ROUTE_POINTS.map(p=>p.pos)];
+       const PLAT_IDX = indices of id-bearing entries (offset +1 for spawn);
+       const P=PTS.map(a=>new Vector3(...a));
        const c=new CatmullRomCurve3(P,false,"centripetal",0.5);
-       const d=400,L=c.getLengths(d),tot=L[d];
+       const d=800,L=c.getLengths(d),tot=L[d];
        const fr=P.map((_,i)=>{const t=i/(P.length-1)*d,lo=Math.floor(t),hi=Math.min(d,lo+1);
          return (L[lo]+(L[hi]-L[lo])*(t-lo))/tot});
        const h=fr[1],s=fr[fr.length-1]-h;
-       console.log((fr[0]-h)/s, fr.slice(1).map(f=>(f-h)/s));'
+       console.log((fr[0]-h)/s, PLAT_IDX.map(i=>(fr[i]-h)/s));'
    --------------------------------------------------------------------------- */
 
-const points = [new Vector3(...SPAWN_POS), ...PLATFORMS.map((p) => new Vector3(...p.pos))];
+const points = [new Vector3(...SPAWN_POS), ...ROUTE_POINTS.map((p) => new Vector3(...p.pos))];
 
 export const curve = new CatmullRomCurve3(points, false, 'centripetal', 0.5);
 
 // Raw arc-length fractions of each control point (spawn first).
 const fractions = (() => {
-  const divisions = 400;
+  const divisions = 800;
   const lengths = curve.getLengths(divisions);
   const total = lengths[divisions];
   return points.map((_, i) => {
@@ -42,7 +44,10 @@ const span = fractions[fractions.length - 1] - T_HOME;
 const toArc = (t) => T_HOME + t * span;
 
 if (process.env.NODE_ENV !== 'production') {
-  const live = fractions.slice(1).map((f) => (f - T_HOME) / span);
+  const platIdx = ROUTE_POINTS
+    .map((p, i) => (p.id ? i + 1 : -1))
+    .filter((i) => i > 0);
+  const live = platIdx.map((i) => (fractions[i] - T_HOME) / span);
   const spawn = (fractions[0] - T_HOME) / span;
   const off = live.some((v, i) => Math.abs(v - PLATFORM_T[i]) > 1e-3) || Math.abs(spawn - SPAWN_T) > 1e-3;
   if (off) {
@@ -62,4 +67,14 @@ export const getTangentAt = (t, out = new Vector3()) => {
   return out.normalize();
 };
 
-export { PLATFORMS, SPAWN_T, PLATFORM_T, tForPlatform, nearestPlatform, stepPlatform } from './route';
+export {
+  ROUTE_POINTS,
+  PLATFORMS,
+  MAIN_PLATFORMS,
+  SPAWN_T,
+  PLATFORM_T,
+  VIA_T,
+  tForPlatform,
+  nearestPlatform,
+  stepPlatform,
+} from './route';

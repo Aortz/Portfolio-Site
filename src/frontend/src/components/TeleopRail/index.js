@@ -171,7 +171,7 @@ const TeleopRail = () => {
             )}
             <Readout>
               <span className="label">BADGES</span>
-              <span className="value">{`${mission.achievements.length}/7`}</span>
+              <span className="value">{`${mission.achievements.length}/8`}</span>
             </Readout>
           </ReadoutBlock>
 

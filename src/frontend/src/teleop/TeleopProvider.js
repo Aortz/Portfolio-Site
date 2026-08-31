@@ -10,6 +10,7 @@ import React, {
 import { useThemeMode } from '../theme/ThemeProvider';
 import {
   PLATFORMS,
+  MAIN_PLATFORMS,
   PLATFORM_T,
   SPAWN_T,
   tForPlatform,
@@ -38,7 +39,7 @@ import {
 const TeleopContext = createContext(null);
 
 // Tunables ----------------------------------------------------------
-const PROGRESS_SPEED = 0.12;     // t/sec at full W/S deflection (~8 s end-to-end)
+const PROGRESS_SPEED = 0.053;    // t/sec at full W/S deflection (HOME→RESUME ≈ 15 s)
 const WHEEL_GAIN = 0.0006;       // t per px of wheel deltaY
 const WHEEL_MAX_PX = 100;        // clamp one wheel event's contribution
 const STRAFE_SPEED = 0.6;        // units/sec
@@ -50,16 +51,16 @@ const HALT_DURATION = 0.30;      // seconds — strafe/yaw ease back to 0
 const HUD_HZ = 10;
 const MANUAL_HOLD = 0.6;         // seconds — motor pause after wheel input
 const MOVING_THRESHOLD = 0.005;  // t/sec
-const ARRIVE_RADIUS = 0.06;      // t — within this of a platform = docked
-const GOTO_DURATION = 1.4;       // seconds
-const TOUR_DURATION = 2.5;       // seconds
+const ARRIVE_RADIUS = 0.035;     // t — within this of a platform = docked
+const GOTO_DURATION = 2.2;       // seconds
+const TOUR_DURATION = 4;         // seconds
 const HASH_DEBOUNCE = 250;       // ms
 const TOUR_FLAG = 'recon2-toured';
 const JUMP_VELOCITY = 7.5;     // world units/sec
 const GRAVITY = 18;            // world units/sec²
 const CORE_JUMP_HEIGHT = 1.0;  // jumpY needed to grab a core while docked
 const MISSION_KEY = 'recon2-mission';
-const SUB_TIME = 9;            // seconds — full-throttle route is ~8.3s, so this needs a clean run
+const SUB_TIME = 17;           // seconds — full-throttle HOME→RESUME is ~15s, so this needs a clean run
 
 export const ACHIEVEMENTS = {
   'first-jump':  { title: 'LIFT-OFF',         desc: 'First jump' },
@@ -69,6 +70,7 @@ export const ACHIEVEMENTS = {
   'speedrun':    { title: 'TIME TRIAL',       desc: 'Completed a HOME→RESUME run' },
   'sub-time':    { title: 'AFTERBURNER',      desc: `Run under ${SUB_TIME}s` },
   'skywalker':   { title: 'SKYWALKER',        desc: '25 jumps' },
+  'deep-field':  { title: 'DEEP FIELD',       desc: 'Found the hidden signal' },
 };
 
 const loadMission = () => {
@@ -429,11 +431,12 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       // ---- Mission: cores, survey, time trial --------------------------
       const m = missionRef.current;
       const dockedId = waypointRef.current;
-      if (dockedId && j.y > CORE_JUMP_HEIGHT && !m.cores.includes(dockedId)) {
+      const dockedHidden = dockedId && PLATFORMS.find((pl) => pl.id === dockedId)?.hidden;
+      if (dockedId && !dockedHidden && j.y > CORE_JUMP_HEIGHT && !m.cores.includes(dockedId)) {
         missionRef.current = { ...m, cores: [...m.cores, dockedId] };
         setMission(missionRef.current);
         unlock('first-core');
-        if (missionRef.current.cores.length === PLATFORMS.length) unlock('all-cores');
+        if (missionRef.current.cores.length === MAIN_PLATFORMS.length) unlock('all-cores');
       }
       const r = runRef.current;
       if (r.active) {
@@ -441,7 +444,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
         if (dockedId === PLATFORMS[r.next]?.id) {
           r.splits = [...r.splits, { id: dockedId, t: elapsed }];
           r.next += 1;
-          if (r.next >= PLATFORMS.length) {
+          if (r.next > PLATFORMS.findIndex((pl) => pl.id === 'resume')) {
             r.active = false;
             const mm = missionRef.current;
             const best = mm.best == null || elapsed < mm.best ? elapsed : mm.best;
@@ -464,7 +467,8 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
         if (wp && !missionRef.current.visited.includes(wp)) {
           missionRef.current = { ...missionRef.current, visited: [...missionRef.current.visited, wp] };
           setMission(missionRef.current);
-          if (missionRef.current.visited.length === PLATFORMS.length) unlock('all-visited');
+          if (wp === 'signal') unlock('deep-field');
+          if (MAIN_PLATFORMS.every((pl) => missionRef.current.visited.includes(pl.id))) unlock('all-visited');
         }
         window.clearTimeout(hashTimerRef.current);
         if (wp) {

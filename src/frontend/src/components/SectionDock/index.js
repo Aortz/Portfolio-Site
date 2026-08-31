@@ -9,12 +9,39 @@ import Project from '../../pages/Project/project';
 import Gallery from '../../pages/Gallery';
 import ResumeSection from '../../pages/Resume/resume';
 
+/* Easter-egg panel for the hidden SIGNAL platform. */
+const SignalWrap = styled.div`
+  padding: ${({ theme }) => theme.space[6]};
+  font-family: ${({ theme }) => theme.font.mono};
+  color: ${({ theme }) => theme.color.fg};
+
+  & .tag { color: ${({ theme }) => theme.color.accent}; font-size: ${({ theme }) => theme.size.xs}; letter-spacing: 0.14em; }
+  & h2 { font-size: ${({ theme }) => theme.size.xl}; letter-spacing: 0.04em; margin: ${({ theme }) => theme.space[3]} 0; }
+  & p { color: ${({ theme }) => theme.color.fgMuted}; font-family: ${({ theme }) => theme.font.sans}; line-height: 1.6; }
+  & a { color: ${({ theme }) => theme.color.accent}; }
+`;
+
+const SignalPanel = () => (
+  <SignalWrap>
+    <div className="tag">{'// INCOMING TRANSMISSION — SOURCE UNKNOWN'}</div>
+    <h2>SIGNAL FOUND</h2>
+    <p>
+      Not many make it past the last beacon. You found the quiet corner of the
+      map — which probably means you read codebases the same way I do.
+    </p>
+    <p>
+      Say hello: <a href="https://github.com/Aortz" target="_blank" rel="noreferrer">github.com/Aortz</a>
+    </p>
+  </SignalWrap>
+);
+
 const SECTION_COMPONENTS = {
   home: Hero,
   about: About,
   projects: Project,
   gallery: Gallery,
   resume: ResumeSection,
+  signal: SignalPanel,
 };
 
 const hexToRgb = (hex) => {

@@ -65,9 +65,10 @@ they're `docked` so they drop full-height/border styling and scroll-triggered fa
 
 | File | Role |
 |---|---|
-| `world/route.js` | Platform list, positions, and pre-computed arc-length fractions. No `three` import so the provider stays light. |
+| `world/route.js` | Route point list (platforms + shaping vias), positions, pre-computed arc-length fractions. No `three` import so the provider stays light. One platform is hidden — go find it. |
 | `world/path.js` | Catmull-Rom spline through spawn + platforms; `getPointAt(t)` / `getTangentAt(t)`. Warns in dev if `route.js` constants are stale. |
-| `world/Starfield.js` | 2,500-point starfield, slow rotation. |
+| `world/Starfield.js` | 3,500-point starfield (fog-immune), slow rotation. |
+| `world/Scenery.js` | Asteroid fields (one instanced draw call), corridor dust, and checkpoint gate rings that brighten as the robot threads them. Nebula fog fades the deep route. |
 | `world/Platform.js` | Wireframe hex pad, beacon pillar, pulsing orb, billboarded label (drei `Text`, `public/fonts/IBMPlexMono-Bold.ttf`). |
 | `world/Landmarks.js` | Per-platform set piece: drone orbits HOME, industrial arm on ABOUT, icosahedron on PROJECTS, torus knot on GALLERY, hands over RESUME. |
 | `world/PlayerRobot.js` | RECON-2 on the spline — the one textured (non-wireframe) model, lit by the scene's hemisphere/directional rig. Procedural trot gait drives the GLB's leg bones (`LF*/LB*` chains) while moving; legs tuck mid-jump. |
@@ -97,9 +98,10 @@ CORES / SURVEY / RUN / BADGES readouts and `components/AchievementToast`:
 - **Data cores** (`world/Cores.js`) — one octahedron hovering over each pad at jump height.
   Jump while docked to collect it. 5/5 unlocks *ARCHIVE COMPLETE*.
 - **Survey** — docking at all five platforms unlocks *FULL SURVEY*.
-- **Time trial** — `T`; *TIME TRIAL* on finish, *AFTERBURNER* under `SUB_TIME` (9s; a
-  full-throttle run is ~8.3s, so it needs a clean line).
-- Also: *LIFT-OFF* (first jump), *CORE SAMPLE* (first core), *SKYWALKER* (25 jumps).
+- **Time trial** — `T`; *TIME TRIAL* on finish, *AFTERBURNER* under `SUB_TIME` (17s; a
+  full-throttle HOME→RESUME run is ~15s, so it needs a clean line).
+- Also: *LIFT-OFF* (first jump), *CORE SAMPLE* (first core), *SKYWALKER* (25 jumps),
+  and one more for pilots who fly past the end of the line.
   Definitions in `ACHIEVEMENTS` at the top of `teleop/TeleopProvider.js`.
 
 The panel opens when `t` is within `ARRIVE_RADIUS` of a platform and closes between them;

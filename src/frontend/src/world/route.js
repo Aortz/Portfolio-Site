@@ -1,28 +1,40 @@
 /* ---------------------------------------------------------------------------
    Route constants — deliberately free of any `three` import so the teleop
-   provider (which lives in the main bundle for page mode too) doesn't drag
-   the 3D library in. `world/path.js` builds the actual spline from these and
-   asserts in development that the hard-coded arc-length fractions still
-   match; if you move a platform, rerun the snippet in path.js and paste the
-   new numbers here.
+   provider (main bundle, page mode included) doesn't drag the 3D library in.
+   `world/path.js` builds the spline from ROUTE_POINTS and warns in dev if the
+   hard-coded arc-length fractions below go stale; recompute them with the
+   snippet in path.js when you move anything.
+
+   Entries with an `id` are platforms; bare entries are via points that shape
+   the winding route. `hidden` platforms stay off the nav and show as '??' on
+   the map until visited.
    --------------------------------------------------------------------------- */
 
-export const PLATFORMS = [
+export const SPAWN_POS = [15, -10, 35];
+
+export const ROUTE_POINTS = [
   { id: 'home',     label: 'HOME',     number: '01', pos: [0, 0, 0] },
-  { id: 'about',    label: 'ABOUT',    number: '02', pos: [12, 2, -10] },
-  { id: 'projects', label: 'PROJECTS', number: '03', pos: [4, -1, -26] },
-  { id: 'gallery',  label: 'GALLERY',  number: '04', pos: [-12, 3, -38] },
-  { id: 'resume',   label: 'RESUME',   number: '05', pos: [-2, 0, -54] },
+  { pos: [18, 4, -14] },
+  { id: 'about',    label: 'ABOUT',    number: '02', pos: [30, 5, -25] },
+  { pos: [20, -3, -45] },
+  { id: 'projects', label: 'PROJECTS', number: '03', pos: [10, -2, -65] },
+  { pos: [-15, 6, -80] },
+  { id: 'gallery',  label: 'GALLERY',  number: '04', pos: [-30, 8, -95] },
+  { pos: [-18, 2, -118] },
+  { id: 'resume',   label: 'RESUME',   number: '05', pos: [-5, 0, -135] },
+  { pos: [10, -6, -155] },
+  { id: 'signal',   label: 'SIGNAL',   number: '??', pos: [25, -4, -172], hidden: true },
 ];
 
-// Off-route spawn used by the first-visit fly-in; sits "behind" HOME on the
-// camera's side of the scene.
-export const SPAWN_POS = [6, -4, 14];
+export const PLATFORMS = ROUTE_POINTS.filter((p) => p.id);
+export const MAIN_PLATFORMS = PLATFORMS.filter((p) => !p.hidden);
 
-// Player `t`: HOME = 0, RESUME = 1, spawn < 0. Arc-length fractions of the
-// centripetal Catmull-Rom through SPAWN_POS + PLATFORMS (see path.js).
-export const SPAWN_T = -0.21325;
-export const PLATFORM_T = [0, 0.21543, 0.46328, 0.74029, 1];
+// Player `t`: HOME = 0, SIGNAL (route end) = 1, spawn < 0. Arc-length
+// fractions of the centripetal Catmull-Rom through spawn + ROUTE_POINTS.
+export const SPAWN_T = -0.16881;
+export const PLATFORM_T = [0, 0.17062, 0.36839, 0.58906, 0.79472, 1];
+// Via-point fractions — the route gates sit here.
+export const VIA_T = [0.1, 0.2728, 0.4967, 0.7037, 0.9036];
 
 export const tForPlatform = (id) => {
   const i = PLATFORMS.findIndex((p) => p.id === id);

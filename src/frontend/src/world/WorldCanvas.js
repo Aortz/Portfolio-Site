@@ -1,5 +1,5 @@
 import React, { Suspense, useRef } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { Canvas } from '@react-three/fiber';
 import { Quaternion, Vector3 } from 'three';
 import { useThemeMode } from '../theme/ThemeProvider';
@@ -10,6 +10,7 @@ import Landmarks from './Landmarks';
 import Cores from './Cores';
 import PlayerRobot from './PlayerRobot';
 import ChaseCamera from './ChaseCamera';
+import Scenery from './Scenery';
 import { PLATFORMS } from './path';
 
 const Root = styled.div`
@@ -26,7 +27,8 @@ const Root = styled.div`
 `;
 
 const WorldScene = () => {
-  const { hud } = useTeleop();
+  const { hud, mission } = useTeleop();
+  const theme = useTheme();
   // Shared transform the robot writes and the camera reads, without React.
   const robotRef = useRef({
     position: new Vector3(),
@@ -36,6 +38,8 @@ const WorldScene = () => {
 
   return (
     <>
+      {/* Nebula depth fade; the starfield opts out so distant stars survive. */}
+      <fog attach="fog" args={[theme.color.bg, 120, 480]} />
       {/* Lights only matter to the textured player robot; every wireframe
           uses MeshBasicMaterial and ignores them. */}
       <hemisphereLight args={['#e6fbff', '#233138', 1.8]} />
@@ -43,8 +47,14 @@ const WorldScene = () => {
       <directionalLight position={[-8, 4, -6]} intensity={0.8} color={'#22d3ee'} />
       <Starfield />
       {PLATFORMS.map((p) => (
-        <Platform key={p.id} platform={p} active={hud.waypointId === p.id} />
+        <Platform
+          key={p.id}
+          platform={p}
+          active={hud.waypointId === p.id}
+          discovered={!p.hidden || mission.visited.includes(p.id)}
+        />
       ))}
+      <Scenery />
       <Landmarks />
       <Cores />
       <Suspense fallback={null}>
@@ -62,7 +72,7 @@ const WorldCanvas = () => {
       <Canvas
         dpr={[1, 1.5]}
         gl={{ antialias: true, powerPreference: 'high-performance', alpha: true }}
-        camera={{ fov: 50, near: 0.1, far: 220, position: [0, 4, 12] }}
+        camera={{ fov: 50, near: 0.1, far: 500, position: [0, 4, 12] }}
         frameloop={reducedMotion ? 'demand' : 'always'}
       >
         <WorldScene />

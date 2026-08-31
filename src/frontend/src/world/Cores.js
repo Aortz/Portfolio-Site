@@ -56,7 +56,7 @@ const Cores = () => {
   const { mission, hud } = useTeleop();
   return (
     <>
-      {PLATFORMS.map((p) => (
+      {PLATFORMS.filter((p) => !p.hidden).map((p) => (
         <Core
           key={p.id}
           platform={p}

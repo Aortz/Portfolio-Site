@@ -11,7 +11,7 @@ const LABEL_FONT = '/fonts/IBMPlexMono-Bold.ttf';
 
 /* A floating hex pad with a beacon pillar and a billboarded label. `active`
    brightens the beacon when the player is docked here. */
-const Platform = ({ platform, active }) => {
+const Platform = ({ platform, active, discovered = true }) => {
   const orb = useRef();
   const theme = useTheme();
   const { reducedMotion } = useThemeMode();
@@ -29,7 +29,7 @@ const Platform = ({ platform, active }) => {
       {/* hex pad */}
       <mesh rotation={[0, Math.PI / 6, 0]}>
         <cylinderGeometry args={[DISC_RADIUS, DISC_RADIUS, 0.15, 6, 1]} />
-        <meshBasicMaterial color={accent} wireframe transparent opacity={active ? 0.9 : 0.45} />
+        <meshBasicMaterial color={accent} wireframe transparent opacity={(active ? 0.9 : 0.45) * (discovered ? 1 : 0.5)} />
       </mesh>
       {/* inner ring */}
       <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 0.1, 0]}>
@@ -62,7 +62,7 @@ const Platform = ({ platform, active }) => {
           anchorX="center"
           anchorY="middle"
         >
-          {`${platform.number} ${platform.label}`}
+          {discovered ? `${platform.number} ${platform.label}` : '?? SIGNAL LOST'}
         </Text>
       </Billboard>
     </group>

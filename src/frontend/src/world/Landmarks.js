@@ -75,15 +75,16 @@ const ProceduralNode = ({ kind }) => {
   });
   return (
     <mesh ref={ref} position={[0, 2.2, 0]}>
-      {kind === 'knot'
-        ? <torusKnotGeometry args={[1.0, 0.32, 96, 12, 2, 3]} />
-        : <icosahedronGeometry args={[1.6, 1]} />}
+      {kind === 'knot' && <torusKnotGeometry args={[1.0, 0.32, 96, 12, 2, 3]} />}
+      {kind === 'ico' && <icosahedronGeometry args={[1.6, 1]} />}
+      {kind === 'dodeca' && <dodecahedronGeometry args={[1.4, 0]} />}
       <meshBasicMaterial color={theme.color.accent} wireframe transparent opacity={0.7} />
     </mesh>
   );
 };
 
 const LANDMARK_BY_ID = {
+  signal: () => <ProceduralNode kind="dodeca" />,
   home: Drone,
   about: IndustrialRobot,
   projects: () => <ProceduralNode kind="ico" />,

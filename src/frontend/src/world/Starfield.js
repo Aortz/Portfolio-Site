@@ -3,8 +3,8 @@ import { useFrame } from '@react-three/fiber';
 import { useTheme } from 'styled-components';
 import { useThemeMode } from '../theme/ThemeProvider';
 
-const STAR_COUNT = 2500;
-const SPREAD = 160;      // cube edge, centred on the route
+const STAR_COUNT = 3500;
+const SPREAD = 420;      // cube edge, centred on the route
 const ROT_SPEED = 0.005; // rad/sec
 
 const Starfield = () => {
@@ -17,7 +17,7 @@ const Starfield = () => {
     for (let i = 0; i < STAR_COUNT; i += 1) {
       arr[i * 3 + 0] = (Math.random() - 0.5) * SPREAD;
       arr[i * 3 + 1] = (Math.random() - 0.5) * SPREAD;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * SPREAD - 25; // bias along route
+      arr[i * 3 + 2] = (Math.random() - 0.5) * SPREAD - 70; // bias along route
     }
     return arr;
   }, []);
@@ -38,6 +38,7 @@ const Starfield = () => {
         />
       </bufferGeometry>
       <pointsMaterial
+        fog={false}
         size={0.14}
         sizeAttenuation
         color={theme.color.fgSubtle}
