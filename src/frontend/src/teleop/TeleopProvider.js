@@ -13,6 +13,7 @@ import {
   MAIN_PLATFORMS,
   PLATFORM_T,
   SPAWN_T,
+  VIA_T,
   tForPlatform,
   nearestPlatform,
   stepPlatform,
@@ -60,7 +61,15 @@ const JUMP_VELOCITY = 7.5;     // world units/sec
 const GRAVITY = 18;            // world units/sec²
 const CORE_JUMP_HEIGHT = 1.0;  // jumpY needed to grab a core while docked
 const MISSION_KEY = 'recon2-mission';
-const SUB_TIME = 17;           // seconds — full-throttle HOME→RESUME is ~15s, so this needs a clean run
+const SUB_TIME = 12;           // seconds — needs boost management, not just a held W
+const BOOST_MULT = 2.2;        // speed multiplier while boosting
+const BOOST_DRAIN = 0.35;      // battery/sec while boosting
+const BOOST_RECHARGE = 0.2;    // battery/sec otherwise
+const ROLL_DURATION = 0.7;     // seconds per barrel roll
+const DOUBLE_TAP_S = 0.3;      // seconds — Q/Q or E/E within this = roll
+const PING_COOLDOWN = 1.5;     // seconds
+const GHOST_SAMPLE_S = 0.1;    // seconds between ghost samples during a run
+const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
 
 export const ACHIEVEMENTS = {
   'first-jump':  { title: 'LIFT-OFF',         desc: 'First jump' },
@@ -71,10 +80,14 @@ export const ACHIEVEMENTS = {
   'sub-time':    { title: 'AFTERBURNER',      desc: `Run under ${SUB_TIME}s` },
   'skywalker':   { title: 'SKYWALKER',        desc: '25 jumps' },
   'deep-field':  { title: 'DEEP FIELD',       desc: 'Found the hidden signal' },
+  'barrel-roll': { title: 'DO A BARREL ROLL', desc: 'Double-tap Q or E' },
+  'slalom':      { title: 'THREAD THE NEEDLE', desc: 'All five gates in one unbroken run' },
+  'ghost-win':   { title: 'RACE YOURSELF',    desc: 'Beat your own ghost' },
+  'konami':      { title: 'GHOST PROTOCOL',   desc: 'Code accepted' },
 };
 
 const loadMission = () => {
-  const empty = { cores: [], visited: ['home'], achievements: [], best: null, jumps: 0 };
+  const empty = { cores: [], visited: ['home'], achievements: [], best: null, jumps: 0, ghost: null };
   try {
     const raw = window.localStorage.getItem(MISSION_KEY);
     return raw ? { ...empty, ...JSON.parse(raw) } : empty;
@@ -96,6 +109,10 @@ const KEY_MAP = {
   KeyX: 'halt',
   KeyM: 'map',
   KeyT: 'run',
+  ShiftLeft: 'boost',
+  ShiftRight: 'boost',
+  KeyH: 'ping',
+  KeyF: 'scan',
 };
 
 const LABEL_BY_ID = Object.fromEntries(PLATFORMS.map((p) => [p.id, p.label]));
@@ -114,11 +131,13 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
   const [expanded, setExpanded] = useState(true);
   const [armed, setArmed] = useState(true);
   const [mapOpen, setMapOpen] = useState(false);
+  const [skin, setSkin] = useState('default');
+  const [scanId, setScanId] = useState(null);
   const [mission, setMission] = useState(loadMission);
   const [unlocks, setUnlocks] = useState([]); // achievement toast queue
   const [run, setRun] = useState({ active: false, pending: false, elapsed: 0, splits: [] });
   const missionRef = useRef(mission);
-  const runRef = useRef({ active: false, pending: false, start: 0, splits: [], next: 1 });
+  const runRef = useRef({ active: false, pending: false, start: 0, splits: [], next: 1, samples: [], lastSample: 0 });
   useEffect(() => { missionRef.current = mission; }, [mission]);
   useEffect(() => {
     try { window.localStorage.setItem(MISSION_KEY, JSON.stringify(mission)); } catch { /* private mode */ }
@@ -145,12 +164,18 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       waypointId: start || 'home',
       waypoint: LABEL_BY_ID[start || 'home'],
       progress: start ? tForPlatform(start) : 0,
+      boost: { active: false, battery: 1 },
     };
   });
 
   const tRef = useRef(hud.progress);
-  const poseRef = useRef({ t: hud.progress, yaw: 0, strafe: 0, moving: false, jumpY: 0 });
+  const poseRef = useRef({ t: hud.progress, yaw: 0, strafe: 0, moving: false, jumpY: 0, roll: 0, boosting: false, ping: 0, runT: -1 });
   const jumpRef = useRef({ y: 0, vy: 0 });
+  const batteryRef = useRef(1);
+  const rollRef = useRef(null);        // { start, dir } while rolling
+  const lastTapRef = useRef({ code: null, at: 0 });
+  const pingRef = useRef(0);
+  const slalomRef = useRef({ next: 0 });
   const velRef = useRef({ progress: 0, strafe: 0, ang: 0 });
   const pressedRef = useRef(new Set());
   const armedRef = useRef(true);
@@ -221,6 +246,18 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
   const toggleArmed = useCallback(() => setArmed((a) => !a), []);
   const dismissHint = useCallback(() => setHint(false), []);
   const toggleMap = useCallback(() => setMapOpen((m) => !m), []);
+  const closeScan = useCallback(() => setScanId(null), []);
+
+  const ping = useCallback(() => {
+    const now = performance.now() / 1000;
+    if (now - pingRef.current < PING_COOLDOWN) return;
+    pingRef.current = now;
+  }, []);
+
+  const startRoll = useCallback((dir) => {
+    if (rollRef.current) return;
+    rollRef.current = { start: performance.now() / 1000, dir };
+  }, []);
 
   const jump = useCallback(() => {
     const j = jumpRef.current;
@@ -238,7 +275,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
   // platform in order, stop at RESUME.
   const startRun = useCallback(() => {
     const r = runRef.current;
-    r.active = false; r.pending = true; r.splits = []; r.next = 1;
+    r.active = false; r.pending = true; r.splits = []; r.next = 1; r.samples = []; r.lastSample = 0;
     setRun({ active: false, pending: true, elapsed: 0, splits: [] });
     startTween(0, GOTO_DURATION, easeInOutCubic, () => {
       r.pending = false; r.active = true; r.start = performance.now() / 1000;
@@ -261,8 +298,20 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
     if (action === 'halt') { halt(); return; }
     if (action === 'map') { setMapOpen((m) => !m); return; }
     if (action === 'run') { startRun(); return; }
+    if (action === 'ping') { ping(); return; }
+    if (action === 'scan') {
+      setScanId((prev) => (prev ? null : waypointRef.current));
+      return;
+    }
     if (!armedRef.current) return;
     if (action === 'jump') { jump(); return; }
+    // Double-tap Q/E = barrel roll.
+    if (code === 'KeyQ' || code === 'KeyE') {
+      const now = performance.now() / 1000;
+      const tap = lastTapRef.current;
+      if (tap.code === code && now - tap.at < DOUBLE_TAP_S) startRoll(code === 'KeyE' ? 1 : -1);
+      lastTapRef.current = { code, at: now };
+    }
     cancelTween();
     if (reducedRef.current && (action === 'up' || action === 'down')) {
       const i = stepPlatform(tRef.current, action === 'up' ? 1 : -1);
@@ -270,7 +319,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       return;
     }
     pressedRef.current.add(code);
-  }, [halt, jump, startRun]);
+  }, [halt, jump, startRun, ping, startRoll]);
 
   const releaseKey = useCallback((code) => { pressedRef.current.delete(code); }, []);
 
@@ -297,6 +346,22 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       window.removeEventListener('blur', onBlur);
     };
   }, [mode, hint, pressKey, releaseKey]);
+
+  // ---- Konami listener (passive — never consumes keys) -----------------
+  useEffect(() => {
+    if (mode !== 'world') return undefined;
+    let seq = [];
+    const onKey = (e) => {
+      seq = [...seq, e.code].slice(-KONAMI.length);
+      if (KONAMI.every((c, i) => seq[i] === c)) {
+        seq = [];
+        setSkin((sk) => (sk === 'ghost' ? 'default' : 'ghost'));
+        unlock('konami');
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [mode, unlock]);
 
   // ---- Wheel drives progress directly ---------------------------------
   useEffect(() => {
@@ -375,6 +440,14 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
         if (pressed.has('KeyA') || pressed.has('ArrowLeft'))  tvA += ANG_SPEED;
         if (pressed.has('KeyD') || pressed.has('ArrowRight')) tvA -= ANG_SPEED;
       }
+      // Boost: multiply drive speed while Shift held and battery lasts.
+      const wantBoost = pressed.has('ShiftLeft') || pressed.has('ShiftRight');
+      const boosting = wantBoost && batteryRef.current > 0 && tvP !== 0;
+      if (boosting) tvP *= BOOST_MULT;
+      batteryRef.current = clamp(
+        batteryRef.current + (boosting ? -BOOST_DRAIN : BOOST_RECHARGE) * dt,
+        0, 1
+      );
       if (reducedRef.current) tvP = 0;
       if (now - lastManualRef.current < MANUAL_HOLD) tvP = 0;
 
@@ -385,6 +458,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       v.strafe   += (tvS - v.strafe)   * k;
       v.ang      += (tvA - v.ang)      * k;
 
+      const prevT = tRef.current;
       // Tween overrides the motor.
       const tw = tweenRef.current;
       if (tw) {
@@ -428,6 +502,36 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       }
       p.jumpY = j.y;
 
+      // Barrel roll progress (consumer eases it).
+      if (rollRef.current) {
+        const x = (now - rollRef.current.start) / ROLL_DURATION;
+        if (x >= 1) {
+          rollRef.current = null;
+          p.roll = 0;
+          unlock('barrel-roll');
+        } else {
+          p.roll = x * rollRef.current.dir;
+        }
+      } else {
+        p.roll = 0;
+      }
+
+      // Slalom: thread every gate in order in one unbroken forward run.
+      const sl = slalomRef.current;
+      if (tRef.current > prevT) {
+        while (sl.next < VIA_T.length && prevT < VIA_T[sl.next] && VIA_T[sl.next] <= tRef.current) {
+          sl.next += 1;
+          if (sl.next === VIA_T.length) { unlock('slalom'); sl.next = 0; break; }
+        }
+        // Skipping a gate out of order restarts the attempt at the first gate behind us.
+        if (sl.next < VIA_T.length && tRef.current > VIA_T[sl.next] + 0.01) sl.next = 0;
+      } else if (tRef.current < prevT - 1e-6 || (!tw && Math.abs(v.progress) < 0.005 && sl.next > 0)) {
+        sl.next = 0;
+      }
+
+      p.boosting = boosting;
+      p.ping = pingRef.current;
+
       // ---- Mission: cores, survey, time trial --------------------------
       const m = missionRef.current;
       const dockedId = waypointRef.current;
@@ -439,19 +543,32 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
         if (missionRef.current.cores.length === MAIN_PLATFORMS.length) unlock('all-cores');
       }
       const r = runRef.current;
+      p.runT = r.active ? now - r.start : -1;
       if (r.active) {
         const elapsed = now - r.start;
+        if (elapsed - r.lastSample >= GHOST_SAMPLE_S) {
+          r.lastSample = elapsed;
+          r.samples.push([Math.round(elapsed * 100) / 100, Math.round(tRef.current * 10000) / 10000]);
+        }
         if (dockedId === PLATFORMS[r.next]?.id) {
           r.splits = [...r.splits, { id: dockedId, t: elapsed }];
           r.next += 1;
           if (r.next > PLATFORMS.findIndex((pl) => pl.id === 'resume')) {
             r.active = false;
             const mm = missionRef.current;
-            const best = mm.best == null || elapsed < mm.best ? elapsed : mm.best;
-            missionRef.current = { ...mm, best };
+            const prevGhost = mm.ghost;
+            const prevBestTime = prevGhost ? prevGhost[prevGhost.length - 1][0] : null;
+            const isBest = mm.best == null || elapsed < mm.best;
+            r.samples.push([Math.round(elapsed * 100) / 100, Math.round(tRef.current * 10000) / 10000]);
+            missionRef.current = {
+              ...mm,
+              best: isBest ? elapsed : mm.best,
+              ghost: isBest ? r.samples : mm.ghost,
+            };
             setMission(missionRef.current);
             unlock('speedrun');
             if (elapsed < SUB_TIME) unlock('sub-time');
+            if (prevBestTime != null && elapsed < prevBestTime) unlock('ghost-win');
           }
           setRun({ active: r.active, pending: false, elapsed, splits: r.splits });
         }
@@ -464,6 +581,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       const wp = near.distance < ARRIVE_RADIUS && !tw ? near.platform.id : null;
       if (wp !== waypointRef.current) {
         waypointRef.current = wp;
+        setScanId(null); // scan card follows the platform it was opened on
         if (wp && !missionRef.current.visited.includes(wp)) {
           missionRef.current = { ...missionRef.current, visited: [...missionRef.current.visited, wp] };
           setMission(missionRef.current);
@@ -492,6 +610,7 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
           waypointId: wp,
           waypoint: wp ? LABEL_BY_ID[wp] : '—',
           progress: tRef.current,
+          boost: { active: p.boosting, battery: batteryRef.current },
         }));
       }
 
@@ -512,6 +631,8 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       touring,
       hint,
       mapOpen,
+      skin,
+      scanId,
       mission,
       run,
       unlocks,
@@ -526,12 +647,13 @@ export const TeleopProvider = ({ mode = 'world', children }) => {
       jump,
       dismissHint,
       toggleMap,
+      closeScan,
       startRun,
       popUnlock,
       subscribePose,
     }),
-    [mode, expanded, armed, touring, hint, mapOpen, mission, run, unlocks, hud, toggleExpanded, toggleArmed, halt,
-      pressKey, releaseKey, goTo, nudge, jump, dismissHint, toggleMap, startRun, popUnlock, subscribePose]
+    [mode, expanded, armed, touring, hint, mapOpen, skin, scanId, mission, run, unlocks, hud, toggleExpanded, toggleArmed, halt,
+      pressKey, releaseKey, goTo, nudge, jump, dismissHint, toggleMap, closeScan, startRun, popUnlock, subscribePose]
   );
 
   return <TeleopContext.Provider value={value}>{children}</TeleopContext.Provider>;

@@ -76,4 +76,32 @@ const gallery = [
 //   specificRepos: [],
 // };
 
-export { navBar, projects, gallery };
+// SCAN CARDS — teleop "F" readouts tying world landmarks to real work.
+const scanData = {
+  home: {
+    title: 'MULE-1 SURVEY DRONE',
+    lines: ['Quad-rotor survey unit.', 'Prototyped in Unreal + AirSim — same stack as my drone-sim work.'],
+  },
+  about: {
+    title: 'ARM-7 INDUSTRIAL',
+    lines: ['Six-axis manipulator.', 'ROS-driven control loops — see the Robotics & Sim toolbox in ABOUT.'],
+  },
+  projects: {
+    title: 'NAV NODE',
+    lines: ['Deployed-systems ledger.', 'Every entry on this pad shipped to production.'],
+  },
+  gallery: {
+    title: 'TOPOLOGY KNOT',
+    lines: ['Edge-flow study.', 'Blender topology practice — more in the sketch gallery.'],
+  },
+  resume: {
+    title: 'MANIPULATOR MK-II',
+    lines: ['Fine-motor end effector.', 'Full work history in the panel on the right.'],
+  },
+  signal: {
+    title: 'UNKNOWN EMITTER',
+    lines: ['Origin unresolved.', 'It was transmitting before you arrived.'],
+  },
+};
+
+export { navBar, projects, gallery, scanData };

@@ -253,7 +253,7 @@ export const ProgressTrack = styled.div`
     position: absolute;
     inset: 0;
     width: ${({ $value }) => `${Math.round(($value || 0) * 100)}%`};
-    background: ${({ theme }) => theme.color.accent};
+    background: ${({ theme, $low }) => ($low ? theme.color.danger : theme.color.accent)};
     transition: width 120ms linear;
   }
 `;

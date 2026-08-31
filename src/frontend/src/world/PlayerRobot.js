@@ -70,17 +70,25 @@ const PlayerRobot = ({ robotRef }) => {
   // Real textured model — the one non-wireframe object in the world.
   const obj = useWireframeGLTF('/robots/scene.glb', { radius: TARGET_RADIUS, textured: true });
   const { reducedMotion } = useThemeMode();
-  const { subscribePose } = useTeleop();
+  const { subscribePose, skin } = useTeleop();
   const { invalidate } = useThree();
 
   const rig = useMemo(() => rigLegs(obj), [obj]);
-  const poseRef = useRef({ t: 0, yaw: 0, strafe: 0, moving: false, jumpY: 0 });
+
+  // Konami ghost skin: flip the real materials to wireframe and back.
+  useEffect(() => {
+    obj.traverse((o) => {
+      if (o.isMesh && o.material) o.material.wireframe = skin === 'ghost';
+    });
+    invalidate();
+  }, [obj, skin, invalidate]);
+  const poseRef = useRef({ t: 0, yaw: 0, strafe: 0, moving: false, jumpY: 0, roll: 0 });
   const gaitWeight = useRef(0);
 
   useEffect(() => subscribePose((p) => {
     const mine = poseRef.current;
-    const changed = mine.t !== p.t || mine.yaw !== p.yaw || mine.strafe !== p.strafe || mine.moving !== p.moving || mine.jumpY !== p.jumpY;
-    mine.t = p.t; mine.yaw = p.yaw; mine.strafe = p.strafe; mine.moving = p.moving; mine.jumpY = p.jumpY;
+    const changed = mine.t !== p.t || mine.yaw !== p.yaw || mine.strafe !== p.strafe || mine.moving !== p.moving || mine.jumpY !== p.jumpY || mine.roll !== p.roll;
+    mine.t = p.t; mine.yaw = p.yaw; mine.strafe = p.strafe; mine.moving = p.moving; mine.jumpY = p.jumpY; mine.roll = p.roll;
     if (changed) invalidate();
   }), [subscribePose, invalidate]);
 
@@ -114,6 +122,12 @@ const PlayerRobot = ({ robotRef }) => {
     }
     g.rotateY(p.yaw);
     if (walking) g.rotateZ(Math.sin(time * SWAY_HZ) * SWAY_AMP);
+    // Barrel roll: pose carries signed progress; ease it here.
+    if (p.roll !== 0 && !reducedMotion) {
+      const x = Math.abs(p.roll);
+      const eased = x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+      g.rotateZ(Math.sign(p.roll) * eased * Math.PI * 2);
+    }
 
     // ---- Gait ----------------------------------------------------------
     const airborne = p.jumpY > 0.05;

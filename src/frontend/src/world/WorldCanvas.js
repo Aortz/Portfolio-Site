@@ -11,6 +11,8 @@ import Cores from './Cores';
 import PlayerRobot from './PlayerRobot';
 import ChaseCamera from './ChaseCamera';
 import Scenery from './Scenery';
+import Sonar from './Sonar';
+import GhostRobot from './GhostRobot';
 import { PLATFORMS } from './path';
 
 const Root = styled.div`
@@ -55,6 +57,10 @@ const WorldScene = () => {
         />
       ))}
       <Scenery />
+      <Sonar />
+      <Suspense fallback={null}>
+        <GhostRobot />
+      </Suspense>
       <Landmarks />
       <Cores />
       <Suspense fallback={null}>

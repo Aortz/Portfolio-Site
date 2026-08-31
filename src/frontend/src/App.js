@@ -18,6 +18,7 @@ const WorldCanvas = lazy(() => import('./world/WorldCanvas'));
 const WorldGlobalStyles = lazy(() => import('./world/WorldGlobalStyles'));
 const SectionDock = lazy(() => import('./components/SectionDock'));
 const MiniMap = lazy(() => import('./components/MiniMap'));
+const ScanCard = lazy(() => import('./components/ScanCard'));
 
 export default function App() {
   const world = useIsDesktop3D();
@@ -38,6 +39,7 @@ export default function App() {
               <HintToast />
               <MiniMap />
               <AchievementToast />
+              <ScanCard />
             </Suspense>
           ) : (
             <RouteContainer>

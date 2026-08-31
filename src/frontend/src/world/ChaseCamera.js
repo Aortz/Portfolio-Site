@@ -8,6 +8,9 @@ import { useTeleop } from '../teleop/TeleopProvider';
 const CAM_OFFSET = new Vector3(-3.5, 3.2, 10.5);
 const CAM_OFFSET_TOUR = new Vector3(-8, 8, 20);
 const CAM_TAU = 0.35;
+const FOV_BASE = 50;
+const FOV_BOOST = 58;
+const FOV_TAU = 0.25;
 const LOOK_AHEAD = 3.0;
 
 // Click-drag orbit around the robot.
@@ -45,7 +48,8 @@ const ChaseCamera = ({ robotRef }) => {
     if (touring) offsetRef.current.copy(CAM_OFFSET_TOUR);
   }, [touring]);
 
-  useEffect(() => subscribePose((p) => { movingRef.current = p.moving; }), [subscribePose]);
+  const boostingRef = useRef(false);
+  useEffect(() => subscribePose((p) => { movingRef.current = p.moving; boostingRef.current = p.boosting; }), [subscribePose]);
 
   // Pointer drag on the page background orbits the camera. The canvas has
   // pointer-events:none, so listen on window and filter out UI targets.
@@ -123,6 +127,14 @@ const ChaseCamera = ({ robotRef }) => {
 
     // Look ahead along the route when following; straight at the robot when
     // the user has orbited away, so it stays centred.
+    // Speed-sense FOV kick while boosting.
+    const wantFov = boostingRef.current ? FOV_BOOST : FOV_BASE;
+    if (Math.abs(camera.fov - wantFov) > 0.01) {
+      const kf = reducedMotion ? 1 : 1 - Math.exp(-delta / FOV_TAU);
+      camera.fov += (wantFov - camera.fov) * kf;
+      camera.updateProjectionMatrix();
+    }
+
     const orbiting = o.az !== 0 || o.el !== 0;
     _target.copy(r.position);
     if (!orbiting) _target.addScaledVector(r.tangent, LOOK_AHEAD);

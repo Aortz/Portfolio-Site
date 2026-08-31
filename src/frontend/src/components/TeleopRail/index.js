@@ -125,6 +125,11 @@ const TeleopRail = () => {
               <span className="value">{formatSigned(hud.vel.ang, 2)} r/s</span>
             </Readout>
             <Readout>
+              <span className="label">BAT</span>
+              <span className="value">{`${Math.round((hud.boost?.battery ?? 1) * 100)}%`}</span>
+            </Readout>
+            <ProgressTrack $value={hud.boost?.battery ?? 1} $low={(hud.boost?.battery ?? 1) < 0.25} aria-hidden="true" />
+            <Readout>
               <span className="label">T+</span>
               <span className="value">{formatUptime(hud.uptime)}</span>
             </Readout>
@@ -171,7 +176,7 @@ const TeleopRail = () => {
             )}
             <Readout>
               <span className="label">BADGES</span>
-              <span className="value">{`${mission.achievements.length}/8`}</span>
+              <span className="value">{`${mission.achievements.length}/12`}</span>
             </Readout>
           </ReadoutBlock>
 
@@ -219,7 +224,7 @@ const TeleopRail = () => {
           </Actions>
 
           <Hint>
-            W/S fly · A/D yaw · Q/E strafe · Space jump · X halt · M map · T time trial · jump at a pad to grab its core
+            W/S fly · Shift boost · A/D yaw · Q/E strafe (double-tap = roll) · Space jump · F scan · H ping · X halt · M map · T trial · jump at a pad for its core
           </Hint>
         </Panel>
       )}
