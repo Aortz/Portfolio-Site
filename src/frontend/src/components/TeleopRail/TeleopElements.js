@@ -300,6 +300,59 @@ export const Hint = styled.p`
   margin: 0;
   font-size: 10px;
   letter-spacing: 0.05em;
-  color: ${({ theme }) => theme.color.fgSubtle};
+  color: ${({ theme, $accent }) => ($accent ? theme.color.accent : theme.color.fgSubtle)};
   line-height: 1.5;
+`;
+
+/* BADGES row doubles as the toggle for the badge board. */
+export const BadgeToggle = styled.button`
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.space[3]};
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.xs};
+  cursor: pointer;
+
+  & .label {
+    color: ${({ theme }) => theme.color.fgSubtle};
+    letter-spacing: 0.06em;
+  }
+  & .value {
+    color: ${({ theme }) => theme.color.fg};
+    font-variant-numeric: tabular-nums;
+  }
+  &:hover .label { color: ${({ theme }) => theme.color.accent}; }
+`;
+
+export const BadgeList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.space[1]};
+  margin-top: ${({ theme }) => theme.space[1]};
+  padding: ${({ theme }) => theme.space[2]};
+  border: 1px dashed ${({ theme }) => theme.color.border};
+  border-radius: ${({ theme }) => theme.radius.sm};
+`;
+
+export const BadgeRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.space[2]};
+  font-size: 10px;
+  letter-spacing: 0.04em;
+
+  & .name {
+    color: ${({ theme, $got }) => ($got ? theme.color.accent : theme.color.fgSubtle)};
+    font-weight: ${({ $got }) => ($got ? 700 : 400)};
+    white-space: nowrap;
+  }
+  & .detail {
+    color: ${({ theme }) => theme.color.fgMuted};
+    text-align: right;
+    font-style: ${({ $got }) => ($got ? 'normal' : 'italic')};
+  }
 `;

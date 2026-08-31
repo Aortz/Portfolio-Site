@@ -72,18 +72,18 @@ const GHOST_SAMPLE_S = 0.1;    // seconds between ghost samples during a run
 const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
 
 export const ACHIEVEMENTS = {
-  'first-jump':  { title: 'LIFT-OFF',         desc: 'First jump' },
-  'first-core':  { title: 'CORE SAMPLE',      desc: 'Collected a data core' },
-  'all-visited': { title: 'FULL SURVEY',      desc: 'Docked at every platform' },
-  'all-cores':   { title: 'ARCHIVE COMPLETE', desc: 'All five data cores recovered' },
-  'speedrun':    { title: 'TIME TRIAL',       desc: 'Completed a HOME→RESUME run' },
-  'sub-time':    { title: 'AFTERBURNER',      desc: `Run under ${SUB_TIME}s` },
-  'skywalker':   { title: 'SKYWALKER',        desc: '25 jumps' },
-  'deep-field':  { title: 'DEEP FIELD',       desc: 'Found the hidden signal' },
-  'barrel-roll': { title: 'DO A BARREL ROLL', desc: 'Double-tap Q or E' },
-  'slalom':      { title: 'THREAD THE NEEDLE', desc: 'All five gates in one unbroken run' },
-  'ghost-win':   { title: 'RACE YOURSELF',    desc: 'Beat your own ghost' },
-  'konami':      { title: 'GHOST PROTOCOL',   desc: 'Code accepted' },
+  'first-jump':  { title: 'LIFT-OFF',         desc: 'First jump', hint: 'Leave the ground' },
+  'first-core':  { title: 'CORE SAMPLE',      desc: 'Collected a data core', hint: 'Jump into the thing above a pad' },
+  'all-visited': { title: 'FULL SURVEY',      desc: 'Docked at every platform', hint: 'See all five sections' },
+  'all-cores':   { title: 'ARCHIVE COMPLETE', desc: 'All five data cores recovered', hint: 'Collect every core' },
+  'speedrun':    { title: 'TIME TRIAL',       desc: 'Completed a HOME→RESUME run', hint: 'Press T' },
+  'sub-time':    { title: 'AFTERBURNER',      desc: `Run under ${SUB_TIME}s`, hint: 'A fast run needs more than W' },
+  'skywalker':   { title: 'SKYWALKER',        desc: '25 jumps', hint: 'Keep jumping' },
+  'deep-field':  { title: 'DEEP FIELD',       desc: 'Found the hidden signal', hint: "The route doesn't end at 05" },
+  'barrel-roll': { title: 'DO A BARREL ROLL', desc: 'Double-tap Q or E', hint: 'Ace pilots tap twice' },
+  'slalom':      { title: 'THREAD THE NEEDLE', desc: 'All five gates in one unbroken run', hint: 'Every ring, one breath' },
+  'ghost-win':   { title: 'RACE YOURSELF',    desc: 'Beat your own ghost', hint: 'Race what you left behind' },
+  'konami':      { title: 'GHOST PROTOCOL',   desc: 'Code accepted', hint: 'An old code still works' },
 };
 
 const loadMission = () => {

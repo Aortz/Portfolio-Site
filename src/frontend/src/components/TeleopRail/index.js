@@ -1,5 +1,5 @@
-import React from 'react';
-import { useTeleop } from '../../teleop/TeleopProvider';
+import React, { useEffect, useState } from 'react';
+import { useTeleop, ACHIEVEMENTS } from '../../teleop/TeleopProvider';
 import {
   RailRoot,
   CollapsedTab,
@@ -17,6 +17,9 @@ import {
   Actions,
   ActionButton,
   Hint,
+  BadgeList,
+  BadgeRow,
+  BadgeToggle,
 } from './TeleopElements';
 
 /* Visual layout of the key cluster.
@@ -57,7 +60,12 @@ const formatYawDeg = (rad) => {
   return `${deg >= 0 ? '+' : ''}${deg.toFixed(0)}°`;
 };
 
+// Rotating nudge toward whatever is still locked.
+const TIPS_INTERVAL_MS = 8000;
+
 const TeleopRail = () => {
+  const [showBadges, setShowBadges] = useState(false);
+  const [tipIdx, setTipIdx] = useState(0);
   const {
     expanded,
     armed,
@@ -79,6 +87,13 @@ const TeleopRail = () => {
   else if (run.active) runLabel = formatRun(run.elapsed);
   else if (mission.best != null) runLabel = `BEST ${formatRun(mission.best)}`;
   const pressedSet = new Set(hud.pressed);
+  const lockedIds = Object.keys(ACHIEVEMENTS).filter((id) => !mission.achievements.includes(id));
+  useEffect(() => {
+    if (!lockedIds.length) return undefined;
+    const id = setInterval(() => setTipIdx((i) => i + 1), TIPS_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [lockedIds.length]);
+  const tip = lockedIds.length ? ACHIEVEMENTS[lockedIds[tipIdx % lockedIds.length]].hint : null;
 
   return (
     <RailRoot $expanded={expanded} aria-label="Teleop console">
@@ -174,10 +189,27 @@ const TeleopRail = () => {
                 <span className="value">{`${lastSplit.id.toUpperCase()} ${formatRun(lastSplit.t)}`}</span>
               </Readout>
             )}
-            <Readout>
+            <BadgeToggle
+              type="button"
+              onClick={() => setShowBadges((b) => !b)}
+              aria-expanded={showBadges}
+            >
               <span className="label">BADGES</span>
-              <span className="value">{`${mission.achievements.length}/12`}</span>
-            </Readout>
+              <span className="value">{`${mission.achievements.length}/12 ${showBadges ? '▾' : '▸'}`}</span>
+            </BadgeToggle>
+            {showBadges && (
+              <BadgeList>
+                {Object.entries(ACHIEVEMENTS).map(([id, a]) => {
+                  const got = mission.achievements.includes(id);
+                  return (
+                    <BadgeRow key={id} $got={got}>
+                      <span className="name">{got ? a.title : '???'}</span>
+                      <span className="detail">{got ? a.desc : a.hint}</span>
+                    </BadgeRow>
+                  );
+                })}
+              </BadgeList>
+            )}
           </ReadoutBlock>
 
           <Divider />
@@ -224,8 +256,9 @@ const TeleopRail = () => {
           </Actions>
 
           <Hint>
-            W/S fly · Shift boost · A/D yaw · Q/E strafe (double-tap = roll) · Space jump · F scan · H ping · X halt · M map · T trial · jump at a pad for its core
+            W/S fly · Shift boost · A/D yaw · Q/E strafe · Space jump · F scan · H ping · X halt · M map · T trial
           </Hint>
+          {tip && <Hint $accent>{`// LOCKED: ${tip}`}</Hint>}
         </Panel>
       )}
     </RailRoot>
