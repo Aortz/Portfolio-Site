@@ -10,7 +10,7 @@ const blink = keyframes`
 const Wrapper = styled.div`
   position: fixed;
   bottom: 16px;
-  right: 300px; /* left of the route map */
+  right: 300px; /* left of the tactical map */
   z-index: 999;
   display: flex;
   flex-direction: column-reverse;

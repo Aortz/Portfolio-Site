@@ -36,6 +36,11 @@ const WorldScene = () => {
 
   return (
     <>
+      {/* Lights only matter to the textured player robot; every wireframe
+          uses MeshBasicMaterial and ignores them. */}
+      <hemisphereLight args={['#e6fbff', '#233138', 1.8]} />
+      <directionalLight position={[6, 10, 4]} intensity={2.2} />
+      <directionalLight position={[-8, 4, -6]} intensity={0.8} color={'#22d3ee'} />
       <Starfield />
       {PLATFORMS.map((p) => (
         <Platform key={p.id} platform={p} active={hud.waypointId === p.id} />
