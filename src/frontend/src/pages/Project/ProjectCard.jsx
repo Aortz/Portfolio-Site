@@ -1,304 +1,121 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { FaGithub, FaDownload } from "react-icons/fa";
-import Skeleton from "react-loading-skeleton";
-import axios from "axios";
-import styled from "styled-components";
-import { 
+import React from 'react';
+import styled from 'styled-components';
+import { BsFolder } from 'react-icons/bs';
+import { FiExternalLink } from 'react-icons/fi';
+import {
   StyledCard,
   CardBody,
   CardTitle,
   CardText,
   StyledDownloadIcon,
-  CardButtonLink,
   StyledGithubIcon,
   CardBtn,
   ButtonContainer,
-  StyledLink
+  StyledLink,
+  LanguageContainer,
+  CodeLabel,
+  TagChip,
 } from './ProjectCardElements';
-import { BsFolder } from "react-icons/bs";
 
-const ProjectCard = ({ index, value, isActive }) => {
-  
-  const {
-    name,
-    description,
-    svn_url,
-    stargazers_count,
-    languages_url,
-    pushed_at,
-  } = value;
+const FolderGlyph = styled(BsFolder)`
+  height: 28px;
+  width: 28px;
+  color: ${({ theme }) => theme.color.fgMuted};
+`;
 
-  const [isVisible, setIsVisible] = useState(false);
+const Screenshot = styled.img`
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: ${({ theme }) => theme.radius.md};
+  margin-bottom: ${({ theme }) => theme.space[3]};
+  border: 1px solid ${({ theme }) => theme.color.border};
+`;
 
-  useEffect(() => {
-    // For Component1, set the text to be visible after the animation-delay
-    const timer1 = setTimeout(() => {
-      setIsVisible(true);
-    }, 0); // Set the delay time in milliseconds (e.g., 1s for Component1)
+const Divider = styled.hr`
+  border: none;
+  border-top: 1px solid ${({ theme }) => theme.color.border};
+  margin: ${({ theme }) => `${theme.space[3]} 0`};
+`;
 
-    // Clear the timeouts when the component unmounts or when the animations are complete
-    return () => {
-      clearTimeout(timer1);
-    };
-  }, []);
+const TitleText = styled.span`
+  flex: 1;
+  text-align: left;
+  margin-left: ${({ theme }) => theme.space[3]};
+`;
+
+const PrimaryLink = styled(StyledLink)`
+  color: ${({ theme }) => theme.color.accent};
+  &:hover {
+    color: ${({ theme }) => theme.color.onAccent};
+    background: ${({ theme }) => theme.color.accent};
+  }
+`;
+
+const ProjectCard = ({ project, index = 0 }) => {
+  const { title, description, liveUrl, githubUrl, tags = [], screenshot } = project || {};
+  const code = `PRJ-${String(index + 1).padStart(2, '0')}`;
 
   return (
-      <StyledCard 
-      $isActive={isActive}
-      data-active={isActive} // Add this line
-      >
-        <CardBody>
-          <CardTitle $animationDelay="0s" className={isVisible ? 'visible' : ''}>
-            <BsFolder style={{color: '#FBEAEB' , height: 40, width: 40, marginRight: 200, alignSelf: 'left'}}/>
-            {svn_url ? <CardButtons svn_url={svn_url} /> : <Skeleton count={2} />}
-            {/* <Cursor/> */}
-          </CardTitle>
-          <CardText $justifyContent="center" $fontSize="30px">
-            {  name || <Skeleton />} 
-          </CardText>
-          <CardText $padding="10px">
-            {(!description) ? "" : description || <Skeleton count={3} />} 
-          </CardText>
-          {/* <hr /> */}
-          <hr />
-          <CardText $bgColor="#000">
-            {languages_url ? (
-              <Language languages_url={languages_url} repo_url={svn_url} />
-            ) : (
-              <Skeleton count={3} />
+    <StyledCard>
+      <CardBody>
+        <CardTitle className="visible">
+          <FolderGlyph />
+          <TitleText>
+            <CodeLabel>{code}</CodeLabel>
+            {title}
+          </TitleText>
+          <CardBtn>
+            {githubUrl && (
+              <ButtonContainer>
+                <StyledLink
+                  href={githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View source on GitHub"
+                  title="View source"
+                >
+                  <StyledGithubIcon />
+                </StyledLink>
+              </ButtonContainer>
             )}
-          </CardText>
-          <hr />
+            {liveUrl && (
+              <ButtonContainer>
+                <PrimaryLink
+                  href={liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Visit live site"
+                  title="Visit live"
+                >
+                  <FiExternalLink size={18} />
+                </PrimaryLink>
+              </ButtonContainer>
+            )}
+          </CardBtn>
+        </CardTitle>
+
+        {screenshot && <Screenshot src={screenshot} alt={`${title} preview`} />}
+
+        <CardText>{description}</CardText>
+
+        {tags.length > 0 && (
           <>
-            {value ? (
-                <CardFooter star_count={stargazers_count} repo_url={svn_url} pushed_at={pushed_at} />
-              ) : (
-                <Skeleton />
-            )}
+            <Divider />
+            <LanguageContainer>
+              {tags.map((tag) => (
+                <TagChip key={tag}>{tag}</TagChip>
+              ))}
+            </LanguageContainer>
           </>
-        </CardBody>
-      </StyledCard>
+        )}
+      </CardBody>
+    </StyledCard>
   );
 };
 
-const CardButtons = ({ svn_url }) => {
-  return (
-    <CardBtn>
-        <ButtonContainer>
-          <StyledLink 
-            href={svn_url} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            aria-label="View GitHub Repository"
-          >
-            <StyledGithubIcon/>
-          </StyledLink>
-        </ButtonContainer>
-        <ButtonContainer>
-          <StyledLink
-            href={`${svn_url}/archive/master.zip`}
-            target="_blank" 
-            rel="noopener noreferrer"
-            aria-label="Download Project"
-          >
-            <StyledDownloadIcon/>
-          </StyledLink>
-        </ButtonContainer>
-    </CardBtn>
-  );
-};
-
-const Language = ({ languages_url, repo_url }) => {
-  const [data, setData] = useState([]);
-
-  const handleRequest = useCallback(async () => {
-    try {
-      const headers = {
-        Authorization: `Bearer ${process.env.REACT_APP_GITHUB_TOKEN}`
-      };
-      const response = await axios.get(languages_url, { headers });
-      return setData(response.data);
-    } catch (error) {
-      console.error("Error fetching languages:", error.message);
-    }
-  }, [languages_url]);
-
-  useEffect(() => {
-    handleRequest();
-  }, [handleRequest]);
-
-  const array = [];
-  let total_count = 0;
-  for (let index in data) {
-    array.push(index);
-    total_count += data[index];
-  }
-
-  return (
-    <LanguageContainer $flexWrap="none">
-      <LanguageTitle $marginLeft="10px">
-        Languages:{" "}
-      </LanguageTitle>
-      <LanguageContainer $marginLeft="10px">
-        {array.length
-          ? array.map((language) => (
-              <LanguageIndv
-                key={language}
-                href={repo_url + `/search?l=${language}`}
-                target=" _blank"
-                rel="noopener noreferrer"
-              >
-                {language}
-                {/* <LanguagePercentage>
-                  {((data[language] / total_count) * 100).toFixed(1)} %
-                </LanguagePercentage> */}
-              </LanguageIndv>
-            ))
-          : "No Languages Found"}
-      </LanguageContainer>
-    </LanguageContainer>
-  );
-};
-
-const StyledLanguage = styled(Language)`
-  font-family: 'VT323', monospace;
-  display: flex;
-  flex-wrap: wrap;
-  
-`
-const LanguageContainer = styled.div`
-  display: flex;
-  flex-direction: ${props => props.$flexDirection || "row"};
-  justify-content: start;
-  border: 0px;
-  flex-wrap: ${props => props.$flexWrap || "wrap"};
-  margin-left: ${props => props.$marginLeft || "0px"};
-`
-
-const LanguageTitle = styled.span`
-  align-self: center;
-  text-align: center;
-  margin-left: ${props => props.$marginLeft || "0px"};
-  font-size: 30px;
-`
-
-const LanguageIndv = styled.span`
-  display: flex;
-  flex-wrap: none;
-  align-self: flex-start;
-  // justify-content: space-between;
-  border: ${props => props.$border || "0px"};
-  border-radius: 20px;
-  margin: 2px;
-  // cursor: pointer;
-  padding: 8px;
-
-  &:hover {
-    align-self: flex-start;
-    background: #4FAF44;
-    border: 1px solid #ccc;
-    color: #000;
-  }
-`
-
-const LanguagePercentage = styled.div`
-  background: none;
-  color: #fff;
-  font-size: 15px;
-  // &:hover {
-  //   color: #000;
-  // }
-`
-
-const CardFooter = ({ star_count, repo_url, pushed_at }) => {
-  const [updated_at, setUpdated_at] = useState("0 mints");
-
-  const handleUpdatetime = useCallback(() => {
-    const date = new Date(pushed_at);
-    const nowdate = new Date();
-    const diff = nowdate.getTime() - date.getTime();
-    const hours = Math.trunc(diff / 1000 / 60 / 60);
-
-    if (hours < 24) {
-      if (hours < 1) return setUpdated_at("just now");
-      let measurement = hours === 1 ? "hour" : "hours";
-      return setUpdated_at(`${hours.toString()} ${measurement} ago`);
-    } else {
-      const options = { day: "numeric", month: "long", year: "numeric" };
-      const time = new Intl.DateTimeFormat("en-US", options).format(date);
-      return setUpdated_at(`on ${time}`);
-    }
-  }, [pushed_at]);
-
-  useEffect(() => {
-    handleUpdatetime();
-  }, [handleUpdatetime]);
-
-  return (
-    <FooterContainer className="card-text">
-      <FooterBtn
-        href={repo_url + "/stargazers"}
-        target=" _blank"
-      >
-        <FooterBtnLink className="text-light card-link mr-4">
-          Stars{" "}
-          <span className="badge badge-dark">{star_count}</span>
-        </FooterBtnLink>
-      </FooterBtn>
-      {/* <FaGithub/> */}
-      <small className="text-muted" style={{marginLeft: "20px"}}>Updated {updated_at}</small>
-    </FooterContainer>
-  );
-};
-
-const FooterContainer = styled.p`
-  cursor: pointer;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  // margin-bottom: 10px;
-
-  // &:hover {
-  //   align-self: flex-start;
-  //   background: #55B4B0;
-  //   border: 1px solid #ccc;
-  //   border-radius: 20px;
-  //   color: #000;
-
-  //   background: #000;
-  // }
-`
-
-const FooterBtn = styled.a`
-  cursor: pointer;
-  border-radius: 4px;
-  padding: 3px;
-  border: 1px solid white;
-  border-left: 1px solid white;
-  margin-left: 20px;
-
-  &:hover {
-    align-self: flex-start;
-    background: #55B4B0;
-    color: #000;
-
-    background: #fff;
-  }
-`
-
-const FooterBtnLink = styled.span`
-  padding: 3px;
-  color: #fff;
-  border-radius: 20px;
-
-  &:hover {
-    align-self: flex-start;
-    background: #55B4B0;
-    color: #000;
-
-    background: #fff;
-  }
-`
+// Export a no-op wrapper for the historical StyledDownloadIcon import path so
+// other files referencing it don't break. Currently unused on this card.
+export { StyledDownloadIcon };
 
 export default ProjectCard;

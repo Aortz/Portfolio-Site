@@ -1,453 +1,353 @@
-import Button from '@mui/material/Button';
 import { NavLink as Link } from 'react-router-dom';
-import { FaGithub, FaDownload } from "react-icons/fa";
+import { FaGithub, FaDownload } from 'react-icons/fa';
 import styled, { keyframes } from 'styled-components';
-import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
-
-
-// Helper function to calculate steps based on the text length
-function typingAnimationWithSteps(text) {
-    const textLength = text ? text.toString().length : 0;
-    return keyframes`
-      from {
-        width: 0;
-      }
-      to {
-        width: ${textLength+1}ch;
-      }
-    `;
-}
-
-const slideUpAnimation = keyframes`
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-`;
-
-const slideLeftAnimation = keyframes`
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-`;
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
 
 const slideRightAnimation = keyframes`
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-`;
-
-const rotateAnimation = keyframes`
-  from {
-    -webkit-transform: rotateY(0deg);
-    transform: rotateY(0deg);
-  }
-  to {0
-    -webkit-transform: rotateY(360deg);
-    transform: rotateY(360deg);
-  }
-`;
-
-const glitchAnimation = keyframes`
-  0% {
-    transform: translate(0);
-  }
-  25% {
-    transform: translate(2px, -2px);
-  }
-  50% {
-    transform: translate(-2px, 2px);
-  }
-  75% {
-    transform: translate(2px, 0);
-  }
-  100% {
-    transform: translate(0);
-  }
+  from { transform: translateX(-24px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
 `;
 
 export const ProjectContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    background: #000;
-    width: 100%;
-    color: #fff;
-    min-height: 100vh;
-    margin-left: 80px;
-    padding: 20px;
-    border-left: 1px solid #ccc;
-    overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: ${({ theme }) => theme.space[12]};
+  background: transparent;
+  width: 100%;
+  color: ${({ theme }) => theme.color.fg};
+  min-height: ${({ $docked }) => ($docked ? '0' : '100vh')};
+  padding: ${({ theme }) => theme.space[6]};
+  border-left: ${({ theme, $docked }) => ($docked ? 'none' : `2px solid ${theme.color.border}`)};
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity ${({ theme }) => theme.motion.slow} ${({ theme }) => theme.motion.ease},
+    transform ${({ theme }) => theme.motion.slow} ${({ theme }) => theme.motion.ease};
 
-    @media screen and (max-width: 768px) {
-      padding: 10px;
-      margin-left: 0px;
-      border-left: 0px solid #ccc;
-    }
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media screen and (max-width: 768px) {
+    gap: ${({ theme }) => theme.space[12]};
+    padding: ${({ theme }) => theme.space[3]};
+    border-left: none;
+  }
 `;
 
+export const ProjectContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+`;
+
+/* Full-content-width container for the 3D robots showcase, below the top row. */
 export const ContainerTitle = styled.div`
-    align-items: left;
-    
-    text-align: left;
-    font-family: 'IBMPlexMonoBold', monospace;
-    // padding: 20px;
-    font-weight: 500;
-    color: ${props => props.$inputColor || "#55B4B0"};
-    font-size: ${props => props.$size || "40px"};
+  text-align: left;
+  font-family: ${({ theme }) => theme.font.mono};
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: ${({ theme }) => theme.color.fg};
+  font-size: ${(props) => props.$size || ((p) => p.theme.size['2xl'])};
 
-    /* Typing cursor animation */
-    // overflow: hidden; /* Hide overflowing characters */
-    white-space: nowrap; /* Prevent text from wrapping */
-    animation: ${slideLeftAnimation} 3s forwards; /* Duration and steps for animation */
-    animation-delay: ${props => props.$animationDelay || "0s"};
-    // border-right: 1px solid #55B4B0;
+  white-space: nowrap;
+  opacity: 0;
+  animation: ${slideRightAnimation} ${({ theme }) => theme.motion.slow}
+    ${({ theme }) => theme.motion.ease} forwards;
+  animation-delay: ${(props) => props.$animationDelay || '0s'};
 
-    /* Initially set the text to be invisible */
-    visibility: hidden;
-    // border-right: 2px solid #fff;
-    /* Add a class to set visibility to visible after the animation-delay has passed */
-    &.visible {
-        visibility: visible;
-        animation: none;
-    }
+  &.visible {
+    opacity: 1;
+  }
 
-    filter: drop-shadow(8px 5px green) sepia(60%) hue-rotate(90deg);
-    
-    &:hover {
-      // background: rgba(255, 255, 255, 0.7); 
-      animation: ${glitchAnimation} 2s ease-in-out forwards;
-      animation-iteration-count: infinite;
-      // filter: blur(4px); /* Adjust the blur amount as needed */
-    }
+  &::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 3px;
+    margin-top: ${({ theme }) => theme.space[2]};
+    background: ${({ theme }) => theme.color.accent};
+    border-radius: ${({ theme }) => theme.radius.sm};
+  }
 
-
-    grid-row: 1;
-    grid-column: 1;
-    z-index: 3;
-
-    /* Account for mobile devices */
-    @media screen and (max-width: 768px) {
-        text-align: center;
-        align-self: left;
-        margin-right: 10px;
-        font-size: 35px;
-        padding: 10px;
-    }
-`
-
+  grid-row: 1;
+  grid-column: 1;
+  z-index: 3;
+`;
 
 export const CardContainer = styled(Col)`
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); // Creates 2 columns
-    gap: 1.5rem; // Reduced from 2rem
-    padding: 1.5rem; // Reduced from 2rem
-    width: 100%;
-    height: auto;
-    background: #000;
-    overflow-y: auto; // Enables vertical scrolling
-    
-    /* Hide the default scrollbar */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  
-    /* WebKit-based browsers */
-    &::-webkit-scrollbar {
-        width: 3px;
-    }
-  
-    &::-webkit-scrollbar-thumb {
-        height: 3px;
-        background-color: #888;
-        border-radius: 4px;
-    }
-  
-    &::-webkit-scrollbar-thumb:hover {
-        background-color: #555;
-    }
-  
-    &::-webkit-scrollbar-track {
-        background-color: #000;
-    }
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: ${({ theme }) => theme.space[6]};
+  padding: ${({ theme }) => theme.space[6]};
+  width: 100%;
+  height: auto;
+  background: ${({ theme }) => theme.color.bg};
+  overflow-y: auto;
 
-    grid-row: 2;
-    grid-column: 1;
-    z-index: 1;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { width: 0; display: none; }
 
-    @media screen and (max-width: 768px) {
-        grid-template-columns: 1fr; // Single column on smaller screens
-    }
-`
+  grid-row: 2;
+  grid-column: 1;
+  z-index: 1;
+
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const ProjectGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: ${({ theme }) => theme.space[6]};
+  width: 100%;
+  margin-top: ${({ theme }) => theme.space[4]};
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.space[4]};
+  }
+`;
 
 export const StyledCard = styled(Card)`
-    width: 80%;
-    max-width: 500px;
-    min-width: 300px;
-    border-radius: 40px;
-    height: fit-content;
-    min-height: 300px;
-    margin: 0 auto;
-    transition: all 0.5s ease-in-out;
-    position: relative;
-    z-index: 1;
-    opacity: ${props => props.$isActive ? 1 : 0.3};
-    filter: ${props => props.$isActive ? 'none' : 'blur(4px)'};
-    transform: scale(${props => props.$isActive ? 1 : 0.8});
-    display: flex;
-    visibility: visible;
+  width: 100%;
+  border-radius: ${({ theme }) => theme.radius.sm};
+  border: 1px solid ${({ theme }) => theme.color.border};
+  background: ${({ theme }) => theme.color.surface};
+  height: 100%;
+  min-height: 300px;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  visibility: visible;
+  overflow: hidden;
 
-    @media screen and (max-width: 768px) {
-        width: 90%;         // Reduced from 90%
-        min-width: 280px;   // Smaller minimum width
-        max-width: 400px;   // Added maximum width for mobile
-        min-height: 250px;  // Reduced minimum height
-        margin: 0 auto;     // Center the card
-        opacity: 1;
-        filter: none;
-        transform: scale(1);
-    }
+  transition:
+    transform ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
+    border-color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
+    box-shadow ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
 
-    @media screen and (max-width: 480px) {
-        width: 90%;
-        min-width: 250px;   // Even smaller for very small screens
-        max-width: 400px;
-    }
+  /* Top-left L-bracket */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 12px;
+    height: 12px;
+    border-top: 1.5px solid ${({ theme }) => theme.color.accent};
+    border-left: 1.5px solid ${({ theme }) => theme.color.accent};
+    opacity: 0.65;
+    transition: opacity ${({ theme }) => theme.motion.base}
+      ${({ theme }) => theme.motion.ease};
+    pointer-events: none;
+    z-index: 2;
+  }
 
-    &:hover {      
-      @media screen and (max-width: 768px) {
-        filter: sepia(60%);
-      }
-    }
-`
+  /* Bottom-right L-bracket */
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 12px;
+    height: 12px;
+    border-bottom: 1.5px solid ${({ theme }) => theme.color.accent};
+    border-right: 1.5px solid ${({ theme }) => theme.color.accent};
+    opacity: 0.65;
+    transition: opacity ${({ theme }) => theme.motion.base}
+      ${({ theme }) => theme.motion.ease};
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: ${({ theme }) => theme.color.accent};
+    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.20);
+  }
+
+  &:hover::before,
+  &:hover::after {
+    opacity: 1;
+  }
+`;
 
 export const CardBody = styled(Card.Body)`
-    align-items: left;
-    border: 1px solid #fff;
-    border-radius: 5px;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-`
+  border: none;
+  border-radius: ${({ theme }) => theme.radius.lg};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  color: ${({ theme }) => theme.color.fg};
+  padding: ${({ theme }) => theme.space[6]};
+
+  hr {
+    border: none;
+    border-top: 1px solid ${({ theme }) => theme.color.border};
+    margin: ${({ theme }) => theme.space[3]} 0;
+  }
+`;
 
 export const CardTitle = styled(Card.Title)`
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    max-width: 420px; 
-    min-width: 410px;
-    height: auto;
-    font-family: 'VT323', monospace;
-    font-size: 30px; // Reduced from 40px
-    padding: 8px; // Reduced from 10px
-    margin-left: auto;
-    margin-right: auto;
-    background-color: #00246B;
+  color: ${({ theme }) => theme.color.fg};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  height: auto;
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.lg};
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: ${({ theme }) => theme.space[3]};
+  background: transparent;
 
-    visibility: hidden;
-    &.visible {
-        visibility: visible;
-    }
-
-    @media screen and (max-width: 768px) {
-        font-size: 24px;    // Smaller font size
-        max-width: 100%;    // Full width
-        min-width: unset;   // Remove min-width constraint
-        padding: 5px;
-        
-        /* Adjust folder icon size */
-        svg {
-            width: 30px;
-            height: 30px;
-            margin-right: 100px; // Reduced margin
-        }
-    }
-`
+  visibility: hidden;
+  &.visible {
+    visibility: visible;
+  }
+`;
 
 export const CardText = styled(Card.Text)`
-    color: #fff;
-    display: flex;
-    background: ${props => props.$bgColor || "fff"};
-    text-align: center;
-    align-self: center;
-    align-items: center;
-    margin-left: ${props => props.$marginLeft || "0px"};
-    margin-right: ${props => props.$marginRight || "0px"};
-    margin-bottom: ${props => props.$marginBottom || "0px"};
-    font-family: 'VT323', monospace;
-    justify-content: ${props => props.$justifyContent || "left"};
-    padding: ${props => props.$padding || "0px"};
-    font-size: ${props => props.$fontSize || "16px"}; // Reduced from 20px
-    font-weight: 400;
-
-    @media screen and (max-width: 768px) {
-        font-size: ${props => props.$fontSize ? 
-            `calc(${props.$fontSize} * 0.8)` : // Reduce font size by 20%
-            '14px'
-        };
-        padding: ${props => props.$padding ? 
-            `calc(${props.$padding} * 0.8)` : // Reduce padding by 20%
-            '5px'
-        };
-    }
-`
+  color: ${({ theme }) => theme.color.fgMuted};
+  display: flex;
+  background: transparent;
+  text-align: left;
+  align-items: center;
+  margin-left: ${(props) => props.$marginLeft || '0'};
+  margin-right: ${(props) => props.$marginRight || '0'};
+  margin-bottom: ${(props) => props.$marginBottom || '0'};
+  font-family: ${({ theme }) => theme.font.sans};
+  justify-content: ${(props) => props.$justifyContent || 'flex-start'};
+  padding: ${(props) => props.$padding || '0'};
+  font-size: ${(props) => props.$fontSize || ((p) => p.theme.size.sm)};
+  font-weight: 400;
+  line-height: 1.55;
+`;
 
 export const CardLink = styled(Link)`
-    color: rgba(255, 255, 255);
-    text-align: right;
-    text-decoration: none;
+  color: ${({ theme }) => theme.color.fg};
+  text-align: right;
+  text-decoration: none;
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.lg};
+  font-weight: 500;
+  cursor: pointer;
+  transition: color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
 
-    font-family: 'MajorMonoDisplay', monospace;
-    font-size: 40px;
-    font-weight: 500;
+  &.active {
+    color: ${({ theme }) => theme.color.accent};
+  }
 
-
-    top: 20%;
-    width: 100%;
-    cursor: pointer;
-    &.active {
-        color: #00c254;
-    }
-
-    &:hover {
-        transition: all 0.2s ease-in-out;
-        background: #253ea1;
-        color: #fff;
-        font-size: 60px;
-        font-weight: 5000;
-
-    }
+  &:hover {
+    color: ${({ theme }) => theme.color.accent};
+  }
 `;
 
 export const CardMenu = styled.div`
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    
-    @media screen and (max-width: 768px) {
-        display: none;
-    }
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.color.surface};
+  z-index: 9;
+  font-size: ${({ theme }) => theme.size.lg};
+  width: 100%;
+  height: 100%;
 
-
-    background-color: rgba(0, 0, 0, 0.9);
-    z-index: 9;
-    font-size: 24px;
-    box-shadow: 0 10px 15px -3px rgb(46 41 51 / 8%), 0 4px 6px -2px rgb(71 63 79 / 16%);
-    width: 100%;
-    height: 100%;
-    transition: transform ease-in-out 0.2s;
-    /* transition: width ease 0.2s; */
-
-    /* Show the menu items when the menu is open */
-    .open & {
-        display: flex;
-    }
-
-    li {
-        margin-right: 20px;
-
-        /* Add spacing between menu items for small screens */
-        @media screen and (max-width: 768px) {
-        margin-right: 0;
-        margin-bottom: 10px;
-        }
-    }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
+const iconHover = `
+  height: auto;
+  width: 18px;
+  transition: transform 250ms cubic-bezier(0.2, 0.8, 0.2, 1), color 250ms cubic-bezier(0.2, 0.8, 0.2, 1);
+`;
 
 export const StyledGithubIcon = styled(FaGithub)`
-  height: auto;
-  width: 20px;
-  transition: transform 0.3s ease; /* Add a smooth transition effect on hover */
-  
+  ${iconHover}
+  color: ${({ theme }) => theme.color.fgMuted};
+
   &:hover {
-    color: #000; /* Change the color to black on hover */
-    transform: translateY(-3px); /* Raise the icon by 3 pixels on hover */
+    color: ${({ theme }) => theme.color.fg};
+    transform: translateY(-2px);
   }
 `;
 
 export const StyledDownloadIcon = styled(FaDownload)`
-  height: auto;
-  width: 20px;
-  transition: transform 0.3s ease; /* Add a smooth transition effect on hover */
-  
+  ${iconHover}
+  color: ${({ theme }) => theme.color.fgMuted};
+
   &:hover {
-    color: #000; /* Change the color to black on hover */
-    transform: translateY(-3px); /* Raise the icon by 3 pixels on hover */
+    color: ${({ theme }) => theme.color.fg};
+    transform: translateY(-2px);
   }
 `;
-
 
 export const CardBtn = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 20px;  // Space between buttons
-  margin-top: 15px;
-  
+  gap: ${({ theme }) => theme.space[3]};
+
   @media screen and (max-width: 768px) {
-    justify-content: center;
-    margin-left: 0;
+    justify-content: flex-end;
   }
-`
+`;
 
 export const ButtonContainer = styled.div`
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin: 0 5px;
 `;
 
 export const StyledLink = styled.a`
-  color: #FBEAEB;
+  color: ${({ theme }) => theme.color.fgMuted};
   text-decoration: none;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  
+  width: 36px;
+  height: 36px;
+  border-radius: ${({ theme }) => theme.radius.md};
+  transition:
+    color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
+    background ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
+
   &:hover {
-    color: #55B4B0;
-    transform: translateY(-2px);
+    color: ${({ theme }) => theme.color.accent};
+    background: ${({ theme }) => theme.color.surfaceAlt};
   }
 
-  /* Optional: add background on hover */
-  &:hover {
-    background: rgba(85, 180, 176, 0.1);
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.color.accent};
+    outline-offset: 2px;
   }
 `;
 
 export const CarouselWrapper = styled.div`
   position: relative;
   display: flex;
-  flex-direction: column; // Changed to column to stack content vertically
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 20px 40px;
+  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[8]}`};
   overflow: hidden;
 
   @media screen and (max-width: 768px) {
-    padding: 10px;
-    width: 100%;
+    padding: ${({ theme }) => theme.space[3]};
   }
 `;
 
@@ -457,135 +357,167 @@ export const CarouselContainer = styled.div`
   align-items: center;
   width: 100%;
   min-height: 400px;
-  background: #000;
+  background: transparent;
   position: relative;
-  transition: transform 0.5s ease-in-out;
 
   @media screen and (max-width: 768px) {
     min-height: 350px;
-    width: 100%;
   }
 `;
 
 export const CarouselControls = styled.div`
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-top: 20px; // Add space between cards and controls
+  gap: ${({ theme }) => theme.space[6]};
+  margin-top: ${({ theme }) => theme.space[6]};
   width: 100%;
-
-  @media screen and (max-width: 768px) {
-    position: relative;
-    bottom: 0;
-    padding: 10px;
-    background: transparent;
-  }
 `;
 
 export const CarouselButton = styled.button`
-  background: none;
-  border: none;
-  color: #55B4B0;
-  font-size: 2rem;
+  background: transparent;
+  border: 1px solid ${({ theme }) => theme.color.border};
+  border-radius: ${({ theme }) => theme.radius.pill};
+  color: ${({ theme }) => theme.color.fgMuted};
+  font-size: 1.25rem;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  padding: 10px;
-  z-index: 100;
-  transition: color 0.3s ease;
-
-  @media screen and (max-width: 768px) {
-    font-size: 1.5rem;
-    padding: 5px;
-  }
+  transition:
+    color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
+    border-color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
+    background ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
 
   &:hover {
-    color: #fff;
+    color: ${({ theme }) => theme.color.fg};
+    border-color: ${({ theme }) => theme.color.accent};
+    background: ${({ theme }) => theme.color.surfaceAlt};
   }
 
-  &:focus {
-    outline: none;
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.color.accent};
+    outline-offset: 2px;
   }
 `;
 
 export const CarouselTrack = styled.div`
-    display: flex;
-    gap: 20px;
-    padding: 20px 40px;
-    transition: transform 0.5s ease-in-out;
-    width: 100%;
-    justify-content: center; // Center the cards
+  display: flex;
+  gap: ${({ theme }) => theme.space[6]};
+  padding: ${({ theme }) => `${theme.space[6]} ${theme.space[8]}`};
+  width: 100%;
 
-    @media screen and (max-width: 768px) {
-        padding: 10px;
-        gap: 0;
-        
-        /* Hide non-active cards on mobile */
-        & > * {
-            display: none;
-            width: 100%;
-            margin: 0 auto; // Center active card
-        }
-        
-        /* Only show active card */
-        & > *[data-active="true"] {
-            display: flex;
-            justify-content: center;
-        }
-    }
+  @media screen and (max-width: 768px) {
+    padding: ${({ theme }) => theme.space[3]};
+    gap: 0;
+
+    & > * { display: none; width: 100%; }
+    & > *[data-active="true"] { display: flex; }
+  }
 `;
 
 export const LanguageContainer = styled.div`
   display: flex;
-  flex-wrap: ${props => props.$flexWrap || "wrap"};
-  margin-left: ${props => props.$marginLeft || "0px"};
+  flex-wrap: ${(props) => props.$flexWrap || 'wrap'};
+  margin-left: ${(props) => props.$marginLeft || '0'};
   align-items: center;
+  gap: ${({ theme }) => theme.space[1]};
 `;
 
 export const LanguageTitle = styled.h1`
   align-self: center;
-  text-align: center;
-  margin-left: ${props => props.$marginLeft || "0px"};
-  font-size: 20px;
-  color: #B8A7E9; // Pale purple text
-  margin-right: 10px;
+  text-align: left;
+  margin: 0;
+  margin-left: ${(props) => props.$marginLeft || '0'};
+  font-size: ${({ theme }) => theme.size.sm};
+  font-family: ${({ theme }) => theme.font.mono};
+  font-weight: 500;
+  color: ${({ theme }) => theme.color.fgMuted};
+  margin-right: ${({ theme }) => theme.space[2]};
 `;
 
 export const LanguageIndv = styled.a`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #000000; // Pale purple border
-  border-radius: 15px;
-  margin: 4px;
-  padding: 6px 12px;
-  color: #B8A7E9; // Pale purple text
+  border: 1px solid ${({ theme }) => theme.color.border};
+  border-radius: ${({ theme }) => theme.radius.pill};
+  margin: 2px;
+  padding: ${({ theme }) => `${theme.space[1]} ${theme.space[3]}`};
+  color: ${({ theme }) => theme.color.fgMuted};
   text-decoration: none;
-  font-size: 14px;
-  background: rgba(184, 167, 233, 0.1); // Very light purple background
-  transition: all 0.3s ease;
-  min-width: 80px;
-  
-  &:hover {
-    background: #B8A7E9;
-    color: #000;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(184, 167, 233, 0.3);
-  }
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.xs};
+  background: transparent;
+  transition:
+    color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
+    border-color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease},
+    background ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
 
-  @media screen and (max-width: 768px) {
-    font-size: 12px;
-    padding: 4px 8px;
-    min-width: 60px;
-    margin: 2px;
+  &:hover {
+    color: ${({ theme }) => theme.color.fg};
+    border-color: ${({ theme }) => theme.color.accent};
+    background: ${({ theme }) => theme.color.surfaceAlt};
   }
 `;
 
 export const LanguagePercentage = styled.div`
-  color: #B8A7E9; // Pale purple text
-  font-size: 14px;
-  margin-left: 6px;
-  font-weight: bold;
-  
-  ${LanguageIndv}:hover & {
-    color: #000;
+  color: ${({ theme }) => theme.color.fgSubtle};
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.xs};
+  margin-left: ${({ theme }) => theme.space[1]};
+`;
+
+/* Mono code label that prefixes each project title (e.g. "PRJ-01"). */
+export const CodeLabel = styled.span`
+  display: inline-block;
+  margin-right: ${({ theme }) => theme.space[2]};
+  padding: 2px 6px;
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.xs};
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: ${({ theme }) => theme.color.accent};
+  background: ${({ theme }) => theme.color.surfaceAlt};
+  border: 1px solid ${({ theme }) => theme.color.border};
+  border-radius: ${({ theme }) => theme.radius.sm};
+  text-transform: uppercase;
+`;
+
+/* Status-indicator pill for the language/tool tags. */
+export const TagChip = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[1]};
+  padding: ${({ theme }) => `${theme.space[1]} ${theme.space[3]}`};
+  margin: 2px;
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.xs};
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: ${({ theme }) => theme.color.fgMuted};
+  background: ${({ theme }) => theme.color.surfaceAlt};
+  border: 1px solid ${({ theme }) => theme.color.border};
+  border-radius: ${({ theme }) => theme.radius.sm};
+
+  &::before {
+    content: '●';
+    color: ${({ theme }) => theme.color.accent};
+    font-size: 0.7em;
+    line-height: 1;
   }
 `;
+
+/* Small mono subtitle that sits below a SectionHeading.
+   Example use: <SectionCaption>// DEPLOYED SYSTEMS — 6 ENTRIES</SectionCaption> */
+export const SectionCaption = styled.p`
+  margin: 0 0 ${({ theme }) => theme.space[4]};
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.sm};
+  letter-spacing: 0.04em;
+  color: ${({ theme }) => theme.color.fgSubtle};
+`;
+
+/* Tiny corner badge over the 3D showcase canvas, e.g. "// FIELD UNIT". */

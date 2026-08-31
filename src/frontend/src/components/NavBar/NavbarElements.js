@@ -1,269 +1,259 @@
-import Button from '@mui/material/Button';
 import { NavLink as Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
-import { MdClose } from 'react-icons/md';
-import { BiMenuAltRight } from 'react-icons/bi';
-import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { FiGithub, FiInstagram, FiLinkedin } from 'react-icons/fi';
 
-const slideUpAnimation = keyframes`
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to   { opacity: 1; }
 `;
 
 const slideLeftAnimation = keyframes`
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
 `;
 
 export const Nav = styled.nav`
-    background-color: rgba(0, 0, 0, 0.8);
-    height: 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;  /* Ensure navbar sticks to top */
-    top: 0;
-    z-index: 999;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  background: ${({ theme }) => theme.color.bg};
+  height: 85px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  padding: ${({ theme }) => `${theme.space[2]} ${theme.space[6]}`};
 
-    @media screen and (max-width: 768px) {
-        justify-content: center;
-        height: 65px;
-    }
-`;
-
-export const NavLogo = styled.img`
-    width: 50px;
-    height: 50px;
-    align-self: center;
-    background: none;
-    
-    &:hover {
-        align-self: flex-start;
-        background: #fff;
-        border-radius: 50px;
-    }
-`;
-
-export const VerticalNav = styled.nav`
-    background-color: rgba(0, 0, 0, 0.8);
-    position: fixed;
-    bottom: 35vh; /* Stick to the bottom of the screen */
-    left: 0; /* Stick to the left of the screen */
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Center align items */
-    z-index: 999;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    opacity: 1;
-    transform: translateX(0);
-    animation: ${slideUpAnimation} 2s ease-in-out forwards;
-
-    @media screen and (max-width: 768px) {
-        display: none;
-    }
-`;
-
-export const VerticalNavLogo = styled.a`
-    padding: 5px;
-    align-self: center;
-    @media screen and (max-width: 768px) {
-        display: none;
-    } 
-`;
-
-export const VerticalDivider = styled.div`
-    width: 1px;              /* Thickness of the line */
-    height: 70px;            /* Length of the line */
-    background-color: #98B4D4; /* Color of the line */
-    margin: 5px 0;          /* Spacing above and below the line */
-
-    @media screen and (max-width: 768px) {
-        display: none;       /* Hide on smaller screens if desired */
-    }
-`;
-
-export const StyledGHLogo = styled(FaGithub)`
-    width: 30px;
-    height: 30px;
-    color: #98B4D4;
-    align-self: center;
-    @media screen and (max-width: 768px) {
-        display: none;
-    } 
-    
-    &:hover {
-        color: #fff;
-    }
-`;
-
-export const StyledInstaLogo = styled(FaInstagram)`
-    width: 30px;
-    height: 30px;
-    color: #98B4D4;
-    align-self: center;
-    
-    &:hover {
-        color: #fff;
-    }
-`;
-
-export const StyledLinkedinLogo = styled(FaLinkedin)`
-    width: 30px;
-    height: 30px;
-    align-self: center;
-    color: #98B4D4;
-
-    &:hover {
-        color: #fff;
-    }
-`;
-
-export const NavLink = styled(Link)`
-    color: rgba(255, 255, 255, 0.9);
-    text-align: right;
-    text-decoration: none;
-
-    font-family: 'VT323', monospace;
-    font-size: 35px;
-    font-weight: 500;
-
-    animation: ${({ animate }) => (animate ? slideLeftAnimation : 'none')} 1s forwards;
-
-    width: 100%;
-    cursor: pointer;
-    &.active {
-        color: #C3447A;
-    }
-
-    &:hover {
-        transition: all 0.2s ease-in-out;
-        background: #98B4D4;
-        color: #fff;
-        font-size: 35px;
-        font-weight: 600;
-    }
-
-    /* Account for mobile devices */
-    @media screen and (max-width: 768px) {
-        text-align: center;
-        font-size: 20px;
-        font-weight: 500;
-        font-family: 'MoiraiOne', monospace;
-    }
-`;
-
-export const NavText = styled.p`
-    color: #7FCDCD;
-    align-self: center;
-    margin-left: 40px;
-    font-family: 'VT323', monospace;
-    font-size: 40px; /* Reduced size for better fit */
-    font-weight: bold;
-    
-    filter: drop-shadow(8px 5px blue) sepia(30%);
-    cursor: pointer;
-
-    &:hover {
-        background: #fff;
-        color: #000;
-        border-radius: 50px;
-        /* Removed spin animation for simplicity */
-    }
-
-    /* Account for mobile devices */
-    @media screen and (max-width: 768px) {
-        display: none;
-    }
-`;
-
-export const NavItems = styled.div`
-    display: flex;
-    gap: 2rem;
-    margin-right: 50px;
-
-    @media screen and (max-width: 768px) {
-        display: none;
-    }
-`;
-
-export const NavItem = styled.div`
-  cursor: pointer;
-  color: #acbcfc; /* Changed for better visibility */
-  font-size: 22px;
-  font-family: 'VT323', monospace;
-
-  &:hover {
-    color: #98B4D4;
+  @media screen and (max-width: 768px) {
+    height: auto;
+    flex-wrap: wrap;
+    gap: ${({ theme }) => theme.space[2]};
+    padding: ${({ theme }) => `${theme.space[2]} ${theme.space[3]}`};
   }
 `;
 
-export const NavMenu = styled.div`
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-
-    background-color: rgba(0, 0, 0, 0.9);
-    z-index: 9;
-    font-size: 24px;
-    box-shadow: 0 10px 15px -3px rgb(46 41 51 / 8%), 0 4px 6px -2px rgb(71 63 79 / 16%);
-    width: 100%;
-    height: 100%;
-    transition: transform ease-in-out 0.2s;
-
-    /* Show the menu items when the menu is open */
-    .open & {
-        display: flex;
-    }
-
-    li {
-        margin-right: 20px;
-
-        /* Add spacing between menu items for small screens */
-        @media screen and (max-width: 768px) {
-        margin-right: 0;
-        margin-bottom: 10px;
-        }
-    }
+export const NavLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[3]};
 `;
 
-export const NavMenuOpen = styled(BiMenuAltRight)` 
-    width: 50px; 
-    height: 50px; 
-    color: #fff;
-`
+export const NavRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[6]};
 
-export const NavMenuClose = styled(MdClose)` 
-    width: 50px; 
-    height: 50px;
-    color: #fff;
-`
+  @media screen and (max-width: 768px) {
+    gap: ${({ theme }) => theme.space[3]};
+  }
+`;
 
-export const NavBtn = styled(Button)`
-    width: 60px;
-    height: 60px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 8px;
-    margin-right: 10px;
-    color: #000;
-    
-    /* Account for mobile devices */
-    @media screen and (max-width: 768px) {
-        margin-left: auto;
-    }
-    
+export const NavLinkRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[6]};
+
+  /* On a phone we lean on single-scroll + the side-rail anchors; the inline
+     nav links eat too much width and would force a wrap anyway. */
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+/* Wrapper for navbar controls that only make sense on a real cursor + viewport
+   (grid lines, particle speed). Hidden on phones. */
+export const DesktopOnly = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[6]};
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const VerticalNav = styled.nav`
+  background-color: transparent;
+  position: fixed;
+  top: 50%;
+  left: 48px;
+  transform: translateY(-50%);
+  width: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${({ theme }) => theme.space[6]};
+  z-index: 999;
+  padding: ${({ theme }) => `${theme.space[8]} 0`};
+  opacity: 0;
+  animation: ${fadeIn} 1s ease-in-out forwards;
+  animation-delay: 0.4s;
+
+  /* Thin vertical line dead-center on the 56px rail */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: ${({ theme }) => theme.color.border};
+    z-index: -1;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const VerticalNavLogo = styled.a`
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: ${({ theme }) => theme.color.bg};
+  border-radius: ${({ theme }) => theme.radius.pill};
+  transition: transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.ease};
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.color.accent};
+    outline-offset: 2px;
+  }
+`;
+
+export const VerticalNavText = styled.div`
+  display: none;
+`;
+
+const iconBase = `
+  width: 28px;
+  height: 28px;
+  align-self: center;
+  stroke-width: 1.75;
+  transition: color 250ms cubic-bezier(0.2, 0.8, 0.2, 1);
+`;
+
+export const StyledGHLogo = styled(FiGithub)`
+  ${iconBase}
+  color: ${({ theme }) => theme.color.fgMuted};
+
+  &:hover {
+    color: ${({ theme }) => theme.color.accent};
+  }
+`;
+
+export const StyledInstaLogo = styled(FiInstagram)`
+  ${iconBase}
+  color: ${({ theme }) => theme.color.fgMuted};
+
+  &:hover {
+    color: ${({ theme }) => theme.color.accent};
+  }
+`;
+
+export const StyledLinkedinLogo = styled(FiLinkedin)`
+  ${iconBase}
+  color: ${({ theme }) => theme.color.fgMuted};
+
+  &:hover {
+    color: ${({ theme }) => theme.color.accent};
+  }
+`;
+
+const navLinkStyles = `
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  position: relative;
+`;
+
+export const NavLink = styled(Link)`
+  ${navLinkStyles}
+  color: ${({ theme }) => theme.color.fg};
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.sm};
+  padding: ${({ theme }) => `${theme.space[1]} 0`};
+  transition: color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
+
+  animation: ${({ animate }) => (animate ? slideLeftAnimation : 'none')} 1s forwards;
+
+  &.active { color: ${({ theme }) => theme.color.accent}; }
+  &:hover  { color: ${({ theme }) => theme.color.accent}; }
+`;
+
+export const NavAnchor = styled.a`
+  ${navLinkStyles}
+  color: ${({ theme }) => theme.color.fg};
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.sm};
+  padding: ${({ theme }) => `${theme.space[1]} 0`};
+  transition: color ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: ${({ theme }) => theme.color.accent};
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform ${({ theme }) => theme.motion.base} ${({ theme }) => theme.motion.ease};
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.color.accent};
+  }
+  &:hover::after {
+    transform: scaleX(1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.color.accent};
+    outline-offset: 4px;
+    border-radius: ${({ theme }) => theme.radius.sm};
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: ${({ theme }) => theme.size.xs};
+    letter-spacing: 0.02em;
+  }
+`;
+
+export const NavText = styled.div`
+  color: ${({ theme }) => theme.color.fg};
+  align-self: center;
+  font-family: ${({ theme }) => theme.font.mono};
+  font-size: ${({ theme }) => theme.size.xl};
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const NavLogo = styled.img`
+  width: 48px;
+  height: 48px;
+  align-self: center;
+  background: none;
+  border-radius: ${({ theme }) => theme.radius.pill};
+  cursor: pointer;
+  transition: transform ${({ theme }) => theme.motion.fast} ${({ theme }) => theme.motion.ease};
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+  }
 `;

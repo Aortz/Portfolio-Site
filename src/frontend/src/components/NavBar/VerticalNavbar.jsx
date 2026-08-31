@@ -4,30 +4,32 @@ import {
   VerticalNavLogo,
   StyledGHLogo,
   StyledLinkedinLogo,
-  VerticalDivider,
-  StyledInstaLogo
+  VerticalNavText,
+  StyledInstaLogo,
 } from './NavbarElements';
-import { GlobalStyles } from '../Fonts/Fonts';
 
-const VerticalNavbar = () =>{
-    return (
-        <>
-          <VerticalNav>
-            <GlobalStyles />
-            <VerticalDivider />
-            <VerticalNavLogo href="https://github.com/Aortz" target="_blank">
-              <StyledGHLogo />
-            </VerticalNavLogo>
-            <VerticalNavLogo href="https://www.instagram.com/_lee_thargic/" target="_blank">
-              <StyledInstaLogo />
-            </VerticalNavLogo>
-            <VerticalNavLogo href="https://www.linkedin.com/in/lee-junwei/" target="_blank">
-              <StyledLinkedinLogo />
-            </VerticalNavLogo>
-            <VerticalDivider />
-          </VerticalNav>
-        </>
-      );
-}
+const VerticalNavbar = () => (
+  <VerticalNav>
+    <VerticalNavText>{'|'}</VerticalNavText>
+    <VerticalNavLogo href="https://github.com/Aortz" target="_blank" rel="noreferrer">
+      <StyledGHLogo />
+    </VerticalNavLogo>
+    <VerticalNavLogo
+      href="https://www.instagram.com/_lee_thargic/"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <StyledInstaLogo />
+    </VerticalNavLogo>
+    <VerticalNavLogo
+      href="https://www.linkedin.com/in/lee-junwei/"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <StyledLinkedinLogo />
+    </VerticalNavLogo>
+    <VerticalNavText>{'|'}</VerticalNavText>
+  </VerticalNav>
+);
 
 export default VerticalNavbar;

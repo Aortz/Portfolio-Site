@@ -1,182 +1,119 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
+import React from 'react';
+import {
   AboutContainer,
   AboutLeftContainer,
   AboutParentContainer,
-  AboutBgImg,
-  ToolsContainer,
-  AboutContainerTitle,
   AboutDescriptionContainer,
   AboutDescriptionText,
-  RightContainerImg,
-  ToolsTitle,
-  ToolDescriptionText,
-  ToolsDescriptionContainer,
+  ToolsBlock,
+  CategoryLabel,
+  TagRow,
+  ToolFlipCard,
 } from './AboutElements';
-import { FaPython, FaJava, FaDocker, FaReact, FaGithub, FaJs, FaCss3, FaUnity  } from 'react-icons/fa';
-import { TbBrandCSharp, TbSql } from 'react-icons/tb';
-import { BsTools } from "react-icons/bs";
-import AboutBg from '../../assets/aboutBG.png'
+import {
+  FaPython,
+  FaJava,
+  FaDocker,
+  FaReact,
+  FaGithub,
+  FaJs,
+  FaCss3,
+  FaUnity,
+  FaLinux,
+} from 'react-icons/fa';
+import { TbBrandCSharp, TbSql, TbMathFunction } from 'react-icons/tb';
+import { SiRos, SiUnrealengine } from 'react-icons/si';
+import SectionHeading from '../../components/SectionHeading';
+import AxisDivider from '../../components/AxisDivider';
+import useFadeInOnScroll from '../../hooks/useFadeInOnScroll';
+import { useLayout } from '../../layout/LayoutContext';
+
+const TOOL_CATEGORIES = [
+  {
+    label: 'Languages',
+    items: [
+      { name: 'Python', Icon: FaPython, purpose: 'scripting / data' },
+      { name: 'Java', Icon: FaJava, purpose: 'jvm services' },
+      { name: 'JavaScript', Icon: FaJs, purpose: 'web glue' },
+      { name: 'C#', Icon: TbBrandCSharp, purpose: 'unity gameplay' },
+      { name: 'SQL', Icon: TbSql, purpose: 'data layer' },
+    ],
+  },
+  {
+    label: 'Robotics & Sim',
+    items: [
+      { name: 'ROS', Icon: SiRos, purpose: 'real-time control' },
+      { name: 'Unreal AirSim', Icon: SiUnrealengine, purpose: 'drone / car sim' },
+      { name: 'MATLAB', Icon: TbMathFunction, purpose: 'numeric proto' },
+      { name: 'Unity', Icon: FaUnity, purpose: '3D / sim' },
+    ],
+  },
+  {
+    label: 'Web',
+    items: [
+      { name: 'React', Icon: FaReact, purpose: 'ui' },
+      { name: 'CSS', Icon: FaCss3, purpose: 'styling' },
+    ],
+  },
+  {
+    label: 'DevOps',
+    items: [
+      { name: 'Docker', Icon: FaDocker, purpose: 'containers' },
+      { name: 'Linux', Icon: FaLinux, purpose: 'daily driver' },
+      { name: 'Git', Icon: FaGithub, purpose: 'version control' },
+    ],
+  },
+];
 
 const About = () => {
-  const [isTitleVisible, setIsTitleVisible] = useState(false);
-  const [isDescriptionVisible, setIsDescriptionVisible] = useState(false);
-  const aboutTitleRef = useRef(null);
-  const aboutDescriptionRef = useRef(null);
-
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: [0, 0.6]
-    };
-
-    const currentTitleRef = aboutTitleRef.current;
-    const currentDescriptionRef = aboutDescriptionRef.current;
-
-    const titleObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setIsTitleVisible(true);
-          // titleAnimated.current = true;
-        }
-      });
-    }, observerOptions);
-
-    const descriptionObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setIsDescriptionVisible(true);
-          // descriptionAnimated.current = true;
-        }
-      });
-    }, observerOptions);
-
-    if (currentTitleRef) {
-      titleObserver.observe(currentTitleRef);
-    }
-    if (currentDescriptionRef) {
-      descriptionObserver.observe(currentDescriptionRef);
-    }
-
-    return () => {
-      if (currentTitleRef) {
-        titleObserver.unobserve(currentTitleRef);
-      }
-      if (currentDescriptionRef) {
-        descriptionObserver.unobserve(currentDescriptionRef);
-      }
-    };
-  }, []);
+  const { docked } = useLayout();
+  const [ref, visible] = useFadeInOnScroll({ disabled: docked });
 
   return (
-    <AboutParentContainer style={{height: '100vh'}}>
-      <AboutBgImg
-        src={AboutBg}
-        className={isDescriptionVisible ? 'visible bg' : ''}
-      />
-      <AboutContainer>
+    <AboutParentContainer
+      id="about"
+      ref={ref}
+      $docked={docked}
+      className={visible ? 'visible' : ''}
+    >
+      <AboutContainer $docked={docked}>
         <AboutLeftContainer>
-          <AboutContainerTitle 
-            ref={aboutTitleRef} 
-            $size="50px" 
-            $animationDelay="0s" 
-            className={isTitleVisible ? 'visible title' : ''}
+          <SectionHeading number="02">ABOUT ME</SectionHeading>
+
+          <AboutDescriptionContainer
+            $animationDelay="0s"
+            className={visible ? 'visible description' : ''}
           >
-           2.ABOUT ME
-          </AboutContainerTitle>
-          
-          <AboutDescriptionContainer 
-            ref={aboutDescriptionRef} 
-            $animationDelay="0s" 
-            className={isDescriptionVisible ? 'visible description' : ''}
-          >
-            <AboutDescriptionText $inputColor="#b8b8b8" >
-              Hello! My name is Junwei and I enjoy creating things that live on the internet. 
-              You can find me tinkering with new frameworks and languages, at the gym or just chilling.
-              I'm always looking for new opportunities to learn and grow!
+            <AboutDescriptionText $inputColor="#b8b8b8">
+              Hi, I&apos;m Junwei — a software engineer who works at the
+              intersection of robotics simulation and the web. I like building
+              tools that turn complex sim/control systems into things you can
+              actually click around on. When I&apos;m not on a keyboard you&apos;ll
+              find me at the gym or chasing some new framework rabbit hole.
             </AboutDescriptionText>
 
-            <ToolsContainer className={isTitleVisible ? 'visible' : ''} $border="none" $borderRadius="20px" > 
-              <ToolsTitle $inputColor="#fff" $size="60px" $animationDelay="0s" 
-                className={isTitleVisible ? 'visible front-face' : ''}>
-                <BsTools style={{height: 'auto', width: '30px', marginRight: '20px'}}/> 
-                Tools 
-                <BsTools style={{marginLeft: '20px', height: 'auto', width: '30px'}}/>
-              </ToolsTitle>
-            </ToolsContainer>
+            <AxisDivider />
 
-            <div className="back-face">
-              <ToolDescriptionText $inputColor="#ffffff">
-                <ToolsDescriptionContainer $flexBasis="calc(25% - 20px)">
-                  <FaPython style={{
-                      marginRight: '10px',
-                      height: 'auto',
-                      width: '50px'
-                    }}/>Python
-                </ToolsDescriptionContainer >
-                <ToolsDescriptionContainer>
-                  <FaJava style={{
-                      marginRight: '10px',
-                      height: 'auto',
-                      width: '50px'
-                    }}/> Java
-                </ToolsDescriptionContainer>
-                <ToolsDescriptionContainer >
-                  <TbSql style={{
-                      height: 'auto',
-                      width: '50px',
-                    }}/>
-                </ToolsDescriptionContainer>
-                <ToolsDescriptionContainer >
-                  <FaDocker style={{
-                      marginRight: '10px',
-                      height: 'auto',
-                      width: '50px'
-                    }}/> Docker
-                </ToolsDescriptionContainer>
-                <ToolsDescriptionContainer >
-                  <FaReact style={{
-                      marginRight: '10px',
-                      height: 'auto',
-                      width: '50px'
-                    }}/> React
-                </ToolsDescriptionContainer>
-                <ToolsDescriptionContainer  >
-                  <FaJs  style={{
-                      marginRight: '10px',
-                      height: 'auto',
-                      width: '50px'
-                    }}/>Javascript
-                </ToolsDescriptionContainer >
-                <ToolsDescriptionContainer >
-                  <FaGithub style={{
-                      marginRight: '10px',
-                      height: 'auto',
-                      width: '50px'
-                    }}/> Git
-                </ToolsDescriptionContainer>
-                <ToolsDescriptionContainer >
-                  <TbBrandCSharp style={{
-                      height: 'auto',
-                      width: '50px'}}/>
-                </ToolsDescriptionContainer>
-                <ToolsDescriptionContainer >
-                  <FaUnity style={{
-                      marginRight: '10px',
-                      height: 'auto',
-                      width: '50px'
-                    }}/> Unity
-                </ToolsDescriptionContainer>
-                <ToolsDescriptionContainer >
-                  <FaCss3 style={{
-                      marginRight: '10px',
-                      height: 'auto',
-                      width: '50px'
-                    }}/> CSS
-                </ToolsDescriptionContainer>
-              </ToolDescriptionText>
-            </div>
+            <ToolsBlock>
+              {TOOL_CATEGORIES.map((cat) => (
+                <div key={cat.label}>
+                  <CategoryLabel>{`// ${cat.label.toUpperCase()}`}</CategoryLabel>
+                  <TagRow>
+                    {cat.items.map(({ name, Icon, purpose }) => (
+                      <ToolFlipCard key={name} tabIndex={0}>
+                        <div className="tool-flip-inner">
+                          <div className="tool-flip-front">
+                            <Icon />
+                            {name}
+                          </div>
+                          <div className="tool-flip-back">{purpose}</div>
+                        </div>
+                      </ToolFlipCard>
+                    ))}
+                  </TagRow>
+                </div>
+              ))}
+            </ToolsBlock>
           </AboutDescriptionContainer>
         </AboutLeftContainer>
       </AboutContainer>
